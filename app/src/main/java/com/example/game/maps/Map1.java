@@ -1,4 +1,4 @@
-package com.example.game;
+package com.example.game.maps;
 
 import android.os.Bundle;
 
@@ -8,6 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.example.game.MainActivity;
+import com.example.game.MainCity;
+import com.example.game.R;
 
 /**
  * A simple {@link Fragment} subclass.

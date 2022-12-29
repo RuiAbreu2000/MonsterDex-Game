@@ -6,15 +6,21 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager;
+    private SharedViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+        //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new Loja()).commit();
 
         fragmentManager = getSupportFragmentManager();
 

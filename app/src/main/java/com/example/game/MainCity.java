@@ -1,7 +1,5 @@
 package com.example.game;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +9,9 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.game.maps.Map1;
+import com.example.game.maps.Map2;
 
 public class MainCity extends Fragment {
 
