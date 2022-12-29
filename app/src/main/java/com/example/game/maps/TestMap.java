@@ -93,7 +93,7 @@ public class TestMap extends Fragment {
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
                 mapCanvas.drawBitmap(mapSprite[iRow][iCol].getSpriteBitmap(), current_x, current_y, null);
-                current_x += current_x;
+                current_x += TILESIZE;
             }
             current_y += TILESIZE;
             current_x = 0;

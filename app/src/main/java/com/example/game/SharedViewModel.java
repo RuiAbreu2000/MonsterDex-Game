@@ -12,8 +12,8 @@ public class SharedViewModel extends AndroidViewModel{
 
     public SpriteSheet spritesheet;
     public Sprite sprite;
-    public static final int NUMBER_OF_MAP_ROWS = 10;
-    public static final int NUMBER_OF_MAP_COLUMNS = 10;
+    public static final int NUMBER_OF_MAP_ROWS = 4;
+    public static final int NUMBER_OF_MAP_COLUMNS = 4;
     public static final int TILESIZE = 64;
 
     public SharedViewModel(@NonNull Application application) {
@@ -24,7 +24,7 @@ public class SharedViewModel extends AndroidViewModel{
 
     public Sprite[][] getTestMap(){         // Map Fragment Calls this method to get Map with Sprites
         // Define Map
-        int[] mapSpriteSheetIndex = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,};
+        int[] mapSpriteSheetIndex = {1,2,1,2,1,1,1,1,0,1,1,1,0,1,1,1};
         Sprite[][] mapSprite = new Sprite[NUMBER_OF_MAP_ROWS][NUMBER_OF_MAP_COLUMNS];
         // Build Map with Sprites
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
