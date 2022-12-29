@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.game.maps.TestMap;
+
 public class MainActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager;
@@ -19,13 +21,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
-        //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new Loja()).commit();
+        viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new TestMap()).commit();
 
-        fragmentManager = getSupportFragmentManager();
-
+        //fragmentManager = getSupportFragmentManager();
         // Show the main game screen when the activity is first created
-        showFragment(new MainMenu());
+        //showFragment(new MainMenu());
     }
 
     // Method to show a given fragment on screen

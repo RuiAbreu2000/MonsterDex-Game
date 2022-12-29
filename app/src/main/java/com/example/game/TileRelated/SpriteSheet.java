@@ -7,10 +7,12 @@ import android.graphics.Rect;
 
 import com.example.game.R;
 
+// Responsible for returning the specific Sprite we are interested in
+// We can ca have many sprites in this class but we use it to return the one we want
 public class SpriteSheet {
     private static final int SPRITE_WIDTH_PIXELS = 64;
     private static final int SPRITE_HEIGHT_PIXELS = 64;
-    private Bitmap bitmap;
+    private static Bitmap bitmap;
 
     public SpriteSheet(Context context) {
         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
@@ -26,13 +28,23 @@ public class SpriteSheet {
       //  return spriteArray;
    // }
 
-    public Bitmap getBitmap() {
+    public static Bitmap getBitmap() {
         return bitmap;
     }
 
-    //public Sprite getWaterSprite() {
-     //   return getSpriteByIndex(1, 0);
-    //}
+    public Sprite getTile(int tileNumber) {
+        switch(tileNumber) {
+            case 1:                 // GREEN TILE
+                return getSpriteByIndex(0,0);
+            case 2:                 // BlLUE TILE
+                return getSpriteByIndex(0,1);
+            case 3:                 // BLUE/BLACK TILE
+                return getSpriteByIndex(0,2);
+            default:
+                return null;
+        }
+    }
+
 
     //public Sprite getLavaSprite() {
        // return getSpriteByIndex(1, 1);
@@ -50,14 +62,13 @@ public class SpriteSheet {
       //  return getSpriteByIndex(1, 4);
     //}
 
-
-   // private Sprite getSpriteByIndex(int idxRow, int idxCol) {
-       // return new Sprite(this, new Rect(
-          //      idxCol*SPRITE_WIDTH_PIXELS,
-        //        idxRow*SPRITE_HEIGHT_PIXELS,
-            //    (idxCol + 1)*SPRITE_WIDTH_PIXELS,
-            //    (idxRow + 1)*SPRITE_HEIGHT_PIXELS
-       // ));
-   // }
-
+   // Returns a bitmap of the SprintSheet and a Rect corresponding to the desired Sprit
+   private Sprite getSpriteByIndex(int idxRow, int idxCol) {
+       return new Sprite(this, new Rect(
+               idxCol*SPRITE_WIDTH_PIXELS,
+              idxRow*SPRITE_HEIGHT_PIXELS,
+                (idxCol + 1)*SPRITE_WIDTH_PIXELS,
+               (idxRow + 1)*SPRITE_HEIGHT_PIXELS
+        ));
+   }
 }

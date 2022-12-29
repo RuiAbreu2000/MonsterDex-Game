@@ -1,4 +1,4 @@
-package com.example.game.TileRelated;
+package com.example.game;
 
 import static com.example.game.MapLayout.NUMBER_OF_COLUMN_TILES;
 import static com.example.game.MapLayout.NUMBER_OF_ROW_TILES;
@@ -9,7 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
-import com.example.game.MapLayout;
+import com.example.game.TileRelated.SpriteSheet;
 
 public class TileMap {
 

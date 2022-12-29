@@ -1,7 +1,9 @@
-package com.example.game.TileRelated;
+package com.example.game;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
+
+import com.example.game.TileRelated.SpriteSheet;
 
 public abstract class Tile {
     protected final Rect mapLocationRect;
