@@ -1,4 +1,4 @@
-package com.example.game.TileRelated;
+package com.example.game.graphics;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

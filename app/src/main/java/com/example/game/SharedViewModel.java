@@ -4,17 +4,24 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
 import android.app.Application;
+import android.util.Log;
 
-import com.example.game.TileRelated.Sprite;
-import com.example.game.TileRelated.SpriteSheet;
+import com.example.game.graphics.MapLayouts;
+import com.example.game.graphics.Sprite;
+import com.example.game.graphics.SpriteSheet;
 
 public class SharedViewModel extends AndroidViewModel{
 
-    public SpriteSheet spritesheet;
-    public Sprite sprite;
+    // MAP CONSTANTS
     public static final int NUMBER_OF_MAP_ROWS = 4;
     public static final int NUMBER_OF_MAP_COLUMNS = 4;
-    public static final int TILESIZE = 64;
+    public static final int SPRITE_WIDTH_PIXELS = 256;
+    public static final int SPRITE_HEIGHT_PIXELS = 256;
+    public static final int TILESIZE = 256;
+
+
+    public SpriteSheet spritesheet;
+    public MapLayouts maplayouts = new MapLayouts();
 
     public SharedViewModel(@NonNull Application application) {
         super(application);
@@ -23,8 +30,14 @@ public class SharedViewModel extends AndroidViewModel{
     }
 
     public Sprite[][] getTestMap(){         // Map Fragment Calls this method to get Map with Sprites
-        // Define Map
-        int[] mapSpriteSheetIndex = {1,2,1,2,1,1,1,1,0,1,1,1,0,1,1,1};
+        // Get Map Layout
+        int[] mapSpriteSheetIndex = maplayouts.grassMap().clone();
+
+        // Debug
+        Log.w("a", String.valueOf(mapSpriteSheetIndex.length));
+        Log.w("a", "ÕN SHAREDVIEWMODEL");
+
+        // Create Map Sprite
         Sprite[][] mapSprite = new Sprite[NUMBER_OF_MAP_ROWS][NUMBER_OF_MAP_COLUMNS];
         // Build Map with Sprites
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {

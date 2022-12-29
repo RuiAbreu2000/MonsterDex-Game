@@ -8,15 +8,16 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.game.R;
 import com.example.game.SharedViewModel;
-import com.example.game.TileRelated.Sprite;
+import com.example.game.graphics.Sprite;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -82,12 +83,19 @@ public class TestMap extends Fragment {
         // Get Map Bitmap
         int current_x = 0;
         int current_y = 0;
-        Sprite[][] mapSprite = viewModel.getTestMap();
+        Sprite[][] mapSprite = viewModel.getTestMap().clone();
 
         // Create bitmap and canvas to draw on it
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
         Bitmap bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_ROWS*TILESIZE, NUMBER_OF_MAP_COLUMNS*TILESIZE, conf); // this creates a MUTABLE bitmap
         mapCanvas = new Canvas(bitmap);
+        Log.w("a", "ÕN TESTMAP");
+        for (int iRow = 0; iRow < mapSprite.length; iRow++) {
+            for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
+                Log.w("a", String.valueOf(mapSprite[iRow][iCol]));
+            }
+
+        }
 
         // Add all sprite bitmaps to canvas
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
