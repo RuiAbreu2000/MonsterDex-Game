@@ -43,7 +43,8 @@ public class TestMap extends Fragment implements View.OnTouchListener {
     private Canvas mapCanvas;
     private ImageView image;
     int[] posXY;
-    public int[] mapSpriteSheetIndex;
+    private int[] tileIndexArray;
+    private Bitmap bitmap;
 
     public TestMap() {
         // Required empty public constructor
@@ -83,29 +84,17 @@ public class TestMap extends Fragment implements View.OnTouchListener {
 
         View v = inflater.inflate(R.layout.fragment_test_map, container, false);
         image = v.findViewById(R.id.MapHolder);
-        // Get Map Bitmap
-        int current_x = 0;
-        int current_y = 0;
-        Sprite[][] mapSprite = viewModel.getTestMap().clone();
 
-        // Get mapSpriteSheetIndex
-        mapSpriteSheetIndex = viewModel.getCurrentmapSpriteSheetIndex().clone();
+        // Build map
+        viewModel.getMap("grass");
+        // Get Tile Matrix
+        tileIndexArray = new int[NUMBER_OF_MAP_COLUMNS*NUMBER_OF_MAP_ROWS];
+        tileIndexArray = viewModel.getTileMatrix().clone();
+        // Get Monster Matrix
+            // ....
+        // Get Bitmap
+        bitmap = viewModel.getBitmap();
 
-        // Create bitmap and canvas to draw on it
-        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-        Bitmap bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_ROWS*TILESIZE, NUMBER_OF_MAP_COLUMNS*TILESIZE, conf); // this creates a MUTABLE bitmap
-        mapCanvas = new Canvas(bitmap);
-
-        // Add all sprite bitmaps to canvas
-        for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
-            for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
-                Log.w("a", String.valueOf(mapSpriteSheetIndex[iRow+iCol]));
-                mapCanvas.drawBitmap(mapSprite[iRow][iCol].getSpriteBitmap(), current_x, current_y, null);
-                current_x += TILESIZE;
-            }
-            current_y += TILESIZE;
-            current_x = 0;
-        }
 
         // Save on screen map coordinates and set listener
         image.setImageBitmap(bitmap);
@@ -117,6 +106,7 @@ public class TestMap extends Fragment implements View.OnTouchListener {
         return v;
     }
 
+    // Image Touch Screen and calculates which Tile was clicked
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         int touchX = (int) event.getX();

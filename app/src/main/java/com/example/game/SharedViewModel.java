@@ -4,10 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
 import android.app.Application;
-import android.util.Log;
+import android.graphics.Bitmap;
 
 import com.example.game.graphics.MapLayouts;
-import com.example.game.graphics.Sprite;
 import com.example.game.graphics.SpriteSheet;
 
 public class SharedViewModel extends AndroidViewModel{
@@ -23,37 +22,34 @@ public class SharedViewModel extends AndroidViewModel{
 
 
     public SpriteSheet spritesheet;
-    public MapLayouts maplayouts = new MapLayouts();
+    public MapLayouts maplayouts;
     public int[] mapSpriteSheetIndex;
 
     public SharedViewModel(@NonNull Application application) {
         super(application);
         spritesheet = new SpriteSheet(application);
-        //sprite = new Sprite();
+        maplayouts = new MapLayouts(spritesheet);
     }
 
-    public Sprite[][] getTestMap(){         // Map Fragment Calls this method to get Map with Sprites
-        // Get Map Layout
-        mapSpriteSheetIndex = maplayouts.grassMap().clone();
+    // Get Map Functions
+    public Bitmap getBitmap() {     // Returns Map Bitmap
+        return maplayouts.getBitmap();
+    }
 
-        // Debug
-       // Log.w("a", String.valueOf(mapSpriteSheetIndex.length));
+    public int[] getTileMatrix() {  // Returns Array with Tile Numbers
+        return maplayouts.getTileIndexMap().clone();
+    }
 
-
-        // Create Map Sprite
-        Sprite[][] mapSprite = new Sprite[NUMBER_OF_MAP_ROWS][NUMBER_OF_MAP_COLUMNS];
-        // Build Map with Sprites
-        for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
-            for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
-                // get corresponding sprite
-                mapSprite[iRow][iCol] = spritesheet.getTile(mapSpriteSheetIndex[iRow+iCol]);
-            }
+    public void getMap(String map) { // Builds map on MapLayouts
+        switch(map) {
+            case "grass":
+                maplayouts.grassMap();
+            case "dirt":
+                maplayouts.dirtMap();
+            case "clearsky":
+                maplayouts.clearskytMap();
+            case "stormmy":
+                maplayouts.stormmyMap();
         }
-        return mapSprite;
     }
-
-    public int[] getCurrentmapSpriteSheetIndex(){
-        return mapSpriteSheetIndex;
-    }
-
 }
