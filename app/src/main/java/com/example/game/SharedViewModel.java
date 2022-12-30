@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import android.app.Application;
 import android.graphics.Bitmap;
 
+import com.example.game.databases.AppDatabase;
 import com.example.game.graphics.MapLayouts;
 import com.example.game.graphics.SpriteSheet;
 
@@ -20,13 +21,13 @@ public class SharedViewModel extends AndroidViewModel{
     public static final int MAP_Y_SIZE = 1024;              //SPRITE_HEIGHT_PIXELS * NUMBER_OF_MAP_ROWS
     public static final int TILESIZE = 256;
 
-
+    public AppDatabase db;
     public SpriteSheet spritesheet;
     public MapLayouts maplayouts;
-    public int[] mapSpriteSheetIndex;
 
     public SharedViewModel(@NonNull Application application) {
         super(application);
+        db = AppDatabase.getInstance(application);
         spritesheet = new SpriteSheet(application);
         maplayouts = new MapLayouts(spritesheet);
     }
