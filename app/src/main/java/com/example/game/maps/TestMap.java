@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -26,7 +27,7 @@ import androidx.lifecycle.ViewModelProviders;
  * Use the {@link TestMap#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TestMap extends Fragment {
+public class TestMap extends Fragment implements View.OnTouchListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,6 +42,8 @@ public class TestMap extends Fragment {
     private SharedViewModel viewModel;
     private Canvas mapCanvas;
     private ImageView image;
+    int[] posXY;
+    public int[] mapSpriteSheetIndex;
 
     public TestMap() {
         // Required empty public constructor
@@ -79,27 +82,24 @@ public class TestMap extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_test_map, container, false);
-        image = (ImageView)v.findViewById(R.id.MapHolder);
+        image = v.findViewById(R.id.MapHolder);
         // Get Map Bitmap
         int current_x = 0;
         int current_y = 0;
         Sprite[][] mapSprite = viewModel.getTestMap().clone();
 
+        // Get mapSpriteSheetIndex
+        mapSpriteSheetIndex = viewModel.getCurrentmapSpriteSheetIndex().clone();
+
         // Create bitmap and canvas to draw on it
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
         Bitmap bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_ROWS*TILESIZE, NUMBER_OF_MAP_COLUMNS*TILESIZE, conf); // this creates a MUTABLE bitmap
         mapCanvas = new Canvas(bitmap);
-        Log.w("a", "ÕN TESTMAP");
-        for (int iRow = 0; iRow < mapSprite.length; iRow++) {
-            for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
-                Log.w("a", String.valueOf(mapSprite[iRow][iCol]));
-            }
-
-        }
 
         // Add all sprite bitmaps to canvas
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
+                Log.w("a", String.valueOf(mapSpriteSheetIndex[iRow+iCol]));
                 mapCanvas.drawBitmap(mapSprite[iRow][iCol].getSpriteBitmap(), current_x, current_y, null);
                 current_x += TILESIZE;
             }
@@ -107,10 +107,27 @@ public class TestMap extends Fragment {
             current_x = 0;
         }
 
+        // Save on screen map coordinates and set listener
         image.setImageBitmap(bitmap);
-
+        posXY = new int[2];
+        image.getLocationOnScreen(posXY);
+        image.setOnTouchListener(this);
 
         // Inflate the layout for this fragment
         return v;
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        int touchX = (int) event.getX();
+        int touchY = (int) event.getY();
+        int imageX = touchX - posXY[0]; // posXY[0] is the X coordinate
+        int imageY = touchY - posXY[1]; // posXY[1] is the y coordinate
+        int idxRow = imageY/TILESIZE;
+        int idxCol = imageX/TILESIZE;
+        int tile = idxRow*NUMBER_OF_MAP_COLUMNS+idxCol;
+        Log.w("a", String.valueOf(tile));
+
+        return false;
     }
 }

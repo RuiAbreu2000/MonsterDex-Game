@@ -17,11 +17,14 @@ public class SharedViewModel extends AndroidViewModel{
     public static final int NUMBER_OF_MAP_COLUMNS = 4;
     public static final int SPRITE_WIDTH_PIXELS = 256;
     public static final int SPRITE_HEIGHT_PIXELS = 256;
+    public static final int MAP_X_SIZE = 1024;              //SPRITE_WIDTH_PIXELS * NUMBER_OF_MAP_COLUMNS
+    public static final int MAP_Y_SIZE = 1024;              //SPRITE_HEIGHT_PIXELS * NUMBER_OF_MAP_ROWS
     public static final int TILESIZE = 256;
 
 
     public SpriteSheet spritesheet;
     public MapLayouts maplayouts = new MapLayouts();
+    public int[] mapSpriteSheetIndex;
 
     public SharedViewModel(@NonNull Application application) {
         super(application);
@@ -31,11 +34,11 @@ public class SharedViewModel extends AndroidViewModel{
 
     public Sprite[][] getTestMap(){         // Map Fragment Calls this method to get Map with Sprites
         // Get Map Layout
-        int[] mapSpriteSheetIndex = maplayouts.grassMap().clone();
+        mapSpriteSheetIndex = maplayouts.grassMap().clone();
 
         // Debug
-        Log.w("a", String.valueOf(mapSpriteSheetIndex.length));
-        Log.w("a", "ÕN SHAREDVIEWMODEL");
+       // Log.w("a", String.valueOf(mapSpriteSheetIndex.length));
+
 
         // Create Map Sprite
         Sprite[][] mapSprite = new Sprite[NUMBER_OF_MAP_ROWS][NUMBER_OF_MAP_COLUMNS];
@@ -47,6 +50,10 @@ public class SharedViewModel extends AndroidViewModel{
             }
         }
         return mapSprite;
+    }
+
+    public int[] getCurrentmapSpriteSheetIndex(){
+        return mapSpriteSheetIndex;
     }
 
 }

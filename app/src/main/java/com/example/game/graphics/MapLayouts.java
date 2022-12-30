@@ -9,7 +9,7 @@ public class MapLayouts {
 
     // Tile Indexes
     int[] groundIndexes = {1, 5, 9, 13};
-    int[] cloudIndexes = {3, 7, 11, 15};
+    int[] cloudIndexes = {3, 7, 11, 16};
 
     // Map Generator Probabilities
     int[] grassMapProbabilities =     new int[]{70,90,95,100}; // 70% grass, 20% dirt, 10% rocks
@@ -41,11 +41,11 @@ public class MapLayouts {
         int[] randomlayout = new int[NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS];
         for (int i = 0; i < NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS; i++) {
             int randomNumber = rand.nextInt(100);
-            if(randomNumber >= 0 && randomNumber < mapProbabilities[0]){                             // Index 0
+            if(randomNumber >= 0 && randomNumber <= mapProbabilities[0]){                             // Index 0
                 randomlayout[i] = indexes[0];
-            }else if(randomNumber > mapProbabilities[0] && randomNumber < mapProbabilities[1]){    // Index 1
+            }else if(randomNumber > mapProbabilities[0] && randomNumber <= mapProbabilities[1]){    // Index 1
                 randomlayout[i] = indexes[1];
-            }else if(randomNumber > mapProbabilities[1] && randomNumber < mapProbabilities[2]){     // index 2
+            }else if(randomNumber > mapProbabilities[1] && randomNumber <= mapProbabilities[2]){     // index 2
                 randomlayout[i] = indexes[2];
             }else if(randomNumber > mapProbabilities[2] && randomNumber <= 100){                    // Index 3
                 randomlayout[i] = indexes[3];

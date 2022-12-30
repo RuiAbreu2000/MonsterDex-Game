@@ -11,7 +11,7 @@ import android.graphics.Rect;
 import com.example.game.R;
 
 // Responsible for returning the specific Sprite we are interested in
-// We can ca have many sprites in this class but we use it to return the one we want
+// We can have many sprites in this class but we use it to return the one we want
 public class SpriteSheet {
     private static Bitmap bitmap;
 
@@ -21,59 +21,51 @@ public class SpriteSheet {
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.sprite_sheet, bitmapOptions);
     }
 
-    //public Sprite[] getPlayerSpriteArray() {
-    //    Sprite[] spriteArray = new Sprite[3];
-    //   spriteArray[0] = new Sprite(this, new Rect(0*64, 0, 1*64, 64));
-    //    spriteArray[1] = new Sprite(this, new Rect(1*64, 0, 2*64, 64));
-    //    spriteArray[2] = new Sprite(this, new Rect(2*64, 0, 3*64, 64));
-      //  return spriteArray;
-   // }
-
     public static Bitmap getBitmap() {
         return bitmap;
     }
 
+    // Vai buscar o tile da sprite sheet utilizando as coordenadas dos tiles na spritesheet
     public Sprite getTile(int tileNumber) {
         switch(tileNumber) {
-            case 1:                 // GREEN TILE
+            case 1:
                 return getSpriteByIndex(0,0);
-            case 2:                 // BlLUE TILE
+            case 2:
                 return getSpriteByIndex(0,1);
-            case 3:                 // BLUE/BLACK TILE
+            case 3:
                 return getSpriteByIndex(0,2);
-            case 4:                 // GREEN TILE
+            case 4:
                 return getSpriteByIndex(0,3);
-            case 5:                 // BlLUE TILE
+            case 5:
                 return getSpriteByIndex(1,0);
-            case 6:                 // BLUE/BLACK TILE
+            case 6:
                 return getSpriteByIndex(1,1);
-            case 7:                 // GREEN TILE
+            case 7:
                 return getSpriteByIndex(1,2);
-            case 8:                 // BlLUE TILE
+            case 8:
                 return getSpriteByIndex(1,3);
-            case 9:                 // BLUE/BLACK TILE
+            case 9:
                 return getSpriteByIndex(2,0);
-            case 10:                 // GREEN TILE
+            case 10:
                 return getSpriteByIndex(2,1);
-            case 11:                 // BlLUE TILE
+            case 11:
                 return getSpriteByIndex(2,2);
-            case 12:                 // BLUE/BLACK TILE
+            case 12:
                 return getSpriteByIndex(2,3);
-            case 13:                 // GREEN TILE
+            case 13:
                 return getSpriteByIndex(3,0);
-            case 14:                 // BlLUE TILE
+            case 14:
                 return getSpriteByIndex(3,1);
-            case 15:                 // BLUE/BLACK TILE
+            case 15:
                 return getSpriteByIndex(3,2);
-            case 16:                 // BLUE/BLACK TILE
+            case 16:
                 return getSpriteByIndex(3,3);
-
             default:
                 return null;
         }
     }
 
-   // Returns a bitmap of the SprintSheet and a Rect corresponding to the desired Sprit
+   // Returns a bitmap of the SprintSheet and a Rect corresponding to the desired Sprite
    private Sprite getSpriteByIndex(int idxRow, int idxCol) {
        return new Sprite(this, new Rect(
                idxCol*SPRITE_WIDTH_PIXELS,
