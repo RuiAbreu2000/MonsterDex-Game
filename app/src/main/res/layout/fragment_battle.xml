@@ -9,7 +9,7 @@
         android:id="@+id/divider_horizontal"
         android:layout_width="409dp"
         android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,7 +19,7 @@
         android:id="@+id/divider_opcoes"
         android:layout_width="409dp"
         android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +29,7 @@
         android:id="@+id/divider_vertical"
         android:layout_width="1dp"
         android:layout_height="729dp"
-        android:background="?android:attr/listDivider"
+        android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/divider_horizontal"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +38,7 @@
         android:id="@+id/divider_monstros"
         android:layout_width="409dp"
         android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toTopOf="@+id/divider_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,8 +46,10 @@
 
     <Button
         android:id="@+id/button_ataque"
-        android:layout_width="201dp"
-        android:layout_height="183dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:backgroundTint="@color/teal_700"
+        android:textColor="@color/black"
         android:text="Ataque"
         app:layout_constraintBottom_toTopOf="@+id/divider_opcoes"
         app:layout_constraintEnd_toStartOf="@+id/divider_vertical"
@@ -56,8 +58,10 @@
 
     <Button
         android:id="@+id/button_mochila"
-        android:layout_width="205dp"
-        android:layout_height="183dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:backgroundTint="@color/teal_700"
+        android:textColor="@color/black"
         android:text="Mochila"
         app:layout_constraintBottom_toTopOf="@+id/divider_opcoes"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,8 +70,10 @@
 
     <Button
         android:id="@+id/button_monstros"
-        android:layout_width="201dp"
-        android:layout_height="170dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:backgroundTint="@color/teal_700"
+        android:textColor="@color/black"
         android:text="Monstros"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/divider_vertical"
@@ -76,8 +82,10 @@
 
     <Button
         android:id="@+id/button_fugir"
-        android:layout_width="205dp"
-        android:layout_height="170dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:backgroundTint="@color/teal_700"
+        android:textColor="@color/black"
         android:text="Fugir"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
