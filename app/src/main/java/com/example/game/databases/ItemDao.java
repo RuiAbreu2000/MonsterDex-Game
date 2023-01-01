@@ -17,8 +17,7 @@ public interface ItemDao {
     Item getItemByName(String name);
 
     @Query("SELECT * FROM Item WHERE id =:id")
-    Monster getItem(int id);
-
+    Item getItem(int id);
 
     // Set Queries
     @Query("UPDATE Item SET price=:price WHERE id =:id")
@@ -26,7 +25,6 @@ public interface ItemDao {
 
     @Query("UPDATE Item SET amount=:amount WHERE id =:id")
     void setAmount(int id, Integer amount);
-
 
     @Delete
     void deleteItem(Item item);

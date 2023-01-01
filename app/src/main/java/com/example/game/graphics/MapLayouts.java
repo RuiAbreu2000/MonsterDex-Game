@@ -14,6 +14,7 @@ public class MapLayouts {
 
     private SpriteSheet spritesheet;
     private int[] mapSpriteSheetIndex;
+    private int[] monsterArray;
     private Sprite[][] mapSprite;
     private Bitmap bitmap;
 
@@ -113,6 +114,27 @@ public class MapLayouts {
         return;
     }
 
+    public void buildMonsterArray(int currentZoneLevel) {
+        // 0 if no Monster; 1< if Monster and number is their level
+        Random rand = new Random();
+        Random rand2 = new Random();
+        int monsterProbability, randomMonsterLevel;
+        int maxMonstersInZone = 4;
+        int numberOfMonsters = 0;
+        for (int i = 0; i < NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS; i++) {
+            monsterProbability = rand.nextInt(100);                                 // Generate number between 0 and 100
+            if(monsterProbability <= 20 && numberOfMonsters <= maxMonstersInZone){                 // 20% probability of adding monster to Tile
+                randomMonsterLevel = rand.nextInt(((currentZoneLevel + 8) - currentZoneLevel) + 1) + currentZoneLevel;  // (max - min) + 1) + min
+                monsterArray[i] = randomMonsterLevel;
+                numberOfMonsters++;
+            }else{
+                monsterArray[i] = 0;
+            }
+
+        }
+
+    }
+
     // Get Functions
     public Bitmap getBitmap(){
         return this.bitmap;
@@ -122,8 +144,8 @@ public class MapLayouts {
         return this.mapSpriteSheetIndex;
     }
 
-    public void getMosterMatrix(){
-        return;
+    public int[] getMonsterArray(){
+        return this.monsterArray;
     }
 
 }

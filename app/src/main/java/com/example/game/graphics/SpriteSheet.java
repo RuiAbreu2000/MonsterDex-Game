@@ -15,10 +15,15 @@ import com.example.game.R;
 public class SpriteSheet {
     private static Bitmap bitmap;
 
-    public SpriteSheet(Context context) {
+    public SpriteSheet(Context context, String source) {
         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
         bitmapOptions.inScaled = false;
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.sprite_sheet, bitmapOptions);
+
+        if (source.equals("tiles")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.sprite_sheet, bitmapOptions);
+        }else if(source.equals("waterMonsters")){
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.water_monsters_spritesheet, bitmapOptions);
+        }
     }
 
     public static Bitmap getBitmap() {

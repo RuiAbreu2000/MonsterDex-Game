@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new Battle()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new MainMenu()).commit();
 
         //fragmentManager = getSupportFragmentManager();
         // Show the main game screen when the activity is first created
