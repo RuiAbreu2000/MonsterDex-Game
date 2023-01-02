@@ -1,27 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="30dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="30dp" />
 
     <Button
         android:id="@+id/button_start_game"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/start_game" />
+        android:layout_weight="1"
+        android:backgroundTint="@color/teal_700"
+        android:text="New Game"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/button_continue"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
 
     <Button
-        android:id="@+id/button_load_game"
-        android:layout_width="wrap_content"
+        android:id="@+id/button_continue"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/load_game" />
+        android:layout_weight="1"
+        android:backgroundTint="@color/teal_700"
+        android:text="Continue"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button_settings"
-        android:layout_width="wrap_content"
+        android:id="@+id/button_options"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/settings" />
+        android:layout_weight="1"
+        android:backgroundTint="@color/teal_700"
+        android:text="Opções"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/button_continue" />
 
-</LinearLayout>
+
+    >
+
+    ></androidx.constraintlayout.widget.ConstraintLayout>

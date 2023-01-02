@@ -15,10 +15,18 @@ import com.example.game.R;
 public class SpriteSheet {
     private static Bitmap bitmap;
 
-    public SpriteSheet(Context context) {
+    public SpriteSheet(Context context, String source) {
         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
         bitmapOptions.inScaled = false;
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.sprite_sheet, bitmapOptions);
+
+        if (source.equals("tiles")) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.sprite_sheet, bitmapOptions);
+        }else if(source.equals("waterMonsters")){
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.water_monsters_spritesheet, bitmapOptions);
+        }
+        else if(source.equals("symbols")){
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.symbols, bitmapOptions);
+        }
     }
 
     public static Bitmap getBitmap() {
@@ -74,4 +82,35 @@ public class SpriteSheet {
                (idxRow + 1)*SPRITE_HEIGHT_PIXELS
         ));
    }
+
+    public Sprite getMonsterTile(int tileNumber) {
+        switch(tileNumber) {
+            case 1:
+                return getSpriteByIndex(0,0);
+            case 2:
+                return getSpriteByIndex(0,1);
+            case 3:
+                return getSpriteByIndex(0,2);
+            case 4:
+                return getSpriteByIndex(1,0);
+            case 5:
+                return getSpriteByIndex(1,1);
+            case 6:
+                return getSpriteByIndex(1,2);
+            case 7:
+                return getSpriteByIndex(2,0);
+            case 8:
+                return getSpriteByIndex(2,1);
+            case 9:
+                return getSpriteByIndex(2,2);
+            case 10:
+                return getSpriteByIndex(3,0);
+            case 11:
+                return getSpriteByIndex(3,1);
+            case 12:
+                return getSpriteByIndex(3,2);
+            default:
+                return null;
+        }
+    }
 }

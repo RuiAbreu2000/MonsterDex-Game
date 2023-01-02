@@ -4,10 +4,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-// https://stackoverflow.com/questions/6341776/how-to-save-bitmap-in-database
-
 @Entity
-public class Monster {
+public class MonsterDex {
     @PrimaryKey(autoGenerate = true)    //automatically generates pk
     public int id;			            // primary key
 
@@ -26,17 +24,25 @@ public class Monster {
     @ColumnInfo(name = "defense")       // Monster defense
     public Integer defense;
 
-    @ColumnInfo(name = "level")         // Monster level
-    public Integer level;
+    @ColumnInfo(name = "isBoss")         // Monster level
+    public Boolean isBoss;
 
     @ColumnInfo(name = "bArray")
     public byte[] bArray;
 
-    // Get and Set Functions
+    @ColumnInfo(name = "rarity")
+    public String rarity;
+
+    @ColumnInfo(name = "evolution")
+    public Integer evolution;
+
+    @ColumnInfo(name = "evolvesFrom")
+    public String evolvesFrom;
+
+    // Get Functions
     public int getId(){return this.id;}
 
-    // Other maybe
-    @ColumnInfo(name = "originalCreator")          // Creator of Monster if it has one
-    public String originalCreator;
+    // Set Functions
+
 
 }

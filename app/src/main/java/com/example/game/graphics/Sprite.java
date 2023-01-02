@@ -3,6 +3,7 @@ package com.example.game.graphics;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.Log;
 
 public class Sprite {
 
@@ -26,7 +27,12 @@ public class Sprite {
     }
 
     public Bitmap getSpriteBitmap(){
-        Bitmap region = Bitmap.createBitmap(spriteSheet.getBitmap(), rect.right, rect.top, rect.width(), rect.height());
+        Bitmap region = Bitmap.createBitmap(spriteSheet.getBitmap(), rect.left, rect.top, rect.width(), rect.height());
+        return region;
+    }
+
+    public Bitmap getSpriteBitmap2(){
+        Bitmap region = Bitmap.createBitmap(spriteSheet.getBitmap(), rect.left, rect.top, rect.width(), rect.height());
         return region;
     }
 

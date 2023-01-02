@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.game.maps.TestMap;
+
 public class MainMenu extends Fragment {
 
     @Nullable
@@ -22,11 +24,20 @@ public class MainMenu extends Fragment {
         View v = inflater.inflate(R.layout.fragment_main_menu, container, false);
 
         Button startGameButton = v.findViewById(R.id.button_start_game);
+        Button button_continue = v.findViewById(R.id.button_continue);
         startGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.w("a", "success to connect to:2");
-                ((MainActivity)getActivity()).showFragment(new MainCity());
+                NewGame fragment = new NewGame();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+            }
+        });
+
+        button_continue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TestMap testMap = new TestMap();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, testMap).commit();
             }
         });
 

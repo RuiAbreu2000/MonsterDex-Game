@@ -45,6 +45,7 @@ public class TestMap extends Fragment implements View.OnTouchListener {
     int[] posXY;
     private int[] tileIndexArray;
     private Bitmap bitmap;
+    private int[] monsterArray;
 
     public TestMap() {
         // Required empty public constructor
@@ -91,7 +92,7 @@ public class TestMap extends Fragment implements View.OnTouchListener {
         tileIndexArray = new int[NUMBER_OF_MAP_COLUMNS*NUMBER_OF_MAP_ROWS];
         tileIndexArray = viewModel.getTileMatrix().clone();
         // Get Monster Matrix
-            // ....
+        monsterArray = viewModel.getMonsterArray().clone();
         // Get Bitmap
         bitmap = viewModel.getBitmap();
 
@@ -117,6 +118,13 @@ public class TestMap extends Fragment implements View.OnTouchListener {
         int idxCol = imageX/TILESIZE;
         int tile = idxRow*NUMBER_OF_MAP_COLUMNS+idxCol;
         Log.w("a", String.valueOf(tile));
+        if(monsterArray[tile] > 0){
+            // BATTLE SCREEN TO CAPTURE MONSTER
+            Log.w("a", "BATTLE TIME");
+        }
+
+
+
 
         return false;
     }
