@@ -13,7 +13,7 @@ import com.example.game.R;
 // Responsible for returning the specific Sprite we are interested in
 // We can have many sprites in this class but we use it to return the one we want
 public class SpriteSheet {
-    private static Bitmap bitmap;
+    private  Bitmap bitmap;
 
     public SpriteSheet(Context context, String source) {
         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
@@ -29,7 +29,7 @@ public class SpriteSheet {
         }
     }
 
-    public static Bitmap getBitmap() {
+    public Bitmap getBitmap() {
         return bitmap;
     }
 

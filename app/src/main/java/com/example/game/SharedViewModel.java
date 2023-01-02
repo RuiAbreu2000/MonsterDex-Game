@@ -45,7 +45,7 @@ public class SharedViewModel extends AndroidViewModel{
         waterMonsterSpritesheet = new SpriteSheet(application, "waterMonsters");
         symbolsSpriteSheet = new SpriteSheet(application, "symbols");
         maplayouts = new MapLayouts(spritesheet);
-        //maplayouts.setSymbolsSpriteSheet(symbolsSpriteSheet);
+        maplayouts.setSymbolsSpriteSheet(symbolsSpriteSheet);
     }
 
     // Get Map Functions
@@ -61,7 +61,7 @@ public class SharedViewModel extends AndroidViewModel{
         return maplayouts.getTileIndexMap().clone();
     }
 
-    public int[] getMonsterArray(){ return maplayouts.getMonsterArray().clone();}
+    public int[][] getMonsterArray(){ return maplayouts.getMonsterArray().clone();}
 
     public void getMap(String map) { // Builds map on MapLayouts
         switch(map) {

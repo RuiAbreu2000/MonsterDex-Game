@@ -15,7 +15,7 @@ public class MapLayouts {
 
     private SpriteSheet spritesheet;
     private int[] mapSpriteSheetIndex;
-    private int[] monsterArray;
+    private int[][] monsterArray;
     private Sprite[][] mapSprite;
     private Bitmap bitmap;
     private SpriteSheet symbolsSpriteSheet;
@@ -27,14 +27,10 @@ public class MapLayouts {
     private Sprite itemSymbol;
 
     // Tile Indexes
-    int[] groundIndexes = {1, 5, 9, 13};
-    int[] cloudIndexes = {3, 7, 11, 16};
+    int[] groundIndexes = {2, 6, 10, 14};
 
     // Map Generator Probabilities
     int[] grassMapProbabilities =     new int[]{70,75,95,100}; // 70% grass, 20% dirt, 10% rocks
-    int[] dirtMapProbabilities =      new int[]{20,25,95,100}; // 70% dirt, 20% grass, 10% rocks
-    int[] clearskyMapProbabilities =  new int[]{};
-    int[] stormmyMapProbabilities =   new int[]{};
 
     public MapLayouts(SpriteSheet spritesheet) {
         this.spritesheet = spritesheet;
@@ -43,10 +39,16 @@ public class MapLayouts {
 
     // GROUND MAPS
     public void grassMap(int currentZoneLevel) {
-        monsterArray = new int[NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS];
+        monsterArray = new int[NUMBER_OF_MAP_ROWS][NUMBER_OF_MAP_COLUMNS];
         // Build Tile Index Map
         mapSpriteSheetIndex = new int[NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS];
         this.buildRandomLayout(groundIndexes, grassMapProbabilities);
+
+        // Print random mapSpriteSheetIndex
+        Log.w("a", "PRINTING");
+        for (int i = 0; i < NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS; i++) {
+            Log.w("a", String.valueOf(mapSpriteSheetIndex[i]));
+        }
 
         // Build Sprite Array
         mapSprite = new Sprite[NUMBER_OF_MAP_ROWS][NUMBER_OF_MAP_COLUMNS];
@@ -69,6 +71,9 @@ public class MapLayouts {
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
                 // get corresponding sprite
+                if(iRow == 0 && iCol ==2){
+                    mapSprite[iRow][iCol] = symbolsSpriteSheet.getMonsterTile(5);
+                }
                 mapSprite[iRow][iCol] = spritesheet.getTile(mapSpriteSheetIndex[iRow+iCol]);
             }
         }
@@ -88,10 +93,9 @@ public class MapLayouts {
         // Add all sprite bitmaps to canvas
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
-                Log.w("a", String.valueOf(monsterArray[iRow+iCol]));
                 mapCanvas.drawBitmap(mapSprite[iRow][iCol].getSpriteBitmap(), current_x, current_y, null);
-                if(monsterArray[iRow+iCol] > 0){    // Draw Monster Symbol if Monster exists in this tile
-                    Log.w("a", "INNN");
+                if(monsterArray[iRow][iCol] > 0){    // Draw Monster Symbol if Monster exists in this tile
+                    Log.w("a", "INNNNNN");
                     //mapCanvas.drawBitmap(monsterSymbol.getSpriteBitmap(), current_x, current_y, null);
                 }
                 current_x += TILESIZE;
@@ -127,14 +131,16 @@ public class MapLayouts {
         int monsterProbability, randomMonsterLevel;
         int maxMonstersInZone = 4;
         int numberOfMonsters = 0;
-        for (int i = 0; i < NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS; i++) {
-            monsterProbability = rand.nextInt(100);                                 // Generate number between 0 and 100
-            if(monsterProbability <= 20 && numberOfMonsters <= maxMonstersInZone){                 // 20% probability of adding monster to Tile
-                randomMonsterLevel = rand.nextInt(((currentZoneLevel + 8) - currentZoneLevel) + 1) + currentZoneLevel;  // (max - min) + 1) + min
-                monsterArray[i] = randomMonsterLevel;
-                numberOfMonsters++;
-            }else{
-                monsterArray[i] = 0;
+        for (int i = 0; i < NUMBER_OF_MAP_ROWS; i++) {
+            for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
+                monsterProbability = rand.nextInt(100);                                 // Generate number between 0 and 100
+                if(monsterProbability <= 20 && numberOfMonsters <= maxMonstersInZone){                 // 20% probability of adding monster to Tile
+                    randomMonsterLevel = rand2.nextInt(((currentZoneLevel + 8) - currentZoneLevel) + 1) + currentZoneLevel;  // (max - min) + 1) + min
+                    monsterArray[i][iCol] = randomMonsterLevel;
+                    numberOfMonsters = numberOfMonsters + 1;
+                }else{
+                    monsterArray[i][iCol] = 0;
+                }
             }
 
         }
@@ -150,7 +156,7 @@ public class MapLayouts {
         return this.mapSpriteSheetIndex;
     }
 
-    public int[] getMonsterArray(){
+    public int[][] getMonsterArray(){
         return this.monsterArray;
     }
 
@@ -158,9 +164,11 @@ public class MapLayouts {
     public void setSymbolsSpriteSheet(SpriteSheet sheet){
         this.symbolsSpriteSheet = sheet;
         // get symbol Sprites
-        arrowUp = symbolsSpriteSheet.getMonsterTile(5);
-        arrowDown = symbolsSpriteSheet.getMonsterTile(4);
-        monsterSymbol = symbolsSpriteSheet.getMonsterTile(1);
+        arrowUp = sheet.getMonsterTile(5);
+        arrowUp.imprime();
+
+        //arrowDown = sheet.getMonsterTile(4);
+        monsterSymbol = sheet.getMonsterTile(1);
     }
 
 }

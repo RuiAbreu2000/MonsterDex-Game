@@ -16,15 +16,6 @@ public class Sprite {
         this.rect = rect;
     }
 
-    public void draw(Canvas canvas, int x, int y) {
-        // Draws a part of a image
-        canvas.drawBitmap(
-                SpriteSheet.getBitmap(),
-                rect,
-                new Rect(x, y, x+getWidth(), y+getHeight()),
-                null
-        );
-    }
 
     public Bitmap getSpriteBitmap(){
         Bitmap region = Bitmap.createBitmap(spriteSheet.getBitmap(), rect.left, rect.top, rect.width(), rect.height());
@@ -42,5 +33,12 @@ public class Sprite {
 
     public int getHeight() {
         return rect.height();
+    }
+
+    public void imprime() {
+        Log.w("a", String.valueOf(rect.left));
+        Log.w("a", String.valueOf(rect.top));
+        Log.w("a", String.valueOf(rect.right));
+        Log.w("a", String.valueOf(rect.bottom));
     }
 }
