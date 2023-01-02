@@ -12,6 +12,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,7 +99,7 @@ public class NewGame extends Fragment {
                 // Build SpriteSheet and Sprite Array
                 waterMonsterSpriteSheet = viewModel.getWaterMonsterSpriteSheet();
                 monsterSprite = new Sprite[4][3];       // Numero de Water Monsters Atualmente
-                buildSpriteArray(4, 4);
+                buildSpriteArray(4, 3);
 
                 // Build Bitmaps
                 Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
@@ -107,7 +108,7 @@ public class NewGame extends Fragment {
                     for (int iCol = 0; iCol < 3; iCol++) {
                         Bitmap bitmap = Bitmap.createBitmap(TILESIZE, TILESIZE, conf); // this creates a MUTABLE bitmap
                         Canvas mapCanvas = new Canvas(bitmap);
-                        mapCanvas.drawBitmap(monsterSprite[iRow][iCol].getSpriteBitmap(), 0, 0, null);
+                        mapCanvas.drawBitmap(monsterSprite[iRow][iCol].getSpriteBitmap2(), 0, 0, null);
                         // Transform to bit Array
                         ByteArrayOutputStream bos = new ByteArrayOutputStream();
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
@@ -148,7 +149,7 @@ public class NewGame extends Fragment {
         for (int iRow = 0; iRow < numberOfRows; iRow++) {
             for (int iCol = 0; iCol < numberOfColumns; iCol++) {
                 // get corresponding sprite
-                monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getTile(iRow+iCol);
+                monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow+iCol+1);
             }
         }
     }

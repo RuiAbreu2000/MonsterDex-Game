@@ -14,21 +14,24 @@ import com.example.game.graphics.SpriteSheet;
 public class SharedViewModel extends AndroidViewModel{
 
     // MAP CONSTANTS
-    public static final int NUMBER_OF_MAP_ROWS = 4;
-    public static final int NUMBER_OF_MAP_COLUMNS = 4;
+    public static final int NUMBER_OF_MAP_ROWS = 5;
+    public static final int NUMBER_OF_MAP_COLUMNS = 5;
     public static final int SPRITE_WIDTH_PIXELS = 256;
     public static final int SPRITE_HEIGHT_PIXELS = 256;
-    public static final int MAP_X_SIZE = 1024;              //SPRITE_WIDTH_PIXELS * NUMBER_OF_MAP_COLUMNS
-    public static final int MAP_Y_SIZE = 1024;              //SPRITE_HEIGHT_PIXELS * NUMBER_OF_MAP_ROWS
+    public static final int MAP_X_SIZE = 1280;              //SPRITE_WIDTH_PIXELS * NUMBER_OF_MAP_COLUMNS
+    public static final int MAP_Y_SIZE = 1280;              //SPRITE_HEIGHT_PIXELS * NUMBER_OF_MAP_ROWS
     public static final int TILESIZE = 256;
 
     // Important
     public AppDatabase db;
     public MapLayouts maplayouts;
 
-
+    // Sprite Sheets
     public SpriteSheet spritesheet;
     public SpriteSheet waterMonsterSpritesheet;
+    public SpriteSheet symbolsSpriteSheet;
+
+
     // Current Zone Vars
     public int currentZoneLevel = 1;                // Level of Current Zone
     public String currentZone = null;
@@ -36,9 +39,13 @@ public class SharedViewModel extends AndroidViewModel{
     public SharedViewModel(@NonNull Application application) {
         super(application);
         db = AppDatabase.getInstance(application);
+        // Spritesheets
+
         spritesheet = new SpriteSheet(application, "tiles");
         waterMonsterSpritesheet = new SpriteSheet(application, "waterMonsters");
+        symbolsSpriteSheet = new SpriteSheet(application, "symbols");
         maplayouts = new MapLayouts(spritesheet);
+        //maplayouts.setSymbolsSpriteSheet(symbolsSpriteSheet);
     }
 
     // Get Map Functions
@@ -60,17 +67,7 @@ public class SharedViewModel extends AndroidViewModel{
         switch(map) {
             case "grass":
                 currentZone = "grass";                               // Updates current Zone
-                maplayouts.grassMap();                               // Builds Map
-                maplayouts.buildMonsterArray(currentZoneLevel);      // Build Array with monster location on map
-            case "dirt":
-                currentZone = "dirt";
-                maplayouts.dirtMap();
-            case "clearsky":
-                currentZone = "clearsky";
-                maplayouts.clearskytMap();
-            case "stormmy":
-                currentZone = "stormmy";
-                maplayouts.stormmyMap();
+                maplayouts.grassMap(currentZoneLevel);                               // Builds Map
         }
     }
 

@@ -6,6 +6,7 @@ import static com.example.game.SharedViewModel.TILESIZE;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import java.util.Random;
 
@@ -17,6 +18,13 @@ public class MapLayouts {
     private int[] monsterArray;
     private Sprite[][] mapSprite;
     private Bitmap bitmap;
+    private SpriteSheet symbolsSpriteSheet;
+
+    // Symbol Tiles
+    private Sprite arrowUp;
+    private Sprite arrowDown;
+    private Sprite monsterSymbol;
+    private Sprite itemSymbol;
 
     // Tile Indexes
     int[] groundIndexes = {1, 5, 9, 13};
@@ -34,40 +42,29 @@ public class MapLayouts {
 
 
     // GROUND MAPS
-    public Bitmap grassMap() {
+    public void grassMap(int currentZoneLevel) {
+        monsterArray = new int[NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS];
         // Build Tile Index Map
         mapSpriteSheetIndex = new int[NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS];
-        buildRandomLayout(groundIndexes, grassMapProbabilities);
+        this.buildRandomLayout(groundIndexes, grassMapProbabilities);
 
         // Build Sprite Array
         mapSprite = new Sprite[NUMBER_OF_MAP_ROWS][NUMBER_OF_MAP_COLUMNS];
-        buildSpriteArray();
+        this.buildSpriteArray();
+
+        // Build Monster Array
+        this.buildMonsterArray(currentZoneLevel);
 
         // Build Bitmap
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_ROWS*TILESIZE, NUMBER_OF_MAP_COLUMNS*TILESIZE, conf); // this creates a MUTABLE bitmap
-        buildBitmap();
+        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_ROWS * TILESIZE, NUMBER_OF_MAP_COLUMNS * TILESIZE, conf); // this creates a MUTABLE bitmap
+        this.buildBitmap();
 
-        // return bitmap to sharedviewmodel
-        return bitmap;
-    }
-
-    public void dirtMap(){
-        return ;
-    }
-
-    // CLOUD MAPS
-    public void clearskytMap(){
-        return ;
-    }
-
-    public void stormmyMap(){
-        return ;
+        return;
     }
 
 
     public void buildSpriteArray(){
-
         // Build Map with Sprites
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
@@ -75,6 +72,10 @@ public class MapLayouts {
                 mapSprite[iRow][iCol] = spritesheet.getTile(mapSpriteSheetIndex[iRow+iCol]);
             }
         }
+        // Set Arrow Symbols
+        //mapSprite[0][2] = arrowUp;
+        //mapSprite[4][2] = arrowDown;
+
         return;
     }
 
@@ -87,7 +88,12 @@ public class MapLayouts {
         // Add all sprite bitmaps to canvas
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
+                Log.w("a", String.valueOf(monsterArray[iRow+iCol]));
                 mapCanvas.drawBitmap(mapSprite[iRow][iCol].getSpriteBitmap(), current_x, current_y, null);
+                if(monsterArray[iRow+iCol] > 0){    // Draw Monster Symbol if Monster exists in this tile
+                    Log.w("a", "INNN");
+                    //mapCanvas.drawBitmap(monsterSymbol.getSpriteBitmap(), current_x, current_y, null);
+                }
                 current_x += TILESIZE;
             }
             current_y += TILESIZE;
@@ -146,6 +152,15 @@ public class MapLayouts {
 
     public int[] getMonsterArray(){
         return this.monsterArray;
+    }
+
+    // Set Functions
+    public void setSymbolsSpriteSheet(SpriteSheet sheet){
+        this.symbolsSpriteSheet = sheet;
+        // get symbol Sprites
+        arrowUp = symbolsSpriteSheet.getMonsterTile(5);
+        arrowDown = symbolsSpriteSheet.getMonsterTile(4);
+        monsterSymbol = symbolsSpriteSheet.getMonsterTile(1);
     }
 
 }
