@@ -50,8 +50,7 @@ public class MQTTHelper {
 
                 //Adjusting the set of options that govern the behaviour of Offline (or Disconnected) buffering of messages
                 DisconnectedBufferOptions disconnectedBufferOptions = new DisconnectedBufferOptions();
-                disconnectedBufferOptions.setBufferEnabled(true);
-                disconnectedBufferOptions.setBufferSize(100);
+                disconnectedBufferOptions.setBufferEnabled(false);
                 disconnectedBufferOptions.setPersistBuffer(false);
                 disconnectedBufferOptions.setDeleteOldestMessages(false);
                 mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
@@ -83,7 +82,11 @@ public class MQTTHelper {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
                 Log.w(TAG, "Subscribed!");
+
+
             }
+
+
 
             @Override
             public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
@@ -94,12 +97,14 @@ public class MQTTHelper {
 
     }
 
-    public void publish(String topic, String msg, int qos){
+    public void publish(String topic, String msg, int qos, boolean retained){
 
         byte[] encodedPayload;
 
         encodedPayload = msg.getBytes(StandardCharsets.UTF_8);
         MqttMessage message = new MqttMessage(encodedPayload);
+        message.setRetained(retained);
+
         message.setQos(qos);
         mqttAndroidClient.publish(topic, message);
 

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/divider_horizontal"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/divider_vertical" />
+
+    <View
+        android:id="@+id/divider_opcoes"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider_horizontal" />
+
+    <View
+        android:id="@+id/divider_vertical"
+        android:layout_width="1dp"
+        android:layout_height="729dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/divider_horizontal"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider_monstros"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/divider_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/divider_vertical" />
+
+    <Button
+        android:id="@+id/button_ataque"
+        android:layout_width="201dp"
+        android:layout_height="183dp"
+        android:text="Ataque"
+        app:layout_constraintBottom_toTopOf="@+id/divider_opcoes"
+        app:layout_constraintEnd_toStartOf="@+id/divider_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider_horizontal" />
+
+    <Button
+        android:id="@+id/button_mochila"
+        android:layout_width="205dp"
+        android:layout_height="183dp"
+        android:text="Mochila"
+        app:layout_constraintBottom_toTopOf="@+id/divider_opcoes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/divider_horizontal" />
+
+    <Button
+        android:id="@+id/button_monstros"
+        android:layout_width="201dp"
+        android:layout_height="170dp"
+        android:text="Monstros"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/divider_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider_opcoes" />
+
+    <Button
+        android:id="@+id/button_fugir"
+        android:layout_width="205dp"
+        android:layout_height="170dp"
+        android:text="Fugir"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/divider_opcoes" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_inimigo"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="205dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider_vertical"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_aliado"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="201dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/divider_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_aliado" />
+
+    <TextView
+        android:id="@+id/textView_inimigo"
+        android:layout_width="205dp"
+        android:layout_height="wrap_content"
+        android:text="Player2"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar_inimigo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider_vertical"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_aliado"
+        android:layout_width="201dp"
+        android:layout_height="wrap_content"
+        android:text="Player1"
+        app:layout_constraintEnd_toStartOf="@+id/divider_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider_monstros" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/divider_monstros"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar_inimigo"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/divider_horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/divider_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar_aliado"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/button_join"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Join match!"
+        app:layout_constraintBottom_toBottomOf="@+id/divider_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/divider_monstros"
+        app:layout_constraintTop_toTopOf="@+id/divider_vertical" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
