@@ -13,24 +13,24 @@ import com.example.game.R;
 // Responsible for returning the specific Sprite we are interested in
 // We can have many sprites in this class but we use it to return the one we want
 public class SpriteSheet {
-    private  Bitmap bitmap;
+    private Bitmap bitmap;
 
     public SpriteSheet(Context context, String source) {
         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
         bitmapOptions.inScaled = false;
 
         if (source.equals("tiles")) {
-            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.sprite_sheet, bitmapOptions);
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.sprite_sheet, bitmapOptions);
         }else if(source.equals("waterMonsters")){
-            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.water_monsters_spritesheet, bitmapOptions);
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.water_monsters, bitmapOptions);
         }
         else if(source.equals("symbols")){
-            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.symbols, bitmapOptions);
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.symbols, bitmapOptions);
         }
     }
 
     public Bitmap getBitmap() {
-        return bitmap;
+        return this.bitmap;
     }
 
     // Vai buscar o tile da sprite sheet utilizando as coordenadas dos tiles na spritesheet
@@ -82,6 +82,16 @@ public class SpriteSheet {
                (idxRow + 1)*SPRITE_HEIGHT_PIXELS
         ));
    }
+
+
+    public Sprite getSpriteExact(int left, int top, int right, int bottom) {
+        return new Sprite(this, new Rect(
+                left,
+                top,
+                right,
+                bottom
+        ));
+    }
 
     public Sprite getMonsterTile(int tileNumber) {
         switch(tileNumber) {

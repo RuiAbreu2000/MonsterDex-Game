@@ -18,12 +18,12 @@ public class Sprite {
 
 
     public Bitmap getSpriteBitmap(){
-        Bitmap region = Bitmap.createBitmap(spriteSheet.getBitmap(), rect.left, rect.top, rect.width(), rect.height());
+        Bitmap region = Bitmap.createBitmap(this.spriteSheet.getBitmap(), rect.left, rect.top, rect.width(), rect.height());
         return region;
     }
 
     public Bitmap getSpriteBitmap2(){
-        Bitmap region = Bitmap.createBitmap(spriteSheet.getBitmap(), rect.left, rect.top, rect.width(), rect.height());
+        Bitmap region = Bitmap.createBitmap(this.spriteSheet.getBitmap(), rect.left, rect.top, rect.width(), rect.height());
         return region;
     }
 
@@ -36,9 +36,12 @@ public class Sprite {
     }
 
     public void imprime() {
-        Log.w("a", String.valueOf(rect.left));
-        Log.w("a", String.valueOf(rect.top));
-        Log.w("a", String.valueOf(rect.right));
-        Log.w("a", String.valueOf(rect.bottom));
+        Log.w("a", "IMPRIME");
+        //Log.w("a", String.valueOf(rect.left));
+        //Log.w("a", String.valueOf(rect.top));
+        //Log.w("a", String.valueOf(rect.right));
+        //Log.w("a", String.valueOf(rect.bottom));
+        Log.w("a", String.valueOf(rect.width()));
+        Log.w("a", String.valueOf(rect.height()));
     }
 }

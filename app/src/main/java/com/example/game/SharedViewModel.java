@@ -39,13 +39,13 @@ public class SharedViewModel extends AndroidViewModel{
     public SharedViewModel(@NonNull Application application) {
         super(application);
         db = AppDatabase.getInstance(application);
-        // Spritesheets
 
-        spritesheet = new SpriteSheet(application, "tiles");
+        // Spritesheets
+        spritesheet = new SpriteSheet(application, "waterMonsters");
         waterMonsterSpritesheet = new SpriteSheet(application, "waterMonsters");
-        symbolsSpriteSheet = new SpriteSheet(application, "symbols");
-        maplayouts = new MapLayouts(spritesheet);
-        maplayouts.setSymbolsSpriteSheet(symbolsSpriteSheet);
+        symbolsSpriteSheet = new SpriteSheet(application, "tiles");
+        maplayouts = new MapLayouts(spritesheet, symbolsSpriteSheet);
+        maplayouts.setSymbolsSpriteSheet();
     }
 
     // Get Map Functions

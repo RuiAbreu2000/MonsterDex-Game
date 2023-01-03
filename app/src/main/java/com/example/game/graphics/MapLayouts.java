@@ -32,26 +32,27 @@ public class MapLayouts {
     // Map Generator Probabilities
     int[] grassMapProbabilities =     new int[]{70,75,95,100}; // 70% grass, 20% dirt, 10% rocks
 
-    public MapLayouts(SpriteSheet spritesheet) {
+    public MapLayouts(SpriteSheet spritesheet, SpriteSheet symbolsSpriteSheet) {
         this.spritesheet = spritesheet;
+        this.symbolsSpriteSheet = symbolsSpriteSheet;
+        mapSpriteSheetIndex = new int[NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS];
+        monsterArray = new int[NUMBER_OF_MAP_ROWS][NUMBER_OF_MAP_COLUMNS];
+        mapSprite = new Sprite[NUMBER_OF_MAP_ROWS][NUMBER_OF_MAP_COLUMNS];
     }
 
 
     // GROUND MAPS
     public void grassMap(int currentZoneLevel) {
-        monsterArray = new int[NUMBER_OF_MAP_ROWS][NUMBER_OF_MAP_COLUMNS];
         // Build Tile Index Map
-        mapSpriteSheetIndex = new int[NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS];
         this.buildRandomLayout(groundIndexes, grassMapProbabilities);
 
         // Print random mapSpriteSheetIndex
-        Log.w("a", "PRINTING");
-        for (int i = 0; i < NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS; i++) {
-            Log.w("a", String.valueOf(mapSpriteSheetIndex[i]));
-        }
+        //Log.w("a", "PRINTING");
+        //for (int i = 0; i < NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS; i++) {
+        //    Log.w("a", String.valueOf(mapSpriteSheetIndex[i]));
+        //}
 
         // Build Sprite Array
-        mapSprite = new Sprite[NUMBER_OF_MAP_ROWS][NUMBER_OF_MAP_COLUMNS];
         this.buildSpriteArray();
 
         // Build Monster Array
@@ -71,15 +72,12 @@ public class MapLayouts {
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
                 // get corresponding sprite
-                if(iRow == 0 && iCol ==2){
-                    mapSprite[iRow][iCol] = symbolsSpriteSheet.getMonsterTile(5);
-                }
                 mapSprite[iRow][iCol] = spritesheet.getTile(mapSpriteSheetIndex[iRow+iCol]);
             }
         }
         // Set Arrow Symbols
-        //mapSprite[0][2] = arrowUp;
-        //mapSprite[4][2] = arrowDown;
+        mapSprite[0][2] = monsterSymbol;
+        mapSprite[4][2] = arrowUp;
 
         return;
     }
@@ -94,10 +92,14 @@ public class MapLayouts {
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
                 mapCanvas.drawBitmap(mapSprite[iRow][iCol].getSpriteBitmap(), current_x, current_y, null);
-                if(monsterArray[iRow][iCol] > 0){    // Draw Monster Symbol if Monster exists in this tile
-                    Log.w("a", "INNNNNN");
-                    //mapCanvas.drawBitmap(monsterSymbol.getSpriteBitmap(), current_x, current_y, null);
+                if(iRow == 0 && iCol == 2){
+
                 }
+
+                //if(monsterArray[iRow][iCol] > 0){    // Draw Monster Symbol if Monster exists in this tile
+                    //Log.w("a", "INNNNNN");
+                    //mapCanvas.drawBitmap(monsterSymbol.getSpriteBitmap(), current_x, current_y, null);
+                //}
                 current_x += TILESIZE;
             }
             current_y += TILESIZE;
@@ -108,9 +110,11 @@ public class MapLayouts {
 
     private void buildRandomLayout(int[] indexes, int[] mapProbabilities){
         Random rand = new Random();
-
+        Log.w("a", "buildRandomLayout");
         for (int i = 0; i < NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS; i++) {
             int randomNumber = rand.nextInt(100);
+
+            //Log.w("a", String.valueOf(randomNumber));
             if(randomNumber >= 0 && randomNumber <= mapProbabilities[0]){                           // Index 0
                 mapSpriteSheetIndex[i] = indexes[0];
             }else if(randomNumber > mapProbabilities[0] && randomNumber <= mapProbabilities[1]){    // Index 1
@@ -161,14 +165,16 @@ public class MapLayouts {
     }
 
     // Set Functions
-    public void setSymbolsSpriteSheet(SpriteSheet sheet){
-        this.symbolsSpriteSheet = sheet;
+    public void setSymbolsSpriteSheet(){
+        Log.w("a", "Setting Monster Symbol");
+        //this.symbolsSpriteSheet = sheet;
         // get symbol Sprites
-        arrowUp = sheet.getMonsterTile(5);
-        arrowUp.imprime();
+        //arrowUp = symbolsSpriteSheet.getMonsterTile(5);
 
+        arrowUp = symbolsSpriteSheet.getSpriteExact(0,0,768,1024);
+        arrowUp.imprime();
         //arrowDown = sheet.getMonsterTile(4);
-        monsterSymbol = sheet.getMonsterTile(1);
+        monsterSymbol = symbolsSpriteSheet.getMonsterTile(1);
     }
 
 }
