@@ -41,9 +41,9 @@ public class SharedViewModel extends AndroidViewModel{
         db = AppDatabase.getInstance(application);
 
         // Spritesheets
-        spritesheet = new SpriteSheet(application, "waterMonsters");
+        spritesheet = new SpriteSheet(application, "tiles");
         waterMonsterSpritesheet = new SpriteSheet(application, "waterMonsters");
-        symbolsSpriteSheet = new SpriteSheet(application, "tiles");
+        symbolsSpriteSheet = new SpriteSheet(application, "symbols");
         maplayouts = new MapLayouts(spritesheet, symbolsSpriteSheet);
         maplayouts.setSymbolsSpriteSheet();
     }
@@ -54,7 +54,14 @@ public class SharedViewModel extends AndroidViewModel{
     }
 
     public Bitmap getBitmap() {     // Returns Map Bitmap
+        //return spritesheet.getBitmap();
+        //return maplayouts.arrowUp.getSpriteBitmap();
         return maplayouts.getBitmap();
+    }
+
+    public Bitmap getBitmap2() {     // Returns Map Bitmap
+        //return spritesheet.getBitmap();
+        return maplayouts.mapSprite[2][2].getSpriteBitmap();
     }
 
     public int[] getTileMatrix() {  // Returns Array with Tile Numbers

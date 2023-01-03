@@ -4,6 +4,7 @@ import static com.example.game.SharedViewModel.NUMBER_OF_MAP_COLUMNS;
 import static com.example.game.SharedViewModel.NUMBER_OF_MAP_ROWS;
 import static com.example.game.SharedViewModel.TILESIZE;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -79,6 +80,7 @@ public class TestMap extends Fragment implements View.OnTouchListener {
         viewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
