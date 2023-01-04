@@ -6,12 +6,15 @@ import static com.example.game.SharedViewModel.TILESIZE;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +28,7 @@ import com.example.game.graphics.SpriteSheet;
 import com.example.game.maps.TestMap;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,8 +49,10 @@ public class NewGame extends Fragment {
     // Variables
     private SharedViewModel viewModel;
     private Button button;
+    private RecyclerView recyclerView;
     private Sprite[][] monsterSprite;
     private SpriteSheet waterMonsterSpriteSheet;
+    Bitmap[] monster = new Bitmap[3];
     private String[] monsterNames = {
             "Crab", "Angry Crab", "Monster Crab",
             "Ocean Bear", "Ocean Bearsaur", "Oceanzilla",
@@ -93,6 +99,15 @@ public class NewGame extends Fragment {
 
 
         button = v.findViewById(R.id.button);
+
+        recyclerView = v.findViewById(R.id.monsters2);
+
+        setMonsters();
+
+        recycler_view_adapter2 adapter = new recycler_view_adapter2(((MainActivity)getActivity()), monster);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(((MainActivity)getActivity())));
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {        // Load Monsters to MonsterDex Database
@@ -145,6 +160,17 @@ public class NewGame extends Fragment {
 
         // Inflate the layout for this fragment
         return v;
+    }
+
+    private void setMonsters() {
+        List<MonsterDex> monsters = viewModel.getDatabase().monsterDexDao().getAllMonsters();
+
+
+        for (int i=0;i<3;i++){
+            MonsterDex m = monsters.get(i*3);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(m.bArray, 0, m.bArray.length);
+            monster[i] = bitmap;
+        }
     }
 
     public void buildSpriteArray(int numberOfRows, int numberOfColumns){

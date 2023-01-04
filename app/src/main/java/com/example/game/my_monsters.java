@@ -63,15 +63,6 @@ public class my_monsters extends Fragment {
         List<MonsterDex> monsters = viewModel.getDatabase().monsterDexDao().getAllMonsters();
 
 
-        //waterMonsterSpriteSheet = viewModel.getWaterMonsterSpriteSheet();
-        //Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-        //Bitmap bitmap = Bitmap.createBitmap(TILESIZE, TILESIZE, conf); // this creates a MUTABLE bitmap
-        //Canvas mapCanvas = new Canvas(bitmap);
-        //monsterSprite = waterMonsterSpriteSheet.getMonsterTile(1);
-
-        //mapCanvas.drawBitmap(monsterSprite.getSpriteBitmap(), null, new Rect(0,0,0,0), null);
-
-
         for (int i=0;i<monsters.size();i++){
             MonsterDex m = monsters.get(i);
             Bitmap bitmap = BitmapFactory.decodeByteArray(m.bArray, 0, m.bArray.length);

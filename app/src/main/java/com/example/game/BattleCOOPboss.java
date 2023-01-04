@@ -122,7 +122,7 @@ public class BattleCOOPboss extends Fragment {
                 if (imPlayer2) {
 
                     String hp = Integer.toString(player2HP);
-                    helper.publish("ConnectJunior", "Player2connected", 0, true);
+                    helper.publish("ConnectJunior", "Player2conn", 0, true);
                     helper.publish("GetHPJunior", hp, 0, true);
                     joinmatch.setVisibility(v.INVISIBLE);
 
@@ -131,7 +131,7 @@ public class BattleCOOPboss extends Fragment {
                 if (imPlayer1) {
 
                     String hp = Integer.toString(player1HP);
-                    helper.publish("ConnectJunior", "Player1connected", 0, true);
+                    helper.publish("ConnectJunior", "Player1conn", 0, true);
                     helper.publish("GetHPJunior", hp, 0, true);
                     joinmatch.setVisibility(v.INVISIBLE);
 
@@ -191,7 +191,7 @@ public class BattleCOOPboss extends Fragment {
                         joinmatch.setVisibility(v.VISIBLE);
 
 
-                    } else if (new String(message.getPayload()).equals("Player1connected")){
+                    } else if (new String(message.getPayload()).equals("Player1conn")){
 
                         if (!imPlayer1) { //IF IM PLAYER2
                             imPlayer2 = true;
@@ -217,7 +217,7 @@ public class BattleCOOPboss extends Fragment {
 
                         }
 
-                    } else if (new String(message.getPayload()).equals("Player2connected")){
+                    } else if (new String(message.getPayload()).equals("Player2conn")){
 
                         //LOAD BOSS DATA FROM DATABASE WHEN ITS READY
                         Boss = new Character(2000, 100, 20);
