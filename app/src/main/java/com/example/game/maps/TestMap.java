@@ -7,6 +7,7 @@ import static com.example.game.SharedViewModel.TILESIZE;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -49,6 +50,8 @@ public class TestMap extends Fragment implements View.OnTouchListener {
     private int[] tileIndexArray;
     private Bitmap bitmap;
     private int[][] monsterArray;
+    private float[] displaymatrix = new float[9];
+    private int actW, actH;
 
     public TestMap() {
         // Required empty public constructor
@@ -102,11 +105,19 @@ public class TestMap extends Fragment implements View.OnTouchListener {
 
 
         // Save on screen map coordinates and set listener
-        image.setLayoutParams(new ConstraintLayout.LayoutParams(NUMBER_OF_MAP_COLUMNS*TILESIZE,TILESIZE*NUMBER_OF_MAP_COLUMNS));
         image.setImageBitmap(bitmap);
         posXY = new int[2];
         image.getLocationOnScreen(posXY);
         image.setOnTouchListener(this);
+
+        // Get Display Image Settings
+        image.getImageMatrix().getValues(displaymatrix);
+        // Extract the scale values using the constants (if aspect ratio maintained, scaleX == scaleY)
+        final float scaleX = displaymatrix[Matrix.MSCALE_X];
+        final float scaleY = displaymatrix[Matrix.MSCALE_Y];
+        // Calculate the actual dimensions
+        actW = Math.round(NUMBER_OF_MAP_COLUMNS*TILESIZE * scaleX);
+        actH = Math.round(NUMBER_OF_MAP_COLUMNS*TILESIZE * scaleY);
 
         // Inflate the layout for this fragment
         return v;
@@ -119,8 +130,9 @@ public class TestMap extends Fragment implements View.OnTouchListener {
         int touchY = (int) event.getY();
         int imageX = touchX - posXY[0]; // posXY[0] is the X coordinate
         int imageY = touchY - posXY[1]; // posXY[1] is the y coordinate
-        float idxRow = (float) imageY/TILESIZE;
-        float idxCol = (float)imageX/TILESIZE;
+        float screenTileSize = actW/NUMBER_OF_MAP_ROWS;
+        float idxRow = (float) imageY/screenTileSize;
+        float idxCol = (float)imageX/screenTileSize;
         float tile = idxRow*NUMBER_OF_MAP_COLUMNS+idxCol;
 
         Log.w("a", "ROWS AND COLUMNS");
