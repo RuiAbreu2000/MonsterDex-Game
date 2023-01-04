@@ -54,15 +54,9 @@ public class SharedViewModel extends AndroidViewModel{
     }
 
     public Bitmap getBitmap() {     // Returns Map Bitmap
-        //return spritesheet.getBitmap();
-        //return maplayouts.arrowUp.getSpriteBitmap();
         return maplayouts.getBitmap();
     }
 
-    public Bitmap getBitmap2() {     // Returns Map Bitmap
-        //return spritesheet.getBitmap();
-        return maplayouts.mapSprite[2][2].getSpriteBitmap();
-    }
 
     public int[] getTileMatrix() {  // Returns Array with Tile Numbers
         return maplayouts.getTileIndexMap().clone();

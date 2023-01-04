@@ -9,6 +9,8 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
 
+import com.example.game.MapInformation;
+
 import java.util.Random;
 
 // Has the informatation about the current map
@@ -20,12 +22,14 @@ public class MapLayouts {
     public Sprite[][] mapSprite;
     private Bitmap bitmap;
     private SpriteSheet symbolsSpriteSheet;
+    private MapInformation mapInformation;
 
     // Symbol Tiles
     public Sprite arrowUp;
     private Sprite arrowDown;
     private Sprite monsterSymbol;
     private Sprite itemSymbol;
+    private Sprite bossSymbol;
 
     // Tile Indexes
     int[] groundIndexes = {2, 6, 10, 14};
@@ -36,6 +40,7 @@ public class MapLayouts {
     public MapLayouts(SpriteSheet spritesheet, SpriteSheet symbolsSpriteSheet) {
         this.spritesheet = spritesheet;
         this.symbolsSpriteSheet = symbolsSpriteSheet;
+        this.mapInformation = new MapInformation();
         mapSpriteSheetIndex = new int[NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS];
         monsterArray = new int[NUMBER_OF_MAP_ROWS][NUMBER_OF_MAP_COLUMNS];
         mapSprite = new Sprite[NUMBER_OF_MAP_ROWS][NUMBER_OF_MAP_COLUMNS];
@@ -49,7 +54,7 @@ public class MapLayouts {
 
 
         // Build Sprite Array
-        this.buildSpriteArray();
+        this.buildSpriteFixeArray(currentZoneLevel);
 
         // Build Monster Array
         this.buildMonsterArray(currentZoneLevel);
@@ -58,12 +63,10 @@ public class MapLayouts {
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
         bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_ROWS * TILESIZE, NUMBER_OF_MAP_COLUMNS * TILESIZE, conf); // this creates a MUTABLE bitmap
         this.buildBitmap();
-
-        return;
     }
 
 
-    public void buildSpriteArray(){
+    public void buildSpriteArray(int currentZoneLevel){
         // Build Map with Sprites
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
@@ -73,9 +76,30 @@ public class MapLayouts {
         }
         // Set Arrow Symbols
         mapSprite[0][2] = arrowDown;
-        mapSprite[4][2] = arrowUp;
 
-        return;
+        if(currentZoneLevel < 15){
+            mapSprite[4][2] = arrowUp;
+        }else{
+            mapSprite[4][2] = bossSymbol;
+        }
+    }
+
+    public void buildSpriteFixeArray(int currentZoneLevel){
+        // Build Map with Sprites
+        for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
+            for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
+                // get corresponding sprite
+                mapSprite[iRow][iCol] = spritesheet.getTile(mapInformation.waterMapLevels[currentZoneLevel][iRow+iCol]);
+            }
+        }
+        // Set Arrow Symbols
+        mapSprite[0][2] = arrowDown;
+
+        if(currentZoneLevel < 15){
+            mapSprite[4][2] = arrowUp;
+        }else{
+            mapSprite[4][2] = bossSymbol;
+        }
     }
 
     public void buildBitmap(){
@@ -167,6 +191,7 @@ public class MapLayouts {
         arrowUp = symbolsSpriteSheet.getMonsterTile(5);
         arrowDown = symbolsSpriteSheet.getMonsterTile(4);
         monsterSymbol = symbolsSpriteSheet.getMonsterTile(1);
+        bossSymbol = symbolsSpriteSheet.getMonsterTile(10);
     }
 
 }

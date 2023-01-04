@@ -20,7 +20,7 @@ public class SpriteSheet {
         bitmapOptions.inScaled = false;
 
         if (source.equals("tiles")) {
-            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.sprite_sheet, bitmapOptions);
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.water_map_tiles, bitmapOptions);
         }else if(source.equals("waterMonsters")){
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.water_monsters, bitmapOptions);
         }
@@ -82,17 +82,6 @@ public class SpriteSheet {
                (idxRow + 1)*SPRITE_HEIGHT_PIXELS
         ));
    }
-
-
-    public Sprite getSpriteExact(int left, int top, int right, int bottom) {
-        return new Sprite(this, new Rect(
-                left,
-                top,
-                right,
-                bottom
-        ));
-    }
-
     public Sprite getMonsterTile(int tileNumber) {
         switch(tileNumber) {
             case 1:
