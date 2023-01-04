@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.game.Battle;
 import com.example.game.R;
 import com.example.game.SharedViewModel;
 import com.example.game.graphics.Sprite;
@@ -83,6 +84,7 @@ public class TestMap extends Fragment implements View.OnTouchListener {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         viewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+
     }
 
     @SuppressLint("MissingInflatedId")
@@ -131,8 +133,8 @@ public class TestMap extends Fragment implements View.OnTouchListener {
         int imageX = touchX - posXY[0]; // posXY[0] is the X coordinate
         int imageY = touchY - posXY[1]; // posXY[1] is the y coordinate
         float screenTileSize = actW/NUMBER_OF_MAP_ROWS;
-        float idxRow = (float) imageY/screenTileSize;
-        float idxCol = (float)imageX/screenTileSize;
+        int idxRow = (int) (imageY/screenTileSize);
+        int idxCol = (int) (imageX/screenTileSize);
         float tile = idxRow*NUMBER_OF_MAP_COLUMNS+idxCol;
 
         Log.w("a", "ROWS AND COLUMNS");
@@ -146,19 +148,22 @@ public class TestMap extends Fragment implements View.OnTouchListener {
         Log.w("a", String.valueOf(imageX));
         Log.w("a", String.valueOf(imageY));
 
-        //if(monsterArray[idxRow][idxCol] > 0){
+        if(monsterArray[idxRow][idxCol] > 0){
             // BATTLE SCREEN TO CAPTURE MONSTER
-         //   Log.w("a", "BATTLE TIME");
-        //}
+            Log.w("a", "BATTLE TIME");
+            // Save Fragment and Go to Battle Screen
+            Battle battle = new Battle();
+            viewModel.addFragment(this);
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, battle).commit();
+
+        }
         if(imageX > 512 && imageX < 768 && imageY > 0 && imageY < 256){
             viewModel.incrementLevel();
+            // Save Frament
             TestMap fragment = new TestMap();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         }
-
-
-
-
         return false;
     }
+
 }

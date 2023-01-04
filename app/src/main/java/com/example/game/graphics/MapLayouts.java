@@ -6,6 +6,7 @@ import static com.example.game.SharedViewModel.TILESIZE;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
@@ -75,12 +76,12 @@ public class MapLayouts {
             }
         }
         // Set Arrow Symbols
-        mapSprite[0][2] = arrowDown;
+        mapSprite[0][2] = arrowUp;
 
         if(currentZoneLevel < 15){
-            mapSprite[4][2] = arrowUp;
+            mapSprite[4][2] = arrowDown;
         }else{
-            mapSprite[4][2] = bossSymbol;
+            mapSprite[0][2] = bossSymbol;
         }
     }
 
@@ -109,13 +110,15 @@ public class MapLayouts {
         int current_bot = TILESIZE;
         // Create canvas to draw on it
         Canvas mapCanvas = new Canvas(bitmap);
+        Paint p = new Paint();
+        p.setAlpha(50);
 
         // Add all sprite bitmaps to canvas
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
                 mapCanvas.drawBitmap(mapSprite[iRow][iCol].getSpriteBitmap(), null, new Rect(current_left, current_top,current_right, current_bot), null);
                 if(monsterArray[iRow][iCol] > 0 && !(iRow == 0 && iCol == 2) && !(iRow == 4 && iCol == 2) ){    // Draw Monster Symbol if Monster exists in this tile
-                    mapCanvas.drawBitmap(monsterSymbol.getSpriteBitmap(), null, new Rect(current_left, current_top,current_right, current_bot), null);
+                    mapCanvas.drawBitmap(monsterSymbol.getSpriteBitmap(), null, new Rect(current_left, current_top,current_right, current_bot), p);
                 }
                 current_left += TILESIZE;
                 current_right += TILESIZE;
