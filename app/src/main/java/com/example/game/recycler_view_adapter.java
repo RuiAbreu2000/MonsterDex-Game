@@ -1,6 +1,8 @@
 package com.example.game;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +37,9 @@ public class recycler_view_adapter extends RecyclerView.Adapter<recycler_view_ad
     @Override
     public void onBindViewHolder(@NonNull recycler_view_adapter.MyViewHolder holder, int position) {
         holder.nameView.setText(monsters.get(position).getName());
-        holder.imageView.setImageResource(monsters.get(position).getImage());
+        holder.imageView.setImageBitmap(monsters.get(position).getImage());
+        //Drawable d = new BitmapDrawable(context.getResources(), monsters.get(position).getImage());
+        //holder.imageView.setImageDrawable(d);
     }
 
     @Override
