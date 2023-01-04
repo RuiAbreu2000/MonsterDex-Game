@@ -17,6 +17,9 @@ public interface MonsterDexDao {
     @Query("SELECT * FROM MonsterDex WHERE name=:name")
     Monster getMonsterByName(String name);
 
+    @Query("SELECT * FROM MonsterDex WHERE evolvesFrom=:name")
+    Monster getMonsterEvolution(String name);
+
     @Query("SELECT * FROM MonsterDex WHERE id =:id")
     Monster getMonster(int id);
 

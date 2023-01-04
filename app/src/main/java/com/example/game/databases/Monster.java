@@ -29,6 +29,12 @@ public class Monster {
     @ColumnInfo(name = "level")         // Monster level
     public Integer level;
 
+    @ColumnInfo(name = "xp")         // Monster xp
+    public Integer xp;
+
+    @ColumnInfo(name = "eve")         // Monster level evolution
+    public Integer eve;
+
     @ColumnInfo(name = "bArray")
     public byte[] bArray;
 
