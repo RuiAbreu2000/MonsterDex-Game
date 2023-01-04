@@ -36,8 +36,6 @@ public class MonsterDex {
     @ColumnInfo(name = "evolution")
     public Integer evolution;
 
-    @ColumnInfo(name = "eve")         // Monster level evolution
-    public Integer eve;
 
     @ColumnInfo(name = "evolvesFrom")
     public String evolvesFrom;

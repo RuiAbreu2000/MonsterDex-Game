@@ -1,7 +1,5 @@
 package com.example.game;
 
-import static com.example.game.SharedViewModel.TILESIZE;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -11,23 +9,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.example.game.databases.MonsterDex;
 import com.example.game.graphics.Sprite;
 import com.example.game.graphics.SpriteSheet;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class my_monsters extends Fragment {
+public class my_monstersDEX extends Fragment {
     ArrayList<monster_class> monster = new ArrayList<>();
     private SharedViewModel viewModel;
     private Sprite monsterSprite;
@@ -45,7 +39,7 @@ public class my_monsters extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View v = inflater.inflate(R.layout.fragment_my_monster, container, false);
+        View v = inflater.inflate(R.layout.fragment_my_monsterdex, container, false);
 
         RecyclerView recyclerView = v.findViewById(R.id.monsters);
 
