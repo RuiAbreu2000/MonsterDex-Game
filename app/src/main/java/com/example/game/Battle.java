@@ -13,8 +13,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+
+import com.example.game.maps.TestMap;
 
 public class Battle extends Fragment {
+    private SharedViewModel viewModel;
     // variables to represent the characters and their stats
     // object to represent the character
     private class Character {
@@ -52,6 +56,13 @@ public class Battle extends Fragment {
     private TextView player2Label;
     private Button attackButton;
     private Button attackButton2;
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+    }
 
     @Nullable
     @Override
@@ -186,6 +197,11 @@ public class Battle extends Fragment {
                             toast = Toast.makeText(getContext(), "Player 2 wins!", Toast.LENGTH_SHORT);
                             toast.show();
                         }
+                        // Go Back To Map
+                        Fragment goBack = viewModel.getLastFragment();
+                        goBack.onResume();
+                        //TestMap fragment = new TestMap();
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, goBack).commit();
                     }
                 });
 

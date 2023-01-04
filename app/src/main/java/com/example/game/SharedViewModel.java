@@ -1,6 +1,7 @@
 package com.example.game;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.AndroidViewModel;
 
 import android.app.Application;
@@ -10,6 +11,8 @@ import com.example.game.databases.AppDatabase;
 import com.example.game.databases.MonsterDex;
 import com.example.game.graphics.MapLayouts;
 import com.example.game.graphics.SpriteSheet;
+
+import java.util.Stack;
 
 public class SharedViewModel extends AndroidViewModel{
 
@@ -25,6 +28,7 @@ public class SharedViewModel extends AndroidViewModel{
     // Important
     public AppDatabase db;
     public MapLayouts maplayouts;
+    Stack<Fragment> fragmentStack = new Stack<Fragment>();
 
     // Sprite Sheets
     public SpriteSheet spritesheet;
@@ -83,5 +87,13 @@ public class SharedViewModel extends AndroidViewModel{
 
     public void incrementLevel() {
         this.currentZoneLevel += 1;
+    }
+
+    public void addFragment(Fragment fragment){
+        fragmentStack.push(fragment);
+        fragmentStack.lastElement().onPause();
+    }
+    public Fragment getLastFragment(){
+        return fragmentStack.lastElement();
     }
 }

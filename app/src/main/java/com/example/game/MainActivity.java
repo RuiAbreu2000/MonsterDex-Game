@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager;
     private SharedViewModel viewModel;
+    private Fragment savedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,4 +41,5 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.fragment_container, fragment)
                 .commit();
     }
+
 }
