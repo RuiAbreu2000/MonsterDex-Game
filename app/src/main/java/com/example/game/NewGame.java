@@ -7,6 +7,7 @@ import static com.example.game.SharedViewModel.TILESIZE;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -108,7 +109,7 @@ public class NewGame extends Fragment {
                     for (int iCol = 0; iCol < 3; iCol++) {
                         Bitmap bitmap = Bitmap.createBitmap(TILESIZE, TILESIZE, conf); // this creates a MUTABLE bitmap
                         Canvas mapCanvas = new Canvas(bitmap);
-                        mapCanvas.drawBitmap(monsterSprite[iRow][iCol].getSpriteBitmap2(), 0, 0, null);
+                        mapCanvas.drawBitmap(monsterSprite[iRow][iCol].getSpriteBitmap(), null, new Rect(0,0,256,256), null);
                         // Transform to bit Array
                         ByteArrayOutputStream bos = new ByteArrayOutputStream();
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
@@ -136,6 +137,9 @@ public class NewGame extends Fragment {
 
                 TestMap fragment = new TestMap();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+
+                //my_monsters fragment = new my_monsters();
+                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
             }
         });
 
@@ -149,7 +153,16 @@ public class NewGame extends Fragment {
         for (int iRow = 0; iRow < numberOfRows; iRow++) {
             for (int iCol = 0; iCol < numberOfColumns; iCol++) {
                 // get corresponding sprite
-                monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow+iCol+1);
+                if (iRow == 0){
+                    monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow+iCol+1);
+                }else if (iRow == 1){
+                    monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow+iCol+3);
+                }else if (iRow == 2){
+                    monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow+iCol+7);
+                }else{
+                    monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow+iCol+1);
+                }
+
             }
         }
     }

@@ -19,11 +19,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.game.databases.MonsterDex;
 import com.example.game.graphics.Sprite;
 import com.example.game.graphics.SpriteSheet;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class my_monsters extends Fragment {
     ArrayList<monster_class> monster = new ArrayList<>();
@@ -58,16 +60,22 @@ public class my_monsters extends Fragment {
     }
 
     private void setMonsters() {
-        waterMonsterSpriteSheet = viewModel.getWaterMonsterSpriteSheet();
-        Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-        Bitmap bitmap = Bitmap.createBitmap(TILESIZE, TILESIZE, conf); // this creates a MUTABLE bitmap
-        Canvas mapCanvas = new Canvas(bitmap);
-        monsterSprite = waterMonsterSpriteSheet.getMonsterTile(2);
-        mapCanvas.drawBitmap(monsterSprite.getSpriteBitmap(), null, new Rect(0,0,0,0), null);
+        List<MonsterDex> monsters = viewModel.getDatabase().monsterDexDao().getAllMonsters();
 
 
-        for (int i=0;i<12;i++){
-            monster.add(new monster_class(bitmap, Integer.toString(i)));
+        //waterMonsterSpriteSheet = viewModel.getWaterMonsterSpriteSheet();
+        //Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+        //Bitmap bitmap = Bitmap.createBitmap(TILESIZE, TILESIZE, conf); // this creates a MUTABLE bitmap
+        //Canvas mapCanvas = new Canvas(bitmap);
+        //monsterSprite = waterMonsterSpriteSheet.getMonsterTile(1);
+
+        //mapCanvas.drawBitmap(monsterSprite.getSpriteBitmap(), null, new Rect(0,0,0,0), null);
+
+
+        for (int i=0;i<monsters.size();i++){
+            MonsterDex m = monsters.get(i);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(m.bArray, 0, m.bArray.length);
+            monster.add(new monster_class(bitmap, Integer.toString(i + 1)));
         }
     }
 }
