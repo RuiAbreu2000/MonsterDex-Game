@@ -130,7 +130,6 @@ public class MapLayouts {
 
     private void buildRandomLayout(int[] indexes, int[] mapProbabilities){
         Random rand = new Random();
-        Log.w("a", "buildRandomLayout");
         for (int i = 0; i < NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS; i++) {
             int randomNumber = rand.nextInt(100);
 
@@ -186,7 +185,6 @@ public class MapLayouts {
 
     // Set Functions
     public void setSymbolsSpriteSheet(){
-        Log.w("a", "Setting Monster Symbol");
         // get symbol Sprites
         arrowUp = symbolsSpriteSheet.getMonsterTile(5);
         arrowDown = symbolsSpriteSheet.getMonsterTile(4);

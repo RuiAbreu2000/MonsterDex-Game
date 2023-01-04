@@ -8,6 +8,8 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -100,6 +102,7 @@ public class TestMap extends Fragment implements View.OnTouchListener {
 
 
         // Save on screen map coordinates and set listener
+        image.setLayoutParams(new ConstraintLayout.LayoutParams(NUMBER_OF_MAP_COLUMNS*TILESIZE,TILESIZE*NUMBER_OF_MAP_COLUMNS));
         image.setImageBitmap(bitmap);
         posXY = new int[2];
         image.getLocationOnScreen(posXY);
@@ -116,13 +119,29 @@ public class TestMap extends Fragment implements View.OnTouchListener {
         int touchY = (int) event.getY();
         int imageX = touchX - posXY[0]; // posXY[0] is the X coordinate
         int imageY = touchY - posXY[1]; // posXY[1] is the y coordinate
-        int idxRow = imageY/TILESIZE;
-        int idxCol = imageX/TILESIZE;
-        int tile = idxRow*NUMBER_OF_MAP_COLUMNS+idxCol;
+        float idxRow = (float) imageY/TILESIZE;
+        float idxCol = (float)imageX/TILESIZE;
+        float tile = idxRow*NUMBER_OF_MAP_COLUMNS+idxCol;
+
+        Log.w("a", "ROWS AND COLUMNS");
+        Log.w("a", String.valueOf(idxRow));
+        Log.w("a", String.valueOf(idxCol));
         Log.w("a", String.valueOf(tile));
-        if(monsterArray[idxRow][idxCol] > 0){
+
+
+        // Print Coords
+        Log.w("a", "Coords");
+        Log.w("a", String.valueOf(imageX));
+        Log.w("a", String.valueOf(imageY));
+
+        //if(monsterArray[idxRow][idxCol] > 0){
             // BATTLE SCREEN TO CAPTURE MONSTER
-            Log.w("a", "BATTLE TIME");
+         //   Log.w("a", "BATTLE TIME");
+        //}
+        if(imageX > 512 && imageX < 768 && imageY > 0 && imageY < 256){
+            viewModel.incrementLevel();
+            TestMap fragment = new TestMap();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         }
 
 
