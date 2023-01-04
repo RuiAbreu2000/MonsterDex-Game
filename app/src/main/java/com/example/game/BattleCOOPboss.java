@@ -100,6 +100,10 @@ public class BattleCOOPboss extends Fragment {
         Boss2Label = v.findViewById(R.id.textView_Boss);
         attackButton = v.findViewById(R.id.button_ataque);
         Button joinmatch = v.findViewById(R.id.button_join);
+        TextView gameActionsTextView = v.findViewById(R.id.game_actions_text_view);
+
+        TextView gameActionsTextView2 = v.findViewById(R.id.game_actions_text_view2);
+        gameActionsTextView.setText("Waiting for battle to start!");
         joinmatch.setVisibility(v.INVISIBLE);
 
         // display the initial values for the characters' stats
@@ -297,12 +301,38 @@ public class BattleCOOPboss extends Fragment {
                 while (player1HP > 0 && player2HP > 0 && BossHP > 0) {
                     // Check for user input
 
-                    if (player1Turn)
+
+
+                    if (player1Turn) {
                         Log.w("TAG", "Player 1 turn");
-                    else if (player2Turn)
+                        // Update the UI
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                gameActionsTextView2.setText("Its player 1 turn!");
+                            }
+                        });
+                    }
+                    else if (player2Turn) {
                         Log.w("TAG", "Player 2 turn");
+                        // Update the UI
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                gameActionsTextView2.setText("Its player 2 turn!");
+                            }
+                        });
+                    }
                     else if (BossTurn) {
                         Log.w("TAG", "Boss turn");
+
+                        // Update the UI
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                gameActionsTextView2.setText("Its the boss turn!");
+                            }
+                        });
 
                         //bossAttacked = true;
                         // Pause the game loop for a short time
@@ -313,17 +343,56 @@ public class BattleCOOPboss extends Fragment {
                         }
 
                         //DECIDE WHICH PLAYER BOSS WILL ATTACK
-                        Random random = new Random();
-                        int chance = random.nextInt(2); // generates a random number between 0 and 1
-                        String playerChoice = "";
-                        if (chance == 0) {
-                            // do something
-                            playerChoice = "player1";
-                            player1HP -= Boss.attack;
+
+                        long seed = BossHP + player1HP + player2HP;
+                        long seed2 = BossHP + player1HP - player2HP;
+                        Log.w("TAG", "seed" + seed);
+                        Log.w("TAG", "seed2" + seed2);
+                        Random random = new Random(seed);
+                        int chance = random.nextInt(100); // generates a random number between 0 and 1
+
+                        Log.w("TAG", "cahnce" + chance);
+
+                        if (chance > 50) {
+
+                            Random random2 = new Random(seed2);
+                            int chance2 = random2.nextInt(100); // generates a random number between 0 and 1
+
+                            if (chance2 > 50) {
+                                // do something
+                                player1HP -= Boss.attack;
+
+                                // Update the UI
+                                mHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        gameActionsTextView.setText("Boss attacked player 1!");
+                                    }
+                                });
+
+                            } else {
+                                // do something else
+                                player2HP -= Boss.attack;
+
+                                // Update the UI
+                                mHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        gameActionsTextView.setText("Boss attacked player 2!");
+                                    }
+                                });
+
+                            }
                         } else {
-                            // do something else
-                            playerChoice = "player2";
-                            player2HP -= Boss.attack;
+                            BossHP += (int) Math.round(BossHP * 0.07);
+
+                            // Update the UI
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    gameActionsTextView.setText("Boss used heal!");
+                                }
+                            });
                         }
 
                         player1Turn = true;
@@ -369,6 +438,14 @@ public class BattleCOOPboss extends Fragment {
                                 if (player1Turn) {
 
                                     Log.w("TAG", "Boss levou damage do player1" + topic);
+
+                                    // Update the UI
+                                    mHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            gameActionsTextView.setText("Player 1 attacked boss!");
+                                        }
+                                    });
                                     BossHP -= number;
 
                                     player1Turn = false;
@@ -397,6 +474,15 @@ public class BattleCOOPboss extends Fragment {
                                 } else if (player2Turn) {
 
                                     Log.w("TAG", "Boss levou damage do player2" + topic);
+
+                                    // Update the UI
+                                    mHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            gameActionsTextView.setText("Player 2 attacked boss!");
+                                        }
+                                    });
+
                                     BossHP -= number;
 
                                     if (imPlayer2) {
@@ -490,11 +576,25 @@ public class BattleCOOPboss extends Fragment {
                         if (player1HP > 0 || player2HP > 0) {
                             toast = Toast.makeText(getContext(), "You win!", Toast.LENGTH_SHORT);
                             toast.show();
+                            // Update the UI
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    gameActionsTextView.setText("Victory!");
+                                }
+                            });
                             helper.publish("ConnectJunior", "Gameover", 0, true);
                             helper.publish("GetHPJunior", "Gameover", 0, true);
                         } else if (BossHP > 0){
                             toast = Toast.makeText(getContext(), "You lose!", Toast.LENGTH_SHORT);
                             toast.show();
+                            // Update the UI
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    gameActionsTextView.setText("Defeat!");
+                                }
+                            });
                             helper.publish("ConnectJunior", "Gameover", 0, true);
                             helper.publish("GetHPJunior", "Gameover", 0, true);
                         }

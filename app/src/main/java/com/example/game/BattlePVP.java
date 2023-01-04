@@ -93,6 +93,11 @@ public class BattlePVP extends Fragment {
         player2Label = v.findViewById(R.id.textView_inimigo);
         attackButton = v.findViewById(R.id.button_ataque);
         Button joinmatch = v.findViewById(R.id.button_join);
+
+        TextView gameActionsTextView = v.findViewById(R.id.game_actions_text_view);
+
+        TextView gameActionsTextView2 = v.findViewById(R.id.game_actions_text_view2);
+        gameActionsTextView.setText("Waiting for battle to start!");
         joinmatch.setVisibility(v.INVISIBLE);
 
         // display the initial values for the characters' stats
@@ -280,10 +285,28 @@ public class BattlePVP extends Fragment {
                 while (player1HP > 0 && player2HP > 0) {
                     // Check for user input
 
-                    if (player1Turn)
+                    if (player1Turn){
                         Log.w("TAG", "Player 1 turn");
-                    else if (player2Turn)
+
+                        // Update the UI
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                gameActionsTextView2.setText("Its player 1 turn!");
+                            }
+                        });
+                    }
+                    else if (player2Turn) {
                         Log.w("TAG", "Player 2 turn");
+
+                        // Update the UI
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                gameActionsTextView2.setText("Its player 2 turn!");
+                            }
+                        });
+                    }
 
                     helper.setCallback(new MqttCallbackExtended() {
                         @Override
@@ -308,6 +331,14 @@ public class BattlePVP extends Fragment {
                                 if (player1Turn) { //player 2 takes dmg
 
                                     Log.w("TAG", "Player 2 levou damage" + topic);
+
+                                    // Update the UI
+                                    mHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            gameActionsTextView.setText("Player 1 attacked player 2");
+                                        }
+                                    });
                                     player2HP -= number;
 
                                     player1Turn = false;
@@ -335,6 +366,14 @@ public class BattlePVP extends Fragment {
                                 } else if (player2Turn) { //player 1 takes dmg
 
                                     Log.w("TAG", "Player 1 levou damage" + topic);
+
+                                    // Update the UI
+                                    mHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            gameActionsTextView.setText("Player 2 attacked player 1");
+                                        }
+                                    });
                                     player1HP -= number;
 
                                     player1Turn = true;
