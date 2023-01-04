@@ -11,6 +11,8 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,6 +51,8 @@ public class NewGame extends Fragment {
     // Variables
     private SharedViewModel viewModel;
     private Button button;
+    private Button button1;
+    private Button button2;
     private RecyclerView recyclerView;
     private Sprite[][] monsterSprite;
     private SpriteSheet waterMonsterSpriteSheet;
@@ -92,13 +96,16 @@ public class NewGame extends Fragment {
         viewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container, @NonNull Bundle savedInstanceState) {
+
         View v = inflater.inflate(R.layout.fragment_new_game, container, false);
 
 
         button = v.findViewById(R.id.button);
+        button1 = v.findViewById(R.id.button1);
+        button2 = v.findViewById(R.id.button2);
 
         recyclerView = v.findViewById(R.id.monsters2);
 
@@ -110,51 +117,28 @@ public class NewGame extends Fragment {
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {        // Load Monsters to MonsterDex Database
+            public void onClick(View view) {
 
-                // Build SpriteSheet and Sprite Array
-                waterMonsterSpriteSheet = viewModel.getWaterMonsterSpriteSheet();
-                monsterSprite = new Sprite[4][3];       // Numero de Water Monsters Atualmente
-                buildSpriteArray(4, 3);
+                
+                continuarButton();
+            }
+        });
 
-                // Build Bitmaps
-                Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-                String evolvesFrom = null;
-                for (int iRow = 0; iRow < 4; iRow++) {
-                    for (int iCol = 0; iCol < 3; iCol++) {
-                        Bitmap bitmap = Bitmap.createBitmap(TILESIZE, TILESIZE, conf); // this creates a MUTABLE bitmap
-                        Canvas mapCanvas = new Canvas(bitmap);
-                        mapCanvas.drawBitmap(monsterSprite[iRow][iCol].getSpriteBitmap(), null, new Rect(0,0,256,256), null);
-                        // Transform to bit Array
-                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
-                        // Create new Monster and Insert into Database
-                        MonsterDex newMonster = new MonsterDex();
-                        newMonster.name = monsterNames[iRow*3+iCol];
-                        newMonster.type = "water";
-                        newMonster.health = 100;
-                        newMonster.attack = 100;
-                        newMonster.defense = 100;
-                        newMonster.isBoss = false;
-                        newMonster.bArray = bos.toByteArray();
-                        newMonster.rarity = "common";
-                        newMonster.evolution = iCol+1;
-                        if(iCol == 0){                              // Se for o primeiro da linha é evolução 1
-                            newMonster.evolvesFrom = "base";
-                        }else{
-                            newMonster.evolvesFrom = evolvesFrom;   // Adiciona o monstro do qual evolui
-                        }
-                        viewModel.createNewMonster(newMonster);
-                        evolvesFrom = monsterNames[iRow+iCol];
-                    }
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                continuarButton();
                 }
+        });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
 
-                TestMap fragment = new TestMap();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-
-                //my_monsters fragment = new my_monsters();
-                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                continuarButton();
             }
         });
 
@@ -162,7 +146,16 @@ public class NewGame extends Fragment {
         return v;
     }
 
+    private void continuarButton(){
+        TestMap fragment = new TestMap();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+
+        //my_monsters fragment = new my_monsters();
+        //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+    }
     private void setMonsters() {
+
+
         List<MonsterDex> monsters = viewModel.getDatabase().monsterDexDao().getAllMonsters();
 
 
@@ -173,23 +166,5 @@ public class NewGame extends Fragment {
         }
     }
 
-    public void buildSpriteArray(int numberOfRows, int numberOfColumns){
 
-        // Build Map with Sprites
-        for (int iRow = 0; iRow < numberOfRows; iRow++) {
-            for (int iCol = 0; iCol < numberOfColumns; iCol++) {
-                // get corresponding sprite
-                //if (iRow == 0){
-                    monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow*3+iCol+1);
-                //}else if (iRow == 1){
-                //    monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow+iCol+3);
-                //}else if (iRow == 2){
-                //    monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow+iCol+7);
-                //}else{
-                //    monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow+iCol+10);
-                //}
-
-            }
-        }
-    }
 }
