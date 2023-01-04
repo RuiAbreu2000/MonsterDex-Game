@@ -115,7 +115,7 @@ public class NewGame extends Fragment {
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
                         // Create new Monster and Insert into Database
                         MonsterDex newMonster = new MonsterDex();
-                        newMonster.name = monsterNames[iRow+iCol];
+                        newMonster.name = monsterNames[iRow*3+iCol];
                         newMonster.type = "water";
                         newMonster.health = 100;
                         newMonster.attack = 100;
@@ -153,15 +153,15 @@ public class NewGame extends Fragment {
         for (int iRow = 0; iRow < numberOfRows; iRow++) {
             for (int iCol = 0; iCol < numberOfColumns; iCol++) {
                 // get corresponding sprite
-                if (iRow == 0){
-                    monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow+iCol+1);
-                }else if (iRow == 1){
-                    monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow+iCol+3);
-                }else if (iRow == 2){
-                    monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow+iCol+7);
-                }else{
-                    monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow+iCol+1);
-                }
+                //if (iRow == 0){
+                    monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow*3+iCol+1);
+                //}else if (iRow == 1){
+                //    monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow+iCol+3);
+                //}else if (iRow == 2){
+                //    monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow+iCol+7);
+                //}else{
+                //    monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow+iCol+10);
+                //}
 
             }
         }

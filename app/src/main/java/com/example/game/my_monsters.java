@@ -75,7 +75,7 @@ public class my_monsters extends Fragment {
         for (int i=0;i<monsters.size();i++){
             MonsterDex m = monsters.get(i);
             Bitmap bitmap = BitmapFactory.decodeByteArray(m.bArray, 0, m.bArray.length);
-            monster.add(new monster_class(bitmap, Integer.toString(i + 1)));
+            monster.add(new monster_class(bitmap, m.name));
         }
     }
 }
