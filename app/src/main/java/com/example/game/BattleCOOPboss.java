@@ -235,13 +235,11 @@ public class BattleCOOPboss extends Fragment {
                         helper.publish("ConnectJunior", "BossIsReady", 0, true);
 
 
-
                     } else if (new String(message.getPayload()).equals("BossIsReady")){
                         Log.w("TAG", "Entrei no loop" + topic);
                         Log.w("TAG", "player1hp= " + player1HP);
                         Log.w("TAG", "player2hp= " + player2HP);
                         Log.w("TAG", "BossHP= " + Boss.health);
-
 
 
                         if (imPlayer1) {
@@ -585,6 +583,9 @@ public class BattleCOOPboss extends Fragment {
                             });
                             helper.publish("ConnectJunior", "Gameover", 0, true);
                             helper.publish("GetHPJunior", "Gameover", 0, true);
+                            helper.stop();
+                            // GET OUT OF MAP
+
                         } else if (BossHP > 0){
                             toast = Toast.makeText(getContext(), "You lose!", Toast.LENGTH_SHORT);
                             toast.show();
@@ -597,6 +598,8 @@ public class BattleCOOPboss extends Fragment {
                             });
                             helper.publish("ConnectJunior", "Gameover", 0, true);
                             helper.publish("GetHPJunior", "Gameover", 0, true);
+                            helper.stop();
+                            // GET OUT OF MAP
                         }
                     }
                 });

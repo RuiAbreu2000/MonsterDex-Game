@@ -473,11 +473,15 @@ public class BattlePVP extends Fragment {
                             toast.show();
                             helper.publish("ConnectJunior", "Gameover", 0, true);
                             helper.publish("GetHPJunior", "Gameover", 0, true);
+                            helper.stop();
+                            // GET OUT OF MAP
                         } else if (player2HP > 0){
                             toast = Toast.makeText(getContext(), "Player 2 wins!", Toast.LENGTH_SHORT);
                             toast.show();
                             helper.publish("ConnectJunior", "Gameover", 0, true);
                             helper.publish("GetHPJunior", "Gameover", 0, true);
+                            helper.stop();
+                            // GET OUT OF MAP
                         }
                     }
                 });

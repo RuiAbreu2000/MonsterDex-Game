@@ -2,6 +2,7 @@ package com.example.game;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,13 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.game.maps.TestMap;
 
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import java.math.BigInteger;
+import java.security.SecureRandom;
+
 public class Battle extends Fragment {
     private SharedViewModel viewModel;
     // variables to represent the characters and their stats
@@ -26,11 +34,13 @@ public class Battle extends Fragment {
         int health;
         int attack;
         int defense;
+        String type;
 
-        public Character(int health, int attack, int defense) {
+        public Character(int health, int attack, int defense, String type) {
             this.health = health;
             this.attack = attack;
             this.defense = defense;
+            this.type = type;
         }
     }
     // Handler for updating the UI
@@ -47,6 +57,7 @@ public class Battle extends Fragment {
     // variables to track whose turn it is
     private boolean player1Turn = true;
     private boolean player2Turn = false;
+    private float temp = 25;
     private Toast toast;
 
     // views to display the characters' stats
@@ -70,9 +81,57 @@ public class Battle extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_battle, container, false);
 
+        SecureRandom random = new SecureRandom();
+        byte[] idBytes = new byte[16];
+        random.nextBytes(idBytes);
+        String id = new BigInteger(1, idBytes).toString(16);
+
+        MQTTHelper helper = new MQTTHelper(getActivity(), id, "battleaJunior");
+
+        helper.connect();
+
+        helper.setCallback(new MqttCallbackExtended() {
+            @Override
+            public void connectComplete(boolean reconnect, String serverURI) {
+                Log.w("TAG", "Connected!");
+
+                helper.subscribeToTopic("tempJunior");
+
+            }
+
+            @Override
+            public void connectionLost(Throwable cause) {
+
+            }
+
+            @Override
+            public void messageArrived(String topic, MqttMessage message) throws Exception {
+                Log.w("TAG", "message: " + new String(message.getPayload()));
+                Log.w("TAG", "topic: " + topic);
+
+                if (topic.equals("tempJunior")){
+                    float number = Float.parseFloat(new String(message.getPayload()));
+                    temp = number;
+                    mGameThread.start();
+                }
+            }
+
+
+            @Override
+            public void deliveryComplete(IMqttDeliveryToken token) {
+
+            }
+        });
+
+
+        // LOAD PLAYER AND LOAD MONSTER HE IS FIGHTING FROM DATABASE
+
+
+
         // initialize the characters and their stats
-        player1 = new Character(1000, 90, 20);
-        player2 = new Character(1000, 100, 15);
+        player1 = new Character(2000, 100, 20, "water"); //player mon
+        player2 = new Character(2000, 100, 20, "fire"); //mon he is fighting
+
 
         // initialize the views to display the characters' stats
         player1HealthBar = v.findViewById(R.id.progressBar_aliado);
@@ -83,7 +142,9 @@ public class Battle extends Fragment {
         //attackButton2 = v.findViewById(R.id.attack_button2);
 
         // display the initial values for the characters' stats
+        player1HealthBar.setMax(player1.health);
         player1HealthBar.setProgress(player1.health);
+        player2HealthBar.setMax(player2.health);
         player2HealthBar.setProgress(player2.health);
 
         // Create the handler for updating the UI
@@ -96,6 +157,32 @@ public class Battle extends Fragment {
             @Override
             public void run() {
                 // Main game loop
+
+                // CUIDADO PARA NAO ALTERAR O ATAQUE NA BASE DE DADOS DO MONSTRO, ALTERA SÓ DURANTE O COMBATE!
+                if (temp >= 35){
+
+                    ((MainActivity)getActivity()).noti("Its hot...", "Ambiente quente, monstros de água estão enfraquecidos!");
+
+                    if (player1.type.equals("water")){
+                        player1.attack -= (int) Math.round(player1.attack * 0.1);
+                    }
+                    if (player2.type.equals("water")){
+                        player2.attack -= (int) Math.round(player2.attack * 0.1);
+                    }
+                } else if (temp <= 5){
+
+                    ((MainActivity)getActivity()).noti("Its cold...", "Ambiente frio, monstros de fogo estão enfraquecidos!");
+                    if (player1.type.equals("fire")){
+                        player1.attack -= (int) Math.round(player1.attack * 0.1);
+                    }
+                    if (player2.type.equals("fire")){
+                        player2.attack -= (int) Math.round(player2.attack * 0.1);
+                    }
+                }
+
+                Log.w("TAG", "p1atk " + player1.attack);
+                Log.w("TAG", "p2atk: " + player2.attack);
+
                 while (player1.health > 0 && player2.health > 0) {
                     // Check for user input
 
@@ -191,13 +278,14 @@ public class Battle extends Fragment {
                         player2HealthBar.setProgress(player2.health);
                         // Print the winner
                         if (player1.health > 0) {
-                            toast = Toast.makeText(getContext(), "Player 1 wins!", Toast.LENGTH_SHORT);
+                            toast = Toast.makeText(getContext(), "Victory!", Toast.LENGTH_SHORT);
                             toast.show();
                         } else {
-                            toast = Toast.makeText(getContext(), "Player 2 wins!", Toast.LENGTH_SHORT);
+                            toast = Toast.makeText(getContext(), "Defeat!", Toast.LENGTH_SHORT);
                             toast.show();
                         }
                         // Go Back To Map
+                        helper.stop();
                         Fragment goBack = viewModel.getLastFragment();
                         goBack.onResume();
                         //TestMap fragment = new TestMap();
@@ -208,7 +296,8 @@ public class Battle extends Fragment {
             }
         });
 
-    mGameThread.start();
+
+
 
     return v;
 
