@@ -1,6 +1,7 @@
 package com.example.game;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class recycler_view_adapter extends RecyclerView.Adapter<recycler_view_adapter.MyViewHolder> {
+public class recycler_view_adapter2 extends RecyclerView.Adapter<recycler_view_adapter2.MyViewHolder> {
     Context context;
-    ArrayList<monster_class> monsters;
+    Bitmap[] monsters;
 
 
 
-    public recycler_view_adapter(Context context, ArrayList<monster_class> monsters){
+    public recycler_view_adapter2(Context context, Bitmap[] monsters){
         this.context = context;
         this.monsters = monsters;
 
@@ -26,34 +27,33 @@ public class recycler_view_adapter extends RecyclerView.Adapter<recycler_view_ad
 
     @NonNull
     @Override
-    public recycler_view_adapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public recycler_view_adapter2.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.recycle_view_row, parent, false);
-        return new recycler_view_adapter.MyViewHolder(view);
+        View view = inflater.inflate(R.layout.recycle_view_row2, parent, false);
+        return new recycler_view_adapter2.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull recycler_view_adapter.MyViewHolder holder, int position) {
-        holder.nameView.setText(monsters.get(position).getName());
-        holder.imageView.setImageBitmap(monsters.get(position).getImage());
+    public void onBindViewHolder(@NonNull recycler_view_adapter2.MyViewHolder holder, int position) {
+        holder.imageView.setImageBitmap(monsters[position]);
         //Drawable d = new BitmapDrawable(context.getResourcrecycler_view_adapteres(), monsters.get(position).getImage());
         //holder.imageView.setImageDrawable(d);
     }
 
     @Override
     public int getItemCount() {
-        return monsters.size();
+        return monsters.length;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         ImageView imageView;
-        TextView nameView;
+
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
-            nameView = itemView.findViewById(R.id.textView2);
+
         }
     }
 }
