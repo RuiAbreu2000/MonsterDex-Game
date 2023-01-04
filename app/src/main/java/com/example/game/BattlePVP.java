@@ -115,7 +115,7 @@ public class BattlePVP extends Fragment {
                 if (imPlayer2) {
 
                     String hp = Integer.toString(player2HP);
-                    helper.publish("ConnectJunior", "Player2connected", 0, true);
+                    helper.publish("ConnectJunior", "Player2conn", 0, true);
                     helper.publish("GetHPJunior", hp, 0, true);
                     joinmatch.setVisibility(v.INVISIBLE);
 
@@ -124,7 +124,7 @@ public class BattlePVP extends Fragment {
                 if (imPlayer1) {
 
                     String hp = Integer.toString(player1HP);
-                    helper.publish("ConnectJunior", "Player1connected", 0, true);
+                    helper.publish("ConnectJunior", "Player1conn", 0, true);
                     helper.publish("GetHPJunior", hp, 0, true);
                     joinmatch.setVisibility(v.INVISIBLE);
 
@@ -185,7 +185,7 @@ public class BattlePVP extends Fragment {
                         joinmatch.setVisibility(v.VISIBLE);
 
 
-                    } else if (new String(message.getPayload()).equals("Player1connected")){
+                    } else if (new String(message.getPayload()).equals("Player1conn")){
 
                         if (!imPlayer1) { //IF IM PLAYER2
                             imPlayer2 = true;
@@ -213,7 +213,7 @@ public class BattlePVP extends Fragment {
 
                         }
 
-                    } else if (new String(message.getPayload()).equals("Player2connected")){
+                    } else if (new String(message.getPayload()).equals("Player2conn")){
                         Log.w("TAG", "Entrei no loop" + topic);
                         Log.w("TAG", "player1hp= " + player1HP);
                         Log.w("TAG", "player2hp= " + player2HP);

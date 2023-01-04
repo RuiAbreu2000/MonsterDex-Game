@@ -7,7 +7,10 @@ import static com.example.game.SharedViewModel.TILESIZE;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.os.Bundle;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -47,6 +50,8 @@ public class TestMap extends Fragment implements View.OnTouchListener {
     private int[] tileIndexArray;
     private Bitmap bitmap;
     private int[][] monsterArray;
+    private float[] displaymatrix = new float[9];
+    private int actW, actH;
 
     public TestMap() {
         // Required empty public constructor
@@ -105,6 +110,15 @@ public class TestMap extends Fragment implements View.OnTouchListener {
         image.getLocationOnScreen(posXY);
         image.setOnTouchListener(this);
 
+        // Get Display Image Settings
+        image.getImageMatrix().getValues(displaymatrix);
+        // Extract the scale values using the constants (if aspect ratio maintained, scaleX == scaleY)
+        final float scaleX = displaymatrix[Matrix.MSCALE_X];
+        final float scaleY = displaymatrix[Matrix.MSCALE_Y];
+        // Calculate the actual dimensions
+        actW = Math.round(NUMBER_OF_MAP_COLUMNS*TILESIZE * scaleX);
+        actH = Math.round(NUMBER_OF_MAP_COLUMNS*TILESIZE * scaleY);
+
         // Inflate the layout for this fragment
         return v;
     }
@@ -116,13 +130,30 @@ public class TestMap extends Fragment implements View.OnTouchListener {
         int touchY = (int) event.getY();
         int imageX = touchX - posXY[0]; // posXY[0] is the X coordinate
         int imageY = touchY - posXY[1]; // posXY[1] is the y coordinate
-        int idxRow = imageY/TILESIZE;
-        int idxCol = imageX/TILESIZE;
-        int tile = idxRow*NUMBER_OF_MAP_COLUMNS+idxCol;
+        float screenTileSize = actW/NUMBER_OF_MAP_ROWS;
+        float idxRow = (float) imageY/screenTileSize;
+        float idxCol = (float)imageX/screenTileSize;
+        float tile = idxRow*NUMBER_OF_MAP_COLUMNS+idxCol;
+
+        Log.w("a", "ROWS AND COLUMNS");
+        Log.w("a", String.valueOf(idxRow));
+        Log.w("a", String.valueOf(idxCol));
         Log.w("a", String.valueOf(tile));
-        if(monsterArray[idxRow][idxCol] > 0){
+
+
+        // Print Coords
+        Log.w("a", "Coords");
+        Log.w("a", String.valueOf(imageX));
+        Log.w("a", String.valueOf(imageY));
+
+        //if(monsterArray[idxRow][idxCol] > 0){
             // BATTLE SCREEN TO CAPTURE MONSTER
-            Log.w("a", "BATTLE TIME");
+         //   Log.w("a", "BATTLE TIME");
+        //}
+        if(imageX > 512 && imageX < 768 && imageY > 0 && imageY < 256){
+            viewModel.incrementLevel();
+            TestMap fragment = new TestMap();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         }
 
 

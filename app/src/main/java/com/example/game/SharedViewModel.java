@@ -80,4 +80,8 @@ public class SharedViewModel extends AndroidViewModel{
     public void createNewMonster(MonsterDex newMonster){
         db.monsterDexDao().addMonster(newMonster);
     }
+
+    public void incrementLevel() {
+        this.currentZoneLevel += 1;
+    }
 }
