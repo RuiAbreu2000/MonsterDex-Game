@@ -45,7 +45,7 @@ public class MainMenu extends Fragment {
         button_options.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                my_monsters my_monsters = new my_monsters();
+                my_monstersDEX my_monsters = new my_monstersDEX();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, my_monsters).commit();
             }
         });

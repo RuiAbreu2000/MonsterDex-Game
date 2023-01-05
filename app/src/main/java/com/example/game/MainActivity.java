@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedViewModel viewModel;
     private Fragment savedFragment;
     private Sprite[][] monsterSprite;
-    private SpriteSheet waterMonsterSpriteSheet;
+    private SpriteSheet MonsterSpriteSheet;
     private String[] monsterNames = {
             "Crab", "Angry Crab", "Monster Crab",
             "Ocean Bear", "Ocean Bearsaur", "Oceanzilla",
@@ -53,43 +53,46 @@ public class MainActivity extends AppCompatActivity {
         List<MonsterDex> monsters = viewModel.getDatabase().monsterDexDao().getAllMonsters();
         if (monsters.size()==0){
             // Load Monsters to MonsterDex Database
-
-            // Build SpriteSheet and Sprite Array
-            waterMonsterSpriteSheet = viewModel.getWaterMonsterSpriteSheet();
-            monsterSprite = new Sprite[4][3];       // Numero de Water Monsters Atualmente
-            buildSpriteArray(4, 3);
-
-            // Build Bitmaps
-            Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-            String evolvesFrom = null;
-            for (int iRow = 0; iRow < 4; iRow++) {
-                for (int iCol = 0; iCol < 3; iCol++) {
-                    Bitmap bitmap = Bitmap.createBitmap(TILESIZE, TILESIZE, conf); // this creates a MUTABLE bitmap
-                    Canvas mapCanvas = new Canvas(bitmap);
-                    mapCanvas.drawBitmap(monsterSprite[iRow][iCol].getSpriteBitmap(), null, new Rect(0,0,256,256), null);
-                    // Transform to bit Array
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
-                    // Create new Monster and Insert into Database
-                    MonsterDex newMonster = new MonsterDex();
-                    newMonster.name = monsterNames[iRow*3+iCol];
-                    newMonster.type = "water";
-                    newMonster.health = 100;
-                    newMonster.attack = 100;
-                    newMonster.defense = 100;
-                    newMonster.isBoss = false;
-                    newMonster.bArray = bos.toByteArray();
-                    newMonster.rarity = "common";
-                    newMonster.evolution = iCol+1;
-                    if(iCol == 0){                              // Se for o primeiro da linha é evolução 1
-                        newMonster.evolvesFrom = "base";
-                    }else{
-                        newMonster.evolvesFrom = evolvesFrom;   // Adiciona o monstro do qual evolui
-                    }
-                    viewModel.createNewMonster(newMonster);
-                    evolvesFrom = monsterNames[iRow+iCol];
-                }
-            }
+            MonsterSpriteSheet = viewModel.getAirMonsterSpriteSheet();
+            monsterNames = new String[]{
+                    "air00", "air01", "air02",
+                    "air10", "air11", "air12",
+                    "air20", "air21", "air22",
+                    "air30", "air31", "air32",
+            };
+            buildMonsters("air");
+            MonsterSpriteSheet = viewModel.getBugMonsterSpriteSheet();
+            monsterNames = new String[]{
+                    "bug00", "bug01", "bug02",
+                    "bug10", "bug11", "bug12",
+                    "bug20", "bug21", "bug22",
+                    "bug30", "bug31", "bug32",
+            };
+            buildMonsters("bug");
+            MonsterSpriteSheet = viewModel.getFireMonsterSpriteSheet();
+            monsterNames = new String[]{
+                    "fire00", "fire01", "fire02",
+                    "fire10", "fire11", "fire12",
+                    "fire20", "fire21", "fire22",
+                    "fire30", "fire31", "fire32",
+            };
+            buildMonsters("fire");
+            MonsterSpriteSheet = viewModel.getGroundMonsterSpriteSheet();
+            monsterNames = new String[]{
+                    "ground00", "ground01", "ground02",
+                    "ground10", "ground11", "ground12",
+                    "ground20", "ground21", "ground22",
+                    "ground30", "ground31", "ground32",
+            };
+            buildMonsters("ground");
+            MonsterSpriteSheet = viewModel.getWaterMonsterSpriteSheet();
+            monsterNames = new String[]{
+                    "Crab", "Angry Crab", "Monster Crab",
+                    "Ocean Bear", "Ocean Bearsaur", "Oceanzilla",
+                    "Ocean Mutant", "Giant Ocean Mutant", "Mega Mutant",
+                    "Shark", "Shark Monster", "Shark Monstrosity",
+            };
+            buildMonsters("water");
         }
 
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new MainMenu()).commit();
@@ -133,9 +136,48 @@ public class MainActivity extends AppCompatActivity {
         for (int iRow = 0; iRow < numberOfRows; iRow++) {
             for (int iCol = 0; iCol < numberOfColumns; iCol++) {
                 // get corresponding sprite
-                monsterSprite[iRow][iCol] = waterMonsterSpriteSheet.getMonsterTile(iRow*3+iCol+1);
+                monsterSprite[iRow][iCol] = MonsterSpriteSheet.getMonsterTile(iRow*3+iCol+1);
 
 
+            }
+        }
+    }
+
+    public void buildMonsters(String type){
+        // Build SpriteSheet and Sprite Array
+
+        monsterSprite = new Sprite[4][3];       // Numero de Water Monsters Atualmente
+        buildSpriteArray(4, 3);
+
+        // Build Bitmaps
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        String evolvesFrom = null;
+        for (int iRow = 0; iRow < 4; iRow++) {
+            for (int iCol = 0; iCol < 3; iCol++) {
+                Bitmap bitmap = Bitmap.createBitmap(TILESIZE, TILESIZE, conf); // this creates a MUTABLE bitmap
+                Canvas mapCanvas = new Canvas(bitmap);
+                mapCanvas.drawBitmap(monsterSprite[iRow][iCol].getSpriteBitmap(), null, new Rect(0,0,256,256), null);
+                // Transform to bit Array
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+                // Create new Monster and Insert into Database
+                MonsterDex newMonster = new MonsterDex();
+                newMonster.name = monsterNames[iRow*3+iCol];
+                newMonster.type = type;
+                newMonster.health = 100;
+                newMonster.attack = 100;
+                newMonster.defense = 100;
+                newMonster.isBoss = false;
+                newMonster.bArray = bos.toByteArray();
+                newMonster.rarity = "common";
+                newMonster.evolution = iCol+1;
+                if(iCol == 0){                              // Se for o primeiro da linha é evolução 1
+                    newMonster.evolvesFrom = "base";
+                }else{
+                    newMonster.evolvesFrom = evolvesFrom;   // Adiciona o monstro do qual evolui
+                }
+                viewModel.createNewMonster(newMonster);
+                evolvesFrom = monsterNames[iRow+iCol];
             }
         }
     }

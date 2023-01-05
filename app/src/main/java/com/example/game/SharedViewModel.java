@@ -34,6 +34,10 @@ public class SharedViewModel extends AndroidViewModel{
 
     // Sprite Sheets
     public SpriteSheet spritesheet;
+    public SpriteSheet airMonsterSpritesheet;
+    public SpriteSheet bugMonsterSpritesheet;
+    public SpriteSheet fireMonsterSpritesheet;
+    public SpriteSheet groundMonsterSpritesheet;
     public SpriteSheet waterMonsterSpritesheet;
     public SpriteSheet symbolsSpriteSheet;
 
@@ -48,6 +52,10 @@ public class SharedViewModel extends AndroidViewModel{
 
         // Spritesheets
         spritesheet = new SpriteSheet(application, "tiles");
+        airMonsterSpritesheet = new SpriteSheet(application, "airMonsters");
+        bugMonsterSpritesheet = new SpriteSheet(application, "bugMonsters");
+        fireMonsterSpritesheet = new SpriteSheet(application, "fireMonsters");
+        groundMonsterSpritesheet = new SpriteSheet(application, "groundMonsters");
         waterMonsterSpritesheet = new SpriteSheet(application, "waterMonsters");
         symbolsSpriteSheet = new SpriteSheet(application, "symbols");
         maplayouts = new MapLayouts(spritesheet, symbolsSpriteSheet);
@@ -76,6 +84,22 @@ public class SharedViewModel extends AndroidViewModel{
                 currentZone = "grass";                               // Updates current Zone
                 maplayouts.grassMap(currentZoneLevel);                               // Builds Map
         }
+    }
+
+    public SpriteSheet getAirMonsterSpriteSheet() {
+        return this.airMonsterSpritesheet;
+    }
+
+    public SpriteSheet getBugMonsterSpriteSheet() {
+        return this.bugMonsterSpritesheet;
+    }
+
+    public SpriteSheet getFireMonsterSpriteSheet() {
+        return this.fireMonsterSpritesheet;
+    }
+
+    public SpriteSheet getGroundMonsterSpriteSheet() {
+        return this.groundMonsterSpritesheet;
     }
 
     public SpriteSheet getWaterMonsterSpriteSheet() {

@@ -21,6 +21,14 @@ public class SpriteSheet {
 
         if (source.equals("tiles")) {
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.water_map_tiles, bitmapOptions);
+        }else if(source.equals("airMonsters")){
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.air_monsters, bitmapOptions);
+        }else if(source.equals("bugMonsters")){
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.bug_monsters, bitmapOptions);
+        }else if(source.equals("fireMonsters")){
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_monsters, bitmapOptions);
+        }else if(source.equals("groundMonsters")){
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ground_monsters, bitmapOptions);
         }else if(source.equals("waterMonsters")){
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.water_monsters, bitmapOptions);
         }
