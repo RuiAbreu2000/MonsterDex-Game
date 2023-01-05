@@ -129,7 +129,7 @@ public class NewGame extends Fragment {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setMyMonster(1);
+                setMyMonster(3);
 
                 continuarButton();
                 }
@@ -138,7 +138,7 @@ public class NewGame extends Fragment {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setMyMonster(2);
+                setMyMonster(6);
 
                 continuarButton();
             }
