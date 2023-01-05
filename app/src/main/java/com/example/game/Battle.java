@@ -1,5 +1,7 @@
 package com.example.game;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -7,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,7 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.game.maps.TestMap;
+import com.example.game.databases.Monster;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -24,6 +27,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.List;
 
 public class Battle extends Fragment {
     private SharedViewModel viewModel;
@@ -35,13 +39,16 @@ public class Battle extends Fragment {
         int attack;
         int defense;
         String type;
+        byte[] bArray;
 
-        public Character(int health, int attack, int defense, String type) {
+        public Character(int health, int attack, int defense, String type, byte[] image) {
             this.health = health;
             this.attack = attack;
             this.defense = defense;
             this.type = type;
+            this.bArray = image;
         }
+
     }
     // Handler for updating the UI
     private Handler mHandler;
@@ -63,6 +70,8 @@ public class Battle extends Fragment {
     // views to display the characters' stats
     private ProgressBar player1HealthBar;
     private ProgressBar player2HealthBar;
+    private ImageView player1image;
+    private ImageView player2image;
     private TextView player1Label;
     private TextView player2Label;
     private Button attackButton;
@@ -125,17 +134,28 @@ public class Battle extends Fragment {
 
 
         // LOAD PLAYER AND LOAD MONSTER HE IS FIGHTING FROM DATABASE
+        List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
+        float level_inimigo = 0;
+        for (int i = 0;i< monsters.size();i++){
+            level_inimigo = level_inimigo + monsters.get(i).level;
+        }
+        level_inimigo = (int) level_inimigo / monsters.size();
+        Monster m = monsters.get(0);
 
+        // LOAD ENEMY
 
 
         // initialize the characters and their stats
-        player1 = new Character(2000, 100, 20, "water"); //player mon
-        player2 = new Character(2000, 100, 20, "fire"); //mon he is fighting
+
+        player1 = new Character(m.health*m.level, m.attack*m.level, m.defense*m.level, m.type, m.bArray); //player mon
+        player2 = new Character(750, 100, 20, "fire", m.bArray); //mon he is fighting
 
 
         // initialize the views to display the characters' stats
         player1HealthBar = v.findViewById(R.id.progressBar_aliado);
         player2HealthBar = v.findViewById(R.id.progressBar_inimigo);
+        player1image = v.findViewById(R.id.imageView3);
+        player2image = v.findViewById(R.id.imageView2);
         player1Label = v.findViewById(R.id.textView_aliado);
         player2Label = v.findViewById(R.id.textView_inimigo);
         attackButton = v.findViewById(R.id.button_ataque);
@@ -144,8 +164,11 @@ public class Battle extends Fragment {
         // display the initial values for the characters' stats
         player1HealthBar.setMax(player1.health);
         player1HealthBar.setProgress(player1.health);
+        player1image.setImageBitmap(BitmapFactory.decodeByteArray(player1.bArray, 0, player1.bArray.length));
         player2HealthBar.setMax(player2.health);
         player2HealthBar.setProgress(player2.health);
+        player2image.setImageBitmap(BitmapFactory.decodeByteArray(player2.bArray, 0, player2.bArray.length));
+
 
         // Create the handler for updating the UI
         mHandler = new Handler();
