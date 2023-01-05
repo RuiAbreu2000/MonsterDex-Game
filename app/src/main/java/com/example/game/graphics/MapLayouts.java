@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 import java.util.Random;
 
@@ -52,13 +53,25 @@ public class MapLayouts {
     // MAPAS
     public void homeMap() {
         // Build Sprite Array
-        this.buildSpriteHomeMap();
+        buildSpriteArrayFixed(mapInformation.homeMap);
+        Log.w("A", "HOME");
 
         // Build Bitmap
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_ROWS * TILESIZE, NUMBER_OF_MAP_COLUMNS * TILESIZE, conf); // this creates a MUTABLE bitmap
+        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_COLUMNS * TILESIZE, NUMBER_OF_MAP_ROWS * TILESIZE, conf); // this creates a MUTABLE bitmap
         this.buildBitmapFixed();
 
+    }
+
+    public void zoneSelection_1() {
+        // Build Sprite Array
+        buildSpriteArrayFixed(mapInformation.zoneSelection_1Map);
+        Log.w("A", "ZONNE 1");
+
+        // Build Bitmap
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_COLUMNS * TILESIZE, NUMBER_OF_MAP_ROWS * TILESIZE, conf); // this creates a MUTABLE bitmap
+        this.buildBitmapFixed();
     }
 
     public void grassMap(int currentZoneLevel) {
@@ -73,7 +86,7 @@ public class MapLayouts {
 
         // Build Bitmap
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_ROWS * TILESIZE, NUMBER_OF_MAP_COLUMNS * TILESIZE, conf); // this creates a MUTABLE bitmap
+        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_COLUMNS * TILESIZE, NUMBER_OF_MAP_ROWS * TILESIZE, conf); // this creates a MUTABLE bitmap
         this.buildBitmap();
     }
 
@@ -114,13 +127,14 @@ public class MapLayouts {
         }
     }
 
-    public void buildSpriteHomeMap(){
+    public void buildSpriteArrayFixed(int[] mapTiles){
         // Build Map with Sprites
         int tile_counter = 0;
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
                 // get corresponding sprite
-                mapSprite[iRow][iCol] = fixedSpriteSheet.getTile(mapInformation.homeMap[tile_counter]);
+                //Log.w("texto", String.valueOf(mapTiles[tile_counter]));
+                mapSprite[iRow][iCol] = fixedSpriteSheet.getTile(mapTiles[tile_counter]);
                 tile_counter += 1;
             }
         }

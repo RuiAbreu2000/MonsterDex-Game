@@ -34,7 +34,7 @@ public class SpriteSheet {
         }
         else if(source.equals("symbols")){
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.symbols, bitmapOptions);
-        }else if(source.equals("fixed")){
+        }else if(source.equals("fixedTiles")){
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fixed_tiles, bitmapOptions);
         }
     }
@@ -79,6 +79,14 @@ public class SpriteSheet {
                 return getSpriteByIndex(3,2);
             case 16:
                 return getSpriteByIndex(3,3);
+            case 17:
+                return getSpriteByIndex(4,0);
+            case 18:
+                return getSpriteByIndex(4,1);
+            case 19:
+                return getSpriteByIndex(4,2);
+            case 20:
+                return getSpriteByIndex(4,3);
             default:
                 return null;
         }
