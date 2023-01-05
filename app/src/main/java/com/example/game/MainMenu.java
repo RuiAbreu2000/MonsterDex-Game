@@ -12,11 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.game.databases.Monster;
 import com.example.game.maps.MainCity;
 import com.example.game.maps.TestMap;
 
-public class MainMenu extends Fragment {
+import java.util.List;
 
+public class MainMenu extends Fragment {
+    private SharedViewModel viewModel;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -30,23 +33,31 @@ public class MainMenu extends Fragment {
         startGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NewGame fragment = new NewGame();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
+
+                if (monsters.size()==0){
+                    NewGame fragment = new NewGame();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                }else{
+                    MainCity mainCity = new MainCity();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mainCity).commit();
+                }
+
             }
         });
 
         button_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainCity mainCity = new MainCity();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mainCity).commit();
+                my_monsters my_monsters = new my_monsters();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, my_monsters).commit();
             }
         });
 
         button_options.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                my_monsters my_monsters = new my_monsters();
+                my_monstersDEX my_monsters = new my_monstersDEX();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, my_monsters).commit();
             }
         });

@@ -28,6 +28,7 @@ import com.example.game.databases.Monster;
 import com.example.game.databases.MonsterDex;
 import com.example.game.graphics.Sprite;
 import com.example.game.graphics.SpriteSheet;
+import com.example.game.maps.MainCity;
 import com.example.game.maps.TestMap;
 
 import java.io.ByteArrayOutputStream;
@@ -149,11 +150,10 @@ public class NewGame extends Fragment {
     }
 
     private void continuarButton(){
-        TestMap fragment = new TestMap();
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        MainCity mainCity = new MainCity();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mainCity).commit();
 
-        //my_monsters fragment = new my_monsters();
-        //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+
     }
     private void setMonsters() {
 
