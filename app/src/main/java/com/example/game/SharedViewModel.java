@@ -13,6 +13,7 @@ import com.example.game.databases.MonsterDex;
 import com.example.game.graphics.MapLayouts;
 import com.example.game.graphics.SpriteSheet;
 
+import java.util.List;
 import java.util.Stack;
 
 public class SharedViewModel extends AndroidViewModel{
@@ -100,5 +101,13 @@ public class SharedViewModel extends AndroidViewModel{
     }
     public Fragment getLastFragment(){
         return fragmentStack.lastElement();
+    }
+
+    public MonsterDex getRandomMonsterByType(String type){
+        List<MonsterDex> monsterdex = db.monsterDexDao().getAllMonstersByType(type);
+        int rand = (int)(Math.random()*(monsterdex.size()-0+1)+0);
+        MonsterDex mosnter = monsterdex.get(rand-(rand%3));
+
+        return mosnter;
     }
 }

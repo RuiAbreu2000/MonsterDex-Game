@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.game.databases.Monster;
+import com.example.game.databases.MonsterDex;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -135,20 +136,21 @@ public class Battle extends Fragment {
 
         // LOAD PLAYER AND LOAD MONSTER HE IS FIGHTING FROM DATABASE
         List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
-        float level_inimigo = 0;
+        int level_inimigo = 0;
         for (int i = 0;i< monsters.size();i++){
             level_inimigo = level_inimigo + monsters.get(i).level;
         }
-        level_inimigo = (int) level_inimigo / monsters.size();
+        level_inimigo = (int) (level_inimigo / monsters.size());
         Monster m = monsters.get(0);
 
         // LOAD ENEMY
+        MonsterDex enemy = viewModel.getRandomMonsterByType("water");
 
 
         // initialize the characters and their stats
 
         player1 = new Character(m.health*m.level, m.attack*m.level, m.defense*m.level, m.type, m.bArray); //player mon
-        player2 = new Character(750, 100, 20, "fire", m.bArray); //mon he is fighting
+        player2 = new Character(enemy.health*level_inimigo, enemy.attack*level_inimigo, enemy.defense*level_inimigo, enemy.type, enemy.bArray); //mon he is fighting
 
 
         // initialize the views to display the characters' stats
