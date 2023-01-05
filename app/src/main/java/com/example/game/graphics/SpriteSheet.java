@@ -26,8 +26,11 @@ public class SpriteSheet {
         }
         else if(source.equals("symbols")){
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.symbols, bitmapOptions);
+        }else if(source.equals("fixed")){
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fixed_tiles, bitmapOptions);
         }
     }
+
 
     public Bitmap getBitmap() {
         return this.bitmap;

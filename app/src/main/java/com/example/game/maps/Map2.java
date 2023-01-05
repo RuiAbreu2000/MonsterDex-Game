@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.game.MainActivity;
-import com.example.game.MainCity;
 import com.example.game.R;
 
 /**

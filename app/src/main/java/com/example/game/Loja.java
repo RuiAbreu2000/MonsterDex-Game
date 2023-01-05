@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.game.maps.MainCity;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Loja#newInstance} factory method to

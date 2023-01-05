@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.game.maps.MainCity;
 import com.example.game.maps.TestMap;
 
 public class MainMenu extends Fragment {
@@ -36,8 +37,8 @@ public class MainMenu extends Fragment {
         button_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TestMap testMap = new TestMap();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, testMap).commit();
+                MainCity mainCity = new MainCity();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mainCity).commit();
             }
         });
 
