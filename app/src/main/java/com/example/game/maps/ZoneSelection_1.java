@@ -10,16 +10,19 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.game.MainMenu;
 import com.example.game.R;
 import com.example.game.SharedViewModel;
 
@@ -56,6 +59,25 @@ public class ZoneSelection_1 extends Fragment implements View.OnTouchListener{
         posXY = new int[2];
         image.getLocationOnScreen(posXY);
         image.setOnTouchListener(this);
+
+
+        Toolbar toolbar = v.findViewById(R.id.toolbar2);
+        toolbar.inflateMenu(R.menu.menu_test);
+        Menu menu = toolbar.getMenu();
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+
+                case R.id.back:
+                    // Navigate to settings screen
+
+                    MainMenu menuback = new MainMenu();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, menuback).commit();
+                    return true;
+
+                default:
+                    return false;
+            }
+        });
 
 
         // Inflate the layout for this fragment
