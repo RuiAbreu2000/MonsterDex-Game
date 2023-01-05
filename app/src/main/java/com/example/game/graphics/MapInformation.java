@@ -1,4 +1,4 @@
-package com.example.game;
+package com.example.game.graphics;
 
 public class MapInformation {
     public int[][] waterMapLevels = {
@@ -99,5 +99,14 @@ public class MapInformation {
             16, 16, 16, 15, 15,
             16, 16, 15, 16, 15,
     }
+    };
+
+    // HOME MAP
+    public int[] homeMap = {
+            5, 6, 7, 1, 8,
+            15, 11, 10, 13, 16,
+            3, 13, 10, 13, 2,
+            1, 1, 14, 1, 1,
+            1, 1, 9, 1, 1,
     };
 }

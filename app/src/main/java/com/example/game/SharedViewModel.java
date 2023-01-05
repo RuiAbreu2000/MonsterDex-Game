@@ -40,6 +40,7 @@ public class SharedViewModel extends AndroidViewModel{
     public SpriteSheet groundMonsterSpritesheet;
     public SpriteSheet waterMonsterSpritesheet;
     public SpriteSheet symbolsSpriteSheet;
+    public SpriteSheet fixedSpriteSheet;
 
 
     // Current Zone Vars
@@ -58,11 +59,11 @@ public class SharedViewModel extends AndroidViewModel{
         groundMonsterSpritesheet = new SpriteSheet(application, "groundMonsters");
         waterMonsterSpritesheet = new SpriteSheet(application, "waterMonsters");
         symbolsSpriteSheet = new SpriteSheet(application, "symbols");
-        maplayouts = new MapLayouts(spritesheet, symbolsSpriteSheet);
+        fixedSpriteSheet = new SpriteSheet(application, "fixed");
+        maplayouts = new MapLayouts(spritesheet, symbolsSpriteSheet, fixedSpriteSheet);
         maplayouts.setSymbolsSpriteSheet();
     }
 
-    // Get Map Functions
     public AppDatabase getDatabase(){
         return db;
     }
@@ -77,12 +78,16 @@ public class SharedViewModel extends AndroidViewModel{
     }
 
     public int[][] getMonsterArray(){ return maplayouts.getMonsterArray().clone();}
-
+    // Get Map Functions
     public void getMap(String map) { // Builds map on MapLayouts
         switch(map) {
             case "grass":
                 currentZone = "grass";                               // Updates current Zone
                 maplayouts.grassMap(currentZoneLevel);                               // Builds Map
+            case "home":
+                currentZone = "home";                               // Updates current Zone
+                maplayouts.homeMap();                               // Builds Map
+
         }
     }
 

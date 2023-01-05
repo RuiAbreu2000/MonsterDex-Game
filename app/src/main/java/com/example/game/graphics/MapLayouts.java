@@ -8,21 +8,21 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
-
-import com.example.game.MapInformation;
 
 import java.util.Random;
 
 // Has the informatation about the current map
 public class MapLayouts {
 
+    // SpriteSheets
     private SpriteSheet spritesheet;
+    private SpriteSheet symbolsSpriteSheet;
+    private SpriteSheet fixedSpriteSheet;
+
     private int[] mapSpriteSheetIndex;
     private int[][] monsterArray;
     public Sprite[][] mapSprite;
     private Bitmap bitmap;
-    private SpriteSheet symbolsSpriteSheet;
     private MapInformation mapInformation;
 
     // Symbol Tiles
@@ -38,9 +38,10 @@ public class MapLayouts {
     // Map Generator Probabilities
     int[] grassMapProbabilities =     new int[]{70,75,95,100}; // 70% grass, 20% dirt, 10% rocks
 
-    public MapLayouts(SpriteSheet spritesheet, SpriteSheet symbolsSpriteSheet) {
+    public MapLayouts(SpriteSheet spritesheet, SpriteSheet symbolsSpriteSheet, SpriteSheet fixedSpriteSheet) {
         this.spritesheet = spritesheet;
         this.symbolsSpriteSheet = symbolsSpriteSheet;
+        this.fixedSpriteSheet = fixedSpriteSheet;
         this.mapInformation = new MapInformation();
         mapSpriteSheetIndex = new int[NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS];
         monsterArray = new int[NUMBER_OF_MAP_ROWS][NUMBER_OF_MAP_COLUMNS];
@@ -48,14 +49,24 @@ public class MapLayouts {
     }
 
 
-    // GROUND MAPS
+    // MAPAS
+    public void homeMap() {
+        // Build Sprite Array
+        this.buildSpriteHomeMap();
+
+        // Build Bitmap
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_ROWS * TILESIZE, NUMBER_OF_MAP_COLUMNS * TILESIZE, conf); // this creates a MUTABLE bitmap
+        this.buildBitmapFixed();
+
+    }
+
     public void grassMap(int currentZoneLevel) {
         // Build Tile Index Map
         this.buildRandomLayout(groundIndexes, grassMapProbabilities);
 
-
         // Build Sprite Array
-        this.buildSpriteFixeArray(currentZoneLevel);
+        this.buildSpriteFixedArray(currentZoneLevel);
 
         // Build Monster Array
         this.buildMonsterArray(currentZoneLevel);
@@ -85,7 +96,7 @@ public class MapLayouts {
         }
     }
 
-    public void buildSpriteFixeArray(int currentZoneLevel){
+    public void buildSpriteFixedArray(int currentZoneLevel){
         // Build Map with Sprites
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
@@ -102,6 +113,20 @@ public class MapLayouts {
             mapSprite[4][2] = bossSymbol;
         }
     }
+
+    public void buildSpriteHomeMap(){
+        // Build Map with Sprites
+        int tile_counter = 0;
+        for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
+            for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
+                // get corresponding sprite
+                mapSprite[iRow][iCol] = fixedSpriteSheet.getTile(mapInformation.homeMap[tile_counter]);
+                tile_counter += 1;
+            }
+        }
+    }
+
+
 
     public void buildBitmap(){
         int current_left = 0;
@@ -120,6 +145,29 @@ public class MapLayouts {
                 if(monsterArray[iRow][iCol] > 0 && !(iRow == 0 && iCol == 2) && !(iRow == 4 && iCol == 2) ){    // Draw Monster Symbol if Monster exists in this tile
                     mapCanvas.drawBitmap(monsterSymbol.getSpriteBitmap(), null, new Rect(current_left, current_top,current_right, current_bot), p);
                 }
+                current_left += TILESIZE;
+                current_right += TILESIZE;
+            }
+            current_left = 0;
+            current_right = TILESIZE;
+            current_top += TILESIZE;
+            current_bot += TILESIZE;
+        }
+        return;
+    }
+
+    public void buildBitmapFixed(){
+        int current_left = 0;
+        int current_top = 0;
+        int current_right = TILESIZE;
+        int current_bot = TILESIZE;
+        // Create canvas to draw on it
+        Canvas mapCanvas = new Canvas(bitmap);
+
+        // Add all sprite bitmaps to canvas
+        for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
+            for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
+                mapCanvas.drawBitmap(mapSprite[iRow][iCol].getSpriteBitmap(), null, new Rect(current_left, current_top,current_right, current_bot), null);
                 current_left += TILESIZE;
                 current_right += TILESIZE;
             }
