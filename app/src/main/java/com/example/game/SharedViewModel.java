@@ -82,17 +82,29 @@ public class SharedViewModel extends AndroidViewModel{
     // Get Map Functions
     public void getMap(String map) { // Builds map on MapLayouts
         switch(map) {
-            case "grass":
-                currentZone = "grass";                               // Updates current Zone
-                maplayouts.grassMap(currentZoneLevel);                               // Builds Map
-                return;
             case "home":
-                currentZone = "home";                               // Updates current Zone
-                maplayouts.homeMap();                               // Builds Map
+                currentZone = "home";
+                maplayouts.homeMap();
                 return;
             case "zoneSelection_1":
-                currentZone = "zoneSelection_1";                               // Updates current Zone
-                maplayouts.zoneSelection_1();                               // Builds Map
+                currentZone = "zoneSelection_1";
+                maplayouts.zoneSelection_1();
+                return;
+            case "waterDungeon":
+                currentZone = "waterDungeon";
+                maplayouts.waterDungeon(currentZoneLevel);
+                return;
+            case "fireDungeon":
+                currentZone = "waterDungeon";
+                maplayouts.fireDungeon(currentZoneLevel);
+                return;
+            case "groundDungeon":
+                currentZone = "waterDungeon";
+                maplayouts.groundDungeon(currentZoneLevel);
+                return;
+            case "airDungeon":
+                currentZone = "waterDungeon";
+                maplayouts.airDungeon(currentZoneLevel);
                 return;
 
         }
