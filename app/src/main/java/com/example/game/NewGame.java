@@ -118,7 +118,7 @@ public class NewGame extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(((MainActivity)getActivity())));
 
         List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
-        Log.w("texto", String.valueOf(monsters));
+        
         if (monsters.size()!=0){
             continuarButton();
         }
