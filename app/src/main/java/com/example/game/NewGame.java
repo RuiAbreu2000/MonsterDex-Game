@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.game.databases.Monster;
 import com.example.game.databases.MonsterDex;
 import com.example.game.graphics.Sprite;
 import com.example.game.graphics.SpriteSheet;
@@ -118,8 +119,9 @@ public class NewGame extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setMyMonster(0);
 
-                
+
                 continuarButton();
             }
         });
@@ -127,7 +129,7 @@ public class NewGame extends Fragment {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                setMyMonster(1);
 
                 continuarButton();
                 }
@@ -136,7 +138,7 @@ public class NewGame extends Fragment {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                setMyMonster(2);
 
                 continuarButton();
             }
@@ -164,6 +166,22 @@ public class NewGame extends Fragment {
             Bitmap bitmap = BitmapFactory.decodeByteArray(m.bArray, 0, m.bArray.length);
             monster[i] = bitmap;
         }
+    }
+    private void setMyMonster(int i){
+        List<MonsterDex> monsters = viewModel.getDatabase().monsterDexDao().getAllMonsters();
+        MonsterDex m = monsters.get(i);
+        Monster m2 = new Monster();
+        m2.name = m.name;
+        m2.type = m.type;
+        m2.health = m.health;
+        m2.attack = m.attack;
+        m2.defense = m.defense;
+        m2.level = 5;
+        m2.xp = 0;
+        m2.bArray = m.bArray;
+        m2.eve = m.evolution;
+        m2.evolution = m.evolvesFrom;
+        viewModel.createNewMonsterTeam(m2);
     }
 
 

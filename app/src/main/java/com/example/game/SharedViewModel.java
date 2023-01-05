@@ -8,6 +8,7 @@ import android.app.Application;
 import android.graphics.Bitmap;
 
 import com.example.game.databases.AppDatabase;
+import com.example.game.databases.Monster;
 import com.example.game.databases.MonsterDex;
 import com.example.game.graphics.MapLayouts;
 import com.example.game.graphics.SpriteSheet;
@@ -83,6 +84,10 @@ public class SharedViewModel extends AndroidViewModel{
     // Add to Database Functions
     public void createNewMonster(MonsterDex newMonster){
         db.monsterDexDao().addMonster(newMonster);
+    }
+
+    public void createNewMonsterTeam(Monster newMonster){
+        db.monsterDao().addMonster(newMonster);
     }
 
     public void incrementLevel() {
