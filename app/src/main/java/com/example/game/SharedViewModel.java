@@ -110,4 +110,20 @@ public class SharedViewModel extends AndroidViewModel{
 
         return mosnter;
     }
+    public void setMyMonster(int i){
+        List<MonsterDex> monsters = db.monsterDexDao().getAllMonsters();
+        MonsterDex m = monsters.get(i);
+        Monster m2 = new Monster();
+        m2.name = m.name;
+        m2.type = m.type;
+        m2.health = m.health;
+        m2.attack = m.attack;
+        m2.defense = m.defense;
+        m2.level = 5;
+        m2.xp = 0;
+        m2.bArray = m.bArray;
+        m2.eve = m.evolution;
+        m2.evolution = m.evolvesFrom;
+        createNewMonsterTeam(m2);
+    }
 }

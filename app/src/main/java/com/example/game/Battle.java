@@ -1,5 +1,6 @@
 package com.example.game;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -303,6 +306,7 @@ public class Battle extends Fragment {
                         player2HealthBar.setProgress(player2.health);
                         // Print the winner
                         if (player1.health > 0) {
+                            decisionPopup(enemy.id-1);
                             toast = Toast.makeText(getContext(), "Victory!", Toast.LENGTH_SHORT);
                             toast.show();
                         } else {
@@ -326,6 +330,33 @@ public class Battle extends Fragment {
 
     return v;
 
+    }
+    public void decisionPopup(int id){
+
+        // Dialog box
+        AlertDialog.Builder alertDialogBuilder  = new AlertDialog.Builder(getActivity());
+
+        alertDialogBuilder.setMessage("Caught or Consume Monster");
+
+        alertDialogBuilder.setPositiveButton("Caught", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                viewModel.setMyMonster(id);
+
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Consume",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        // Refresh
+        // refresh also List<Nota> notas and set to SharedModel
+        getActivity().getSupportFragmentManager().beginTransaction().detach(this).attach(this).commit();
     }
 
 }
