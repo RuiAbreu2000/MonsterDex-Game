@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -77,6 +78,7 @@ public class my_monsters extends Fragment {
 
     private void setMonsters() {
         List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
+        Log.w("texto", String.valueOf(monsters));
 
 
         for (int i=0;i<monsters.size();i++){
