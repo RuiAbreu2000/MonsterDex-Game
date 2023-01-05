@@ -34,12 +34,9 @@ public class MainCity extends Fragment implements View.OnTouchListener{
 
     // Variables
     private SharedViewModel viewModel;
-    private Canvas mapCanvas;
     private ImageView image;
     int[] posXY;
-    private int[] tileIndexArray;
     private Bitmap bitmap;
-    private int[][] monsterArray;
     private float[] displaymatrix = new float[9];
     private int actW, actH;
 
@@ -61,11 +58,7 @@ public class MainCity extends Fragment implements View.OnTouchListener{
 
         // Build map
         viewModel.getMap("home");
-        // Get Tile Matrix
-        tileIndexArray = new int[NUMBER_OF_MAP_COLUMNS*NUMBER_OF_MAP_ROWS];
-        tileIndexArray = viewModel.getTileMatrix().clone();
-        // Get Monster Matrix
-        monsterArray = viewModel.getMonsterArray().clone();
+
         // Get Bitmap
         bitmap = viewModel.getBitmap();
 
@@ -96,42 +89,34 @@ public class MainCity extends Fragment implements View.OnTouchListener{
         int touchY = (int) event.getY();
         int imageX = touchX - posXY[0]; // posXY[0] is the X coordinate
         int imageY = touchY - posXY[1]; // posXY[1] is the y coordinate
-        float screenTileSize = actW/NUMBER_OF_MAP_ROWS;
-        int idxRow = (int) (imageY/screenTileSize);
-        int idxCol = (int) (imageX/screenTileSize);
+        float screenTileSizeW = actW/NUMBER_OF_MAP_ROWS;
+        float screenTileSizeH = actH/NUMBER_OF_MAP_ROWS;
+        int idxRow = (int) (imageY/screenTileSizeH);
+        int idxCol = (int) (imageX/screenTileSizeW);
         float tile = idxRow*NUMBER_OF_MAP_COLUMNS+idxCol;
 
+        // Print Coords
+        Log.w("texto", "Coords");
+        Log.w("texto", String.valueOf(idxRow));
+        Log.w("texto", String.valueOf(idxCol));
+        Log.w("texto", String.valueOf(tile));
 
-        if( imageX > 0 && imageX < 256 ){        // First Column
-            if( imageY > 0 && imageY < 256){               // Co-Op Boss Battle
-                Log.w("texto", "Co-Op");
 
-            } else if( imageY > 512 && imageY < 768 ){      // Go Left
-                Log.w("texto", "Left Map");
+        if( tile == 0){               // Co-Op Boss Battle
+            Log.w("texto", "Co-Op");
 
-            }
-        }else if( imageX > 256 && imageX < 512 ){   // Second Column
-            if( imageY > 0 && imageY < 256){               // Shop
-                Log.w("texto", "Shop");
+        } else if( tile == 10 ){      // Go Left
+            Log.w("texto", "Left Map");
 
-            }
+        }else if( tile == 22 ){      // Go Left
+            Log.w("texto", "Hospital");
+
         }
-        else if( imageX > 512 && imageX < 768 ){   // Third Column
-            if( imageY > 0 && imageY < 256){               // Arena (Versus)
-                Log.w("texto", "Arena");
+        else if( tile == 14 ){      // Go Left
+            Log.w("texto", "Right Map");
 
-            } else if( imageY > 512 && imageY < 1280 ){      // Hospital
-                Log.w("texto", "Hospital");
-
-            }
-        }else if( imageX > 1024 && imageX < 1280 ) {   // Fifth Column
-            if (imageY > 0 && imageY < 256) {               // Trade
-                Log.w("texto", "Trade");
-
-            } else if (imageY > 512 && imageY < 768) {      // Go Right
-                Log.w("texto", "Go Right");
-            }
         }
+
         return false;
     }
 }
