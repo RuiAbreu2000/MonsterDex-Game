@@ -10,6 +10,7 @@ import android.graphics.Matrix;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -25,6 +27,7 @@ import com.example.game.Arena;
 import com.example.game.Battle;
 import com.example.game.Loja;
 import com.example.game.MainActivity;
+import com.example.game.MainMenu;
 import com.example.game.R;
 import com.example.game.SharedViewModel;
 import com.example.game.maps.Map1;
@@ -65,6 +68,24 @@ public class MainCity extends Fragment implements View.OnTouchListener{
         image.getLocationOnScreen(posXY);
         image.setOnTouchListener(this);
 
+
+        Toolbar toolbar = v.findViewById(R.id.toolbar2);
+        toolbar.inflateMenu(R.menu.menu_test);
+        Menu menu = toolbar.getMenu();
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+
+                case R.id.back:
+                    // Navigate to settings screen
+
+                    MainMenu menuback = new MainMenu();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, menuback).commit();
+                    return true;
+
+                default:
+                    return false;
+            }
+        });
 
         // Inflate the layout for this fragment
         return v;
