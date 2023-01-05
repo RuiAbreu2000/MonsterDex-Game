@@ -2,6 +2,7 @@ package com.example.game;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,6 +34,7 @@ public class my_monstersDEX extends Fragment {
         super.onCreate(savedInstanceState);
 
         viewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+
     }
 
 
@@ -48,6 +51,27 @@ public class my_monstersDEX extends Fragment {
         recycler_view_adapter adapter = new recycler_view_adapter(((MainActivity)getActivity()), monster);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(((MainActivity)getActivity())));
+
+
+
+
+        Toolbar toolbar = v.findViewById(R.id.toolbar_home);
+        toolbar.inflateMenu(R.menu.menu_test);
+        Menu menu = toolbar.getMenu();
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+
+                case R.id.back:
+                    // Navigate to settings screen
+
+                    MainMenu menuback = new MainMenu();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, menuback).commit();
+                    return true;
+
+                default:
+                    return false;
+            }
+        });
 
 
         return v;
