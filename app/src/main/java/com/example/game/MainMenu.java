@@ -26,6 +26,7 @@ public class MainMenu extends Fragment {
 
         Button startGameButton = v.findViewById(R.id.button_start_game);
         Button button_continue = v.findViewById(R.id.button_continue);
+        Button button_options = v.findViewById(R.id.button_options);
         startGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,6 +40,14 @@ public class MainMenu extends Fragment {
             public void onClick(View v) {
                 MainCity mainCity = new MainCity();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mainCity).commit();
+            }
+        });
+
+        button_options.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                my_monsters my_monsters = new my_monsters();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, my_monsters).commit();
             }
         });
 
