@@ -25,11 +25,14 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.game.Arena;
 import com.example.game.Battle;
+import com.example.game.BattleCOOPboss;
+import com.example.game.BattlePVP;
 import com.example.game.Loja;
 import com.example.game.MainActivity;
 import com.example.game.MainMenu;
 import com.example.game.R;
 import com.example.game.SharedViewModel;
+import com.example.game.TradingMon;
 import com.example.game.maps.Map1;
 import com.example.game.maps.Map2;
 
@@ -105,15 +108,21 @@ public class MainCity extends Fragment implements View.OnTouchListener{
 
         if( tile == 0){               // Co-Op Boss Battle
             Log.w("texto", "Co-Op");
-
+            BattleCOOPboss battleCOOPboss = new BattleCOOPboss();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, battleCOOPboss).commit();
         }else if( tile == 1 ){      // Go Left
             Log.w("texto", "Shop");
 
+
         }else if( tile == 2 ){      // Go Left
             Log.w("texto", "Arena");
+            BattlePVP battlePVP = new BattlePVP();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, battlePVP).commit();
 
         }else if( tile == 3 ) {      // Go Left
             Log.w("texto", "Trade");
+            TradingMon tradingMon = new TradingMon();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, tradingMon).commit();
 
         }else if( tile == 8 ){      // Go Left
             Log.w("texto", "Left Map");
