@@ -240,4 +240,8 @@ public class SharedViewModel extends AndroidViewModel{
     public Monster getMonsterById(int id){
         return db.monsterDao().getMonster(id);
     }
+
+    public void setHeal(int health, int id){
+        db.monsterDao().setHealth(health, id);
+    }
 }

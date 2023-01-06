@@ -290,7 +290,7 @@ public class Battle extends Fragment {
 
                         // Aqui vai ser a "AI" que escolhe o ataque que vai usar
                         player1.health -= player2.attack - (int)(player2.attack*(player1.defense/m.maxhealth));
-                        viewModel.getDatabase().monsterDao().setHealth(player1.health, m.id);
+                        viewModel.setHeal(player1.health, m.id);
 
                         player1Turn = true;
                         player2Turn = false;

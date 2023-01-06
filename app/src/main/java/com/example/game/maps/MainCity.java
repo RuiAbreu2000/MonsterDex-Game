@@ -25,11 +25,14 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.game.city.BattleCOOPboss;
 import com.example.game.city.BattlePVP;
+import com.example.game.databases.Monster;
 import com.example.game.screens.MainMenu;
 import com.example.game.R;
 import com.example.game.SharedViewModel;
 import com.example.game.TradingMon;
 import com.example.game.threads.Task_Manager;
+
+import java.util.List;
 
 public class MainCity extends Fragment implements View.OnTouchListener{
 
@@ -129,7 +132,12 @@ public class MainCity extends Fragment implements View.OnTouchListener{
                 @Override
                 public void onClick(DialogInterface arg0, int arg1) {
                     // Heal
+                    List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
 
+                    for (int i = 0;i< monsters.size();i++){
+                        Monster m = monsters.get(i);
+                        viewModel.setHeal(m.maxhealth+8*m.level, m.id);
+                    }
                 }
             });
             alertDialogBuilder.setNegativeButton("Leave", new DialogInterface.OnClickListener() {
