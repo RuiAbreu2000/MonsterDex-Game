@@ -50,7 +50,7 @@ public class my_monsters extends Fragment {
 
         setMonsters();
 
-        recycler_view_adapter adapter = new recycler_view_adapter(((MainActivity)getActivity()), monster);
+        recycler_view_adapter3 adapter = new recycler_view_adapter3(((MainActivity)getActivity()), monster);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(((MainActivity)getActivity())));
 
@@ -84,7 +84,7 @@ public class my_monsters extends Fragment {
         for (int i=0;i<monsters.size();i++){
             Monster m = monsters.get(i);
             Bitmap bitmap = BitmapFactory.decodeByteArray(m.bArray, 0, m.bArray.length);
-            monster.add(new monster_class(bitmap, m.name));
+            monster.add(new monster_class(bitmap, m.name, String.valueOf(m.level), m.type));
         }
     }
 }
