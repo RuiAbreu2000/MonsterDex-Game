@@ -235,16 +235,14 @@ public class MapLayouts {
     public void buildMonsterArray(int currentZoneLevel) {
         // 0 if no Monster; 1< if Monster and number is their level
         Random rand = new Random();
-        Random rand2 = new Random();
         int monsterProbability, randomMonsterLevel;
-        int maxMonstersInZone = 4;
+        int maxMonstersInZone = 3;
         int numberOfMonsters = 0;
         for (int i = 0; i < NUMBER_OF_MAP_ROWS; i++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
                 monsterProbability = rand.nextInt(100);                                 // Generate number between 0 and 100
                 if(monsterProbability <= 20 && numberOfMonsters <= maxMonstersInZone){                 // 20% probability of adding monster to Tile
-                    randomMonsterLevel = rand2.nextInt(((currentZoneLevel + 8) - currentZoneLevel) + 1) + currentZoneLevel;  // (max - min) + 1) + min
-                    monsterArray[i][iCol] = randomMonsterLevel;
+                    monsterArray[i][iCol] = 1;
                     numberOfMonsters = numberOfMonsters + 1;
                 }else{
                     monsterArray[i][iCol] = 0;

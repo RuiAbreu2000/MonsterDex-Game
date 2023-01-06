@@ -17,7 +17,10 @@ public class Monster {
     @ColumnInfo(name = "type")          // Monster type
     public String type;
 
-    @ColumnInfo(name = "health")        // Monster health
+    @ColumnInfo(name = "maxhealth")        // Monster health
+    public Integer maxhealth;
+
+    @ColumnInfo(name = "health")        // Monster current health
     public Integer health;
 
     @ColumnInfo(name = "attack")        // Monster attack

@@ -29,7 +29,7 @@ public class FireDungeon extends Fragment implements View.OnTouchListener{
     private ImageView image;
     int[] posXY;
     private Bitmap bitmap;
-    private int[] tileIndexArray;
+    private String[] typeArray;
     private int[][] monsterArray;
 
     @Override
@@ -47,11 +47,10 @@ public class FireDungeon extends Fragment implements View.OnTouchListener{
 
         // Build map
         viewModel.getMap("fireDungeon");
-        // Get Tile Matrix
-        tileIndexArray = new int[NUMBER_OF_MAP_COLUMNS*NUMBER_OF_MAP_ROWS];
-        tileIndexArray = viewModel.getTileMatrix().clone();
         // Get Monster Matrix
         monsterArray = viewModel.getMonsterArray().clone();
+        // Get Tile Type Array
+        typeArray = viewModel.getTileType_Fire().clone();
 
         // Get Bitmap
         bitmap = viewModel.getBitmap();
@@ -93,9 +92,8 @@ public class FireDungeon extends Fragment implements View.OnTouchListener{
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fireDungeon).commit();
 
         }else if(monsterArray[idxRow][idxCol] > 0){
-            // BATTLE SCREEN TO CAPTURE MONSTER
-            Log.w("texto", "BATTLE TIME");
             // Save Fragment and Go to Battle Screen
+            viewModel.setCurrentType(typeArray[(int)tile]);
             Battle battle = new Battle();
             viewModel.addFragment(this);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, battle).commit();

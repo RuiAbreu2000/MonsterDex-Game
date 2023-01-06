@@ -36,12 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private Fragment savedFragment;
     private Sprite[][] monsterSprite;
     private SpriteSheet MonsterSpriteSheet;
-    private String[] monsterNames = {
-            "Crab", "Angry Crab", "Monster Crab",
-            "Ocean Bear", "Ocean Bearsaur", "Oceanzilla",
-            "Ocean Mutant", "Giant Ocean Mutant", "Mega Mutant",
-            "Shark", "Shark Monster", "Shark Monstrosity",
-    };
+    private String[] monsterNames;
 
     @SuppressLint("WrongThread")
     @Override

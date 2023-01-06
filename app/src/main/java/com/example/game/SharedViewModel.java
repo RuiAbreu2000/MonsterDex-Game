@@ -14,9 +14,35 @@ import com.example.game.graphics.MapLayouts;
 import com.example.game.graphics.SpriteSheet;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Stack;
 
 public class SharedViewModel extends AndroidViewModel{
+    // TILESET INDEX TYPES
+    public String[] waterTileType = {
+            "ground", "water", "water", "water",
+            "water", "water", "ground", "ground",
+            "water", "water", "water", "water",
+            "water", "water", "water", "water",
+    };
+    public String[] fireTileType = {
+            "fire", "fire", "ground", "fire",
+            "fire", "fire", "fire", "fire",
+            "fire", "fire", "fire", "ground",
+            "fire", "fire", "fire", "fire",
+    };
+    public String[] groundTileType = {
+            "ground", "bug", "ground", "ground",
+            "ground", "ground", "water", "ground",
+            "ground", "ground", "ground", "ground",
+            "ground", "ground", "ground", "ground",
+    };
+    public String[] airTileType = {
+            "air", "air", "air", "air",
+            "air", "air", "water", "air",
+            "air", "air", "fire", "air",
+            "air", "air", "air", "air",
+    };
 
     // MAP CONSTANTS
     public static final int NUMBER_OF_MAP_ROWS = 5;
@@ -53,6 +79,7 @@ public class SharedViewModel extends AndroidViewModel{
     // Current Zone Vars
     public int currentZoneLevel = 1;                // Level of Current Zone
     public String currentZone = null;
+    public String monsterType;
 
     public SharedViewModel(@NonNull Application application) {
         super(application);
@@ -82,18 +109,19 @@ public class SharedViewModel extends AndroidViewModel{
         return db;
     }
 
+    // Map Generation Functions
     public Bitmap getBitmap() {     // Returns Map Bitmap
         return maplayouts.getBitmap();
     }
-
-
     public int[] getTileMatrix() {  // Returns Array with Tile Numbers
         return maplayouts.getTileIndexMap().clone();
     }
-
     public int[][] getMonsterArray(){ return maplayouts.getMonsterArray().clone();}
+    public String[] getTileType_Water() { return waterTileType;}
+    public String[] getTileType_Fire() { return fireTileType;}
+    public String[] getTileType_Ground() { return groundTileType;}
+    public String[] getTileType_Air() { return airTileType;}
 
-    // Get Map Functions
     public void getMap(String map) { // Builds map on MapLayouts
         switch(map) {
             case "home":
@@ -120,10 +148,10 @@ public class SharedViewModel extends AndroidViewModel{
                 currentZone = "waterDungeon";
                 maplayouts.airDungeon(currentZoneLevel, skyTiles);
                 return;
-
         }
     }
 
+    // Return SpriteSheets
     public SpriteSheet getAirMonsterSpriteSheet() {
         return this.airMonsterSpritesheet;
     }
@@ -153,11 +181,14 @@ public class SharedViewModel extends AndroidViewModel{
         db.monsterDao().addMonster(newMonster);
     }
 
-    public void incrementLevel() {
-        this.currentZoneLevel += 1;
-    }
+    // Functions for Zone Level
+    public void incrementLevel() { this.currentZoneLevel += 1;}
     public void setLevelTo_1(){this.currentZoneLevel = 1;}
+    public int getZoneLevel(){ Random rand = new Random(); return this.currentZoneLevel + rand.nextInt(5);}
+    public String getCurrentType() {return monsterType;}
+    public void setCurrentType(String string) {this.monsterType = string;}
 
+    // Save Zone Before going into Battle
     public void addFragment(Fragment fragment){
         fragmentStack.push(fragment);
         fragmentStack.lastElement().onPause();
@@ -166,6 +197,7 @@ public class SharedViewModel extends AndroidViewModel{
         return fragmentStack.lastElement();
     }
 
+    // Monster DB Functions
     public MonsterDex getRandomMonsterByType(String type){
         List<MonsterDex> monsterdex = db.monsterDexDao().getAllMonstersByType(type);
         int rand = (int)(Math.random()*(monsterdex.size()-0+1)+0);
@@ -174,11 +206,12 @@ public class SharedViewModel extends AndroidViewModel{
         return mosnter;
     }
     public void setMyMonster(int i){
-        List<MonsterDex> monsters = db.monsterDexDao().getAllMonsters();
+        List<MonsterDex> monsters = db.monsterDexDao().getAllMonsters();    // Mudar para fazer query com o id
         MonsterDex m = monsters.get(i);
         Monster m2 = new Monster();
         m2.name = m.name;
         m2.type = m.type;
+        m2.maxhealth = m.health;
         m2.health = m.health;
         m2.attack = m.attack;
         m2.defense = m.defense;

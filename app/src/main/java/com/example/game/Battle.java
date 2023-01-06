@@ -143,11 +143,11 @@ public class Battle extends Fragment {
         for (int i = 0;i< monsters.size();i++){
             level_inimigo = level_inimigo + monsters.get(i).level;
         }
-        level_inimigo = (int) (level_inimigo / monsters.size());
+        level_inimigo = viewModel.getZoneLevel();
         Monster m = monsters.get(0);
 
         // LOAD ENEMY
-        MonsterDex enemy = viewModel.getRandomMonsterByType("water");
+        MonsterDex enemy = viewModel.getRandomMonsterByType(viewModel.getCurrentType());
 
 
         // initialize the characters and their stats
@@ -328,6 +328,7 @@ public class Battle extends Fragment {
 
     }
     public void decisionPopup(int id){
+
 
 
         if (id==-1){
