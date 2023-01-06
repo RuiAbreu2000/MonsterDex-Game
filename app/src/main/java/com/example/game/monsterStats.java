@@ -3,6 +3,7 @@ package com.example.game;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -12,12 +13,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.lifecycle.viewmodel.CreationExtras;
 
 import com.example.game.databases.Monster;
+import com.example.game.screens.MainMenu;
 
 public class monsterStats extends Fragment {
     private SharedViewModel viewModel;
@@ -59,12 +62,41 @@ public class monsterStats extends Fragment {
         image.setImageBitmap(BitmapFactory.decodeByteArray(monster.bArray, 0, monster.bArray.length));
         name.setText(monster.name);
         level.setText(String.valueOf(monster.level));
-        health.setText(String.valueOf(monster.health));
+        health.setText(String.valueOf(monster.health)+"/"+String.valueOf(monster.maxhealth));
         attack.setText(String.valueOf(monster.attack));
         defense.setText(String.valueOf(monster.defense));
-        xp.setMax(500);
+        xp.setMax(250*monster.level);
         xp.setProgress(monster.xp);
-        
+
+        Toolbar toolbar = v.findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.menu_test);
+        Menu menu = toolbar.getMenu();
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+
+                case R.id.back:
+                    // Navigate to settings screen
+
+                    my_monsters my_monsters = new my_monsters();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, my_monsters).commit();
+                    return true;
+
+                //case R.id.save:
+                    //monster.name = String.valueOf(name.getText());
+
+                    //funçao para atualizar o nome na BD
+
+                    //my_monsters mon = new my_monsters();
+                    //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mon).commit();
+                    //return true;
+
+
+
+                default:
+                    return false;
+            }
+        });
+
 
         return v;
     }
