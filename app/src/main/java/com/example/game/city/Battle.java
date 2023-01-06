@@ -86,7 +86,7 @@ public class Battle extends Fragment {
     private TextView player1Label;
     private TextView player2Label;
     private Button attackButton;
-    private Button attackButton2;
+    private Button runButton;
 
 
     @Override
@@ -181,6 +181,7 @@ public class Battle extends Fragment {
         player1Label = v.findViewById(R.id.textView_aliado);
         player2Label = v.findViewById(R.id.textView_inimigo);
         attackButton = v.findViewById(R.id.button_ataque);
+        runButton = v.findViewById(R.id.button_fugir);
         //attackButton2 = v.findViewById(R.id.attack_button2);
 
         // display the initial values for the characters' stats
@@ -253,6 +254,19 @@ public class Battle extends Fragment {
 
                         }
                     });
+
+                    runButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //getActivity().getSupportFragmentManager().beginTransaction().detach(this).attach(this).commit();
+                            Fragment goBack = viewModel.getLastFragment();
+                            goBack.onResume();
+                            //TestMap fragment = new TestMap();
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, goBack).commit();
+                        }
+                    });
+
+
 
                     // Este bloco simula batalha entre 2 players em que cada um tem o seu botao....
                     // Wait for player 2 to attack
