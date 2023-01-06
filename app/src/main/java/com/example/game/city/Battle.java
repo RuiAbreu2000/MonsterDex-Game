@@ -22,12 +22,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.game.Backpack;
 import com.example.game.MQTTHelper;
 import com.example.game.MainActivity;
 import com.example.game.R;
 import com.example.game.SharedViewModel;
 import com.example.game.databases.Monster;
 import com.example.game.databases.MonsterDex;
+import com.example.game.my_monsters;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -37,7 +39,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.List;
 
-public class Battle extends Fragment {
+public class Battle extends Fragment{
     private SharedViewModel viewModel;
     private int enemy_max_health;
     private Monster m;
@@ -53,6 +55,14 @@ public class Battle extends Fragment {
 
 
         public Character(int health, int attack, int defense, String type, byte[] image) {
+            this.health = health;
+            this.attack = attack;
+            this.defense = defense;
+            this.type = type;
+            this.bArray = image;
+        }
+
+        public void setValues(int health, int attack, int defense, String type, byte[] image){
             this.health = health;
             this.attack = attack;
             this.defense = defense;
@@ -87,6 +97,8 @@ public class Battle extends Fragment {
     private TextView player2Label;
     private Button attackButton;
     private Button runButton;
+    private Button attackButton2;
+    private Button backpackButton;
 
 
     @Override
@@ -146,11 +158,8 @@ public class Battle extends Fragment {
 
         // LOAD PLAYER AND LOAD MONSTER HE IS FIGHTING FROM DATABASE
         List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
-        int level_inimigo = 0;
-        for (int i = 0;i< monsters.size();i++){
-            level_inimigo = level_inimigo + monsters.get(i).level;
-        }
-        level_inimigo = viewModel.getZoneLevel();
+
+        int level_inimigo = viewModel.getZoneLevel();
         int number = 0;
         m = monsters.get(number);
         number=number+1;
@@ -165,8 +174,7 @@ public class Battle extends Fragment {
 
         // LOAD ENEMY
         MonsterDex enemy = viewModel.getRandomMonsterByType(viewModel.getCurrentType());
-
-
+        
         // initialize the characters and their stats
 
         player1 = new Character(m.health+8*m.level, m.attack+8*m.level, m.defense+8*m.level, m.type, m.bArray); //player mon
@@ -183,6 +191,7 @@ public class Battle extends Fragment {
         attackButton = v.findViewById(R.id.button_ataque);
         runButton = v.findViewById(R.id.button_fugir);
         //attackButton2 = v.findViewById(R.id.attack_button2);
+        backpackButton = v.findViewById(R.id.button_mochila);
 
         // display the initial values for the characters' stats
         player1HealthBar.setMax(m.maxhealth+8*m.level);
@@ -196,7 +205,23 @@ public class Battle extends Fragment {
         // Create the handler for updating the UI
         mHandler = new Handler();
 
-        //attackButton2.setVisibility(View.GONE); // Im hiding the player 2 button because im using player vs AI monster
+
+        // Backpack Listener
+        backpackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Opens list
+                // On click change
+                // save state
+                viewModel.addFragment(getParentFragment());
+                Backpack backpack = new Backpack();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, backpack).commit();
+                // get new id
+
+                // change player
+
+            }
+        });
 
         // Create the game thread
         mGameThread = new Thread(new Runnable() {

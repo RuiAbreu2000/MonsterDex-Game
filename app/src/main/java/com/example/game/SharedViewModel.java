@@ -76,7 +76,7 @@ public class SharedViewModel extends AndroidViewModel{
     public SpriteSheet spritesheet;
 
 
-    // Current Zone Vars
+    // Game State Vars
     public int currentZoneLevel = 1;                // Level of Current Zone
     public String currentZone = null;
     public String monsterType;

@@ -21,7 +21,7 @@ public class MapInformation {
     public int[] zoneSelection_2Map = {
             15, 15, 15, 15,
             1, 1, 1, 1,
-            1, 16, 16, 2,
+            3, 16, 16, 2,
             1, 17, 1, 1,
             1, 25, 1, 1,
     };
