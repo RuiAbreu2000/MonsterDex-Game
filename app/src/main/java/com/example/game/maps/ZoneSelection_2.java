@@ -20,11 +20,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.game.screens.MainMenu;
 import com.example.game.R;
 import com.example.game.SharedViewModel;
+import com.example.game.screens.MainMenu;
 
-public class ZoneSelection_1 extends Fragment implements View.OnTouchListener{
+
+public class ZoneSelection_2 extends Fragment implements View.OnTouchListener{
 
     // Variables
     private SharedViewModel viewModel;
@@ -47,7 +48,7 @@ public class ZoneSelection_1 extends Fragment implements View.OnTouchListener{
         image = v.findViewById(R.id.MapHolder);
 
         // Build map
-        viewModel.getMap("zoneSelection_1");
+        viewModel.getMap("zoneSelection_2");
 
         // Get Bitmap
         bitmap = viewModel.getBitmap();
@@ -93,39 +94,19 @@ public class ZoneSelection_1 extends Fragment implements View.OnTouchListener{
         int idxCol = (int) (imageX/TILESIZE);
         float tile = idxRow*NUMBER_OF_MAP_COLUMNS+idxCol;
 
-        if( tile == 1){               // Water Dungeon
-            Log.w("texto", "Water Dungeon");
-            WaterDungeon waterDungeon = new WaterDungeon();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, waterDungeon).commit();
 
-        }else if( tile == 2 ){      // Fire Dungeon
-            Log.w("texto", "Fire Dungeon");
-            FireDungeon fireDungeon = new FireDungeon();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fireDungeon).commit();
-
-        }else if( tile == 8 ){      // Go Left
-            Log.w("texto", "Left Arrow");
-            Log.w("texto", "Left Map");
-            ZoneSelection_2 zone_2 = new ZoneSelection_2();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, zone_2).commit();
-
-        }else if( tile == 11 ){      // Right Arrow
+        if( tile == 11 ){      // Right Arrow
             Log.w("texto", "Right Arrow");
-            MainCity maincity = new MainCity();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, maincity).commit();
+            ZoneSelection_1 zone_1 = new ZoneSelection_1();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, zone_1).commit();
 
-        }else if( tile == 17 ) {      // Air Dungeon
-            Log.w("texto", "Air Dungeon");
+        }else if( tile == 17 ) {      // Random Dungeon
+            Log.w("texto", "Random Dungeon");
             airDungeon airDungeon = new airDungeon();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, airDungeon).commit();
-
-        }else if( tile == 18 ){      // Ground Dungeon
-            Log.w("texto", "Ground Dungeon");
-            GroundDungeon groundDungeon = new GroundDungeon();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, groundDungeon).commit();
         }
-
-
         return false;
     }
+
+
 }

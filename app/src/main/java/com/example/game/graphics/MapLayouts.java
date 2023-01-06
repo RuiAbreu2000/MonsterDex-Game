@@ -66,7 +66,16 @@ public class MapLayouts {
     public void zoneSelection_1() {
         // Build Sprite Array
         buildSpriteArrayFixed(mapInformation.zoneSelection_1Map);
-        Log.w("A", "ZONNE 1");
+
+        // Build Bitmap
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_COLUMNS * TILESIZE, NUMBER_OF_MAP_ROWS * TILESIZE, conf); // this creates a MUTABLE bitmap
+        this.buildBitmapFixed();
+    }
+
+    public void zoneSelection_2() {
+        // Build Sprite Array
+        buildSpriteArrayFixed(mapInformation.zoneSelection_2Map);
 
         // Build Bitmap
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
@@ -156,7 +165,7 @@ public class MapLayouts {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
                 // get corresponding sprite
                 //Log.w("texto", String.valueOf(mapTiles[tile_counter]));
-                mapSprite[iRow][iCol] = fixedSpriteSheet.getTile(mapTiles[tile_counter]);
+                mapSprite[iRow][iCol] = fixedSpriteSheet.getTile_5x5(mapTiles[tile_counter]);
                 tile_counter += 1;
             }
         }

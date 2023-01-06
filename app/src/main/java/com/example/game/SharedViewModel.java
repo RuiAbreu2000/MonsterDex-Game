@@ -132,6 +132,10 @@ public class SharedViewModel extends AndroidViewModel{
                 currentZone = "zoneSelection_1";
                 maplayouts.zoneSelection_1();
                 return;
+            case "zoneSelection_2":
+                currentZone = "zoneSelection_2";
+                maplayouts.zoneSelection_2();
+                return;
             case "waterDungeon":
                 currentZone = "waterDungeon";
                 maplayouts.waterDungeon(currentZoneLevel, waterTiles);

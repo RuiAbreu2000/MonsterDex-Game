@@ -99,6 +99,63 @@ public class SpriteSheet {
         }
     }
 
+    public Sprite getTile_5x5(int tileNumber) {
+        switch(tileNumber) {
+            case 1:
+                return getSpriteByIndex(0,0);
+            case 2:
+                return getSpriteByIndex(0,1);
+            case 3:
+                return getSpriteByIndex(0,2);
+            case 4:
+                return getSpriteByIndex(0,3);
+            case 5:
+                return getSpriteByIndex(0,4);
+            case 6:
+                return getSpriteByIndex(1,0);
+            case 7:
+                return getSpriteByIndex(1,1);
+            case 8:
+                return getSpriteByIndex(1,2);
+            case 9:
+                return getSpriteByIndex(1,3);
+            case 10:
+                return getSpriteByIndex(1,4);
+            case 11:
+                return getSpriteByIndex(2,0);
+            case 12:
+                return getSpriteByIndex(2,1);
+            case 13:
+                return getSpriteByIndex(2,2);
+            case 14:
+                return getSpriteByIndex(2,3);
+            case 15:
+                return getSpriteByIndex(2,4);
+            case 16:
+                return getSpriteByIndex(3,0);
+            case 17:
+                return getSpriteByIndex(3,1);
+            case 18:
+                return getSpriteByIndex(3,2);
+            case 19:
+                return getSpriteByIndex(3,3);
+            case 20:
+                return getSpriteByIndex(3,4);
+            case 21:
+                return getSpriteByIndex(4,0);
+            case 22:
+                return getSpriteByIndex(4,1);
+            case 23:
+                return getSpriteByIndex(4,2);
+            case 24:
+                return getSpriteByIndex(4,3);
+            case 25:
+                return getSpriteByIndex(4,4);
+            default:
+                return null;
+        }
+    }
+
    // Returns a bitmap of the SprintSheet and a Rect corresponding to the desired Sprite
    private Sprite getSpriteByIndex(int idxRow, int idxCol) {
        return new Sprite(this, new Rect(
