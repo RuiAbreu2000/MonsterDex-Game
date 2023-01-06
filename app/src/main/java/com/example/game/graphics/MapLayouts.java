@@ -76,7 +76,6 @@ public class MapLayouts {
 
     // DUNGEON MAPS
     public void waterDungeon(int currentZoneLevel, SpriteSheet waterTiles) {
-        // Build Sprite Array
         buildSpriteArray(currentZoneLevel, mapInformation.waterMapLevels[currentZoneLevel], waterTiles, 20);
 
         // Build Monster array
@@ -135,14 +134,16 @@ public class MapLayouts {
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
                 // get corresponding sprite
+                //Log.w("texto", String.valueOf(mapTiles[tile_counter]));
                 mapSprite[iRow][iCol] = sheet.getTile(mapTiles[tile_counter]);
+                tile_counter+=1;
             }
         }
         // Set Arrow Symbols
-        mapSprite[0][1] = arrowUp;
+        mapSprite[4][1] = arrowDown;
 
         if(currentZoneLevel < maxLevel){
-            mapSprite[4][1] = arrowDown;
+            mapSprite[0][1] = arrowUp;
         }else{
             mapSprite[0][1] = bossSymbol;
         }
