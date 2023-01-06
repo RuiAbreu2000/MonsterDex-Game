@@ -307,18 +307,14 @@ public class Battle extends Fragment {
                         // Print the winner
                         if (player1.health > 0) {
                             decisionPopup(enemy.id-1);
-                            toast = Toast.makeText(getContext(), "Victory!", Toast.LENGTH_SHORT);
-                            toast.show();
+
                         } else {
-                            toast = Toast.makeText(getContext(), "Defeat!", Toast.LENGTH_SHORT);
-                            toast.show();
+                            decisionPopup(-1);
+
                         }
                         // Go Back To Map
                         helper.stop();
-                        Fragment goBack = viewModel.getLastFragment();
-                        goBack.onResume();
-                        //TestMap fragment = new TestMap();
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, goBack).commit();
+
                     }
                 });
 
@@ -333,30 +329,48 @@ public class Battle extends Fragment {
     }
     public void decisionPopup(int id){
 
-        // Dialog box
-        AlertDialog.Builder alertDialogBuilder  = new AlertDialog.Builder(getActivity());
 
-        alertDialogBuilder.setMessage("Caught or Consume Monster");
+        if (id==-1){
+            toast = Toast.makeText(getContext(), "Defeat!", Toast.LENGTH_SHORT);
+            toast.show();
+            Fragment goBack = viewModel.getLastFragment();
+            goBack.onResume();
+            //TestMap fragment = new TestMap();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, goBack).commit();
+        }
+        else{
+            toast = Toast.makeText(getContext(), "Victory!", Toast.LENGTH_SHORT);
+            toast.show();
+            // Dialog box
+            AlertDialog.Builder alertDialogBuilder  = new AlertDialog.Builder(getActivity());
 
-        alertDialogBuilder.setPositiveButton("Caught", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-                viewModel.setMyMonster(id);
+            alertDialogBuilder.setMessage("Caught or Consume Monster");
 
-            }
-        });
+            alertDialogBuilder.setPositiveButton("Caught", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    viewModel.setMyMonster(id);
 
-        alertDialogBuilder.setNegativeButton("Consume",new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+                }
+            });
 
-            }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-        // Refresh
-        // refresh also List<Nota> notas and set to SharedModel
-        getActivity().getSupportFragmentManager().beginTransaction().detach(this).attach(this).commit();
+            alertDialogBuilder.setNegativeButton("Consume",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            // Refresh
+            // refresh also List<Nota> notas and set to SharedModel
+            getActivity().getSupportFragmentManager().beginTransaction().detach(this).attach(this).commit();
+            Fragment goBack = viewModel.getLastFragment();
+            goBack.onResume();
+            //TestMap fragment = new TestMap();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, goBack).commit();
+        }
+
     }
 
 }

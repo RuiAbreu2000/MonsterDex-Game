@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 import java.util.Random;
 
@@ -52,81 +53,86 @@ public class MapLayouts {
     // MAPAS
     public void homeMap() {
         // Build Sprite Array
-        this.buildSpriteHomeMap();
+        buildSpriteArrayFixed(mapInformation.homeMap);
+        Log.w("A", "HOME");
 
         // Build Bitmap
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_ROWS * TILESIZE, NUMBER_OF_MAP_COLUMNS * TILESIZE, conf); // this creates a MUTABLE bitmap
+        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_COLUMNS * TILESIZE, NUMBER_OF_MAP_ROWS * TILESIZE, conf); // this creates a MUTABLE bitmap
         this.buildBitmapFixed();
 
     }
 
-    public void grassMap(int currentZoneLevel) {
-        // Build Tile Index Map
-        this.buildRandomLayout(groundIndexes, grassMapProbabilities);
-
+    public void zoneSelection_1() {
         // Build Sprite Array
-        this.buildSpriteFixedArray(currentZoneLevel);
-
-        // Build Monster Array
-        this.buildMonsterArray(currentZoneLevel);
+        buildSpriteArrayFixed(mapInformation.zoneSelection_1Map);
+        Log.w("A", "ZONNE 1");
 
         // Build Bitmap
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_ROWS * TILESIZE, NUMBER_OF_MAP_COLUMNS * TILESIZE, conf); // this creates a MUTABLE bitmap
+        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_COLUMNS * TILESIZE, NUMBER_OF_MAP_ROWS * TILESIZE, conf); // this creates a MUTABLE bitmap
+        this.buildBitmapFixed();
+    }
+
+    // DUNGEON MAPS
+    public void waterDungeon(int currentZoneLevel) {
+        // Build Sprite Array
+        buildSpriteArray(currentZoneLevel, mapInformation.waterMapLevels[currentZoneLevel]);
+
+        // Build Monster array
+        buildMonsterArray(currentZoneLevel);
+
+        // Build Bitmap
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_COLUMNS * TILESIZE, NUMBER_OF_MAP_ROWS * TILESIZE, conf); // this creates a MUTABLE bitmap
         this.buildBitmap();
+
+    }
+
+    public void fireDungeon(int currentZoneLevel) {
+        // ...
+    }
+
+    public void groundDungeon(int currentZoneLevel) {
+        // ...
+    }
+
+    public void airDungeon(int currentZoneLevel) {
+        // ...
     }
 
 
-    public void buildSpriteArray(int currentZoneLevel){
-        // Build Map with Sprites
-        for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
-            for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
-                // get corresponding sprite
-                mapSprite[iRow][iCol] = spritesheet.getTile(mapSpriteSheetIndex[iRow+iCol]);
-            }
-        }
-        // Set Arrow Symbols
-        mapSprite[0][2] = arrowUp;
-
-        if(currentZoneLevel < 15){
-            mapSprite[4][2] = arrowDown;
-        }else{
-            mapSprite[0][2] = bossSymbol;
-        }
-    }
-
-    public void buildSpriteFixedArray(int currentZoneLevel){
-        // Build Map with Sprites
-        for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
-            for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
-                // get corresponding sprite
-                mapSprite[iRow][iCol] = spritesheet.getTile(mapInformation.waterMapLevels[currentZoneLevel][iRow+iCol]);
-            }
-        }
-        // Set Arrow Symbols
-        mapSprite[0][2] = arrowDown;
-
-        if(currentZoneLevel < 15){
-            mapSprite[4][2] = arrowUp;
-        }else{
-            mapSprite[4][2] = bossSymbol;
-        }
-    }
-
-    public void buildSpriteHomeMap(){
+    public void buildSpriteArray(int currentZoneLevel, int[] mapTiles){
         // Build Map with Sprites
         int tile_counter = 0;
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
                 // get corresponding sprite
-                mapSprite[iRow][iCol] = fixedSpriteSheet.getTile(mapInformation.homeMap[tile_counter]);
+                mapSprite[iRow][iCol] = spritesheet.getTile(mapTiles[tile_counter]);
+            }
+        }
+        // Set Arrow Symbols
+        mapSprite[0][1] = arrowUp;
+
+        if(currentZoneLevel < 15){
+            mapSprite[4][1] = arrowDown;
+        }else{
+            mapSprite[0][1] = bossSymbol;
+        }
+    }
+
+    public void buildSpriteArrayFixed(int[] mapTiles){
+        // Build Map with Sprites
+        int tile_counter = 0;
+        for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
+            for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
+                // get corresponding sprite
+                //Log.w("texto", String.valueOf(mapTiles[tile_counter]));
+                mapSprite[iRow][iCol] = fixedSpriteSheet.getTile(mapTiles[tile_counter]);
                 tile_counter += 1;
             }
         }
     }
-
-
 
     public void buildBitmap(){
         int current_left = 0;

@@ -1,14 +1,18 @@
 package com.example.game;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,9 +50,27 @@ public class my_monsters extends Fragment {
 
         setMonsters();
 
-        recycler_view_adapter adapter = new recycler_view_adapter(((MainActivity)getActivity()), monster);
+        recycler_view_adapter3 adapter = new recycler_view_adapter3(((MainActivity)getActivity()), monster);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(((MainActivity)getActivity())));
+
+        Toolbar toolbar = v.findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.menu_test);
+        Menu menu = toolbar.getMenu();
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+
+                case R.id.back:
+                    // Navigate to settings screen
+
+                    MainMenu menuback = new MainMenu();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, menuback).commit();
+                    return true;
+
+                default:
+                    return false;
+            }
+        });
 
 
         return v;
@@ -56,12 +78,13 @@ public class my_monsters extends Fragment {
 
     private void setMonsters() {
         List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
+        Log.w("texto", String.valueOf(monsters));
 
 
         for (int i=0;i<monsters.size();i++){
             Monster m = monsters.get(i);
             Bitmap bitmap = BitmapFactory.decodeByteArray(m.bArray, 0, m.bArray.length);
-            monster.add(new monster_class(bitmap, m.name));
+            monster.add(new monster_class(bitmap, m.name, String.valueOf(m.level), m.type));
         }
     }
 }

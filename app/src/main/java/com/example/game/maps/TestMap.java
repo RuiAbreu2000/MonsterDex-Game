@@ -136,16 +136,12 @@ public class TestMap extends Fragment implements View.OnTouchListener {
         int idxCol = (int) (imageX/screenTileSize);
         float tile = idxRow*NUMBER_OF_MAP_COLUMNS+idxCol;
 
+
         Log.w("texto", "ROWS AND COLUMNS");
         Log.w("texto", String.valueOf(idxRow));
         Log.w("texto", String.valueOf(idxCol));
         Log.w("texto", String.valueOf(tile));
 
-
-        // Print Coords
-        Log.w("texto", "Coords");
-        Log.w("texto", String.valueOf(imageX));
-        Log.w("texto", String.valueOf(imageY));
 
         if(monsterArray[idxRow][idxCol] > 0){
             // BATTLE SCREEN TO CAPTURE MONSTER

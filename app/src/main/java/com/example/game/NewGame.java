@@ -13,6 +13,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,6 +30,7 @@ import com.example.game.databases.Monster;
 import com.example.game.databases.MonsterDex;
 import com.example.game.graphics.Sprite;
 import com.example.game.graphics.SpriteSheet;
+import com.example.game.maps.MainCity;
 import com.example.game.maps.TestMap;
 
 import java.io.ByteArrayOutputStream;
@@ -116,6 +119,12 @@ public class NewGame extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(((MainActivity)getActivity())));
 
+        List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
+
+        if (monsters.size()!=0){
+            continuarButton();
+        }
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,12 +153,31 @@ public class NewGame extends Fragment {
             }
         });
 
+        Toolbar toolbar = v.findViewById(R.id.toolbar3);
+        toolbar.inflateMenu(R.menu.menu_test);
+        Menu menu = toolbar.getMenu();
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+
+                case R.id.back:
+                    // Navigate to settings screen
+
+                    MainMenu menuback = new MainMenu();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, menuback).commit();
+                    return true;
+
+                default:
+                    return false;
+            }
+        });
+
+
         // Inflate the layout for this fragment
         return v;
     }
 
     private void continuarButton(){
-        TestMap fragment = new TestMap();
+        MainCity fragment = new MainCity();
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
 
         //my_monsters fragment = new my_monsters();

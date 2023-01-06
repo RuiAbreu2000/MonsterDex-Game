@@ -20,7 +20,7 @@ public class SharedViewModel extends AndroidViewModel{
 
     // MAP CONSTANTS
     public static final int NUMBER_OF_MAP_ROWS = 5;
-    public static final int NUMBER_OF_MAP_COLUMNS = 5;
+    public static final int NUMBER_OF_MAP_COLUMNS = 4;
     public static final int SPRITE_WIDTH_PIXELS = 256;
     public static final int SPRITE_HEIGHT_PIXELS = 256;
     public static final int MAP_X_SIZE = 1280;              //SPRITE_WIDTH_PIXELS * NUMBER_OF_MAP_COLUMNS
@@ -59,7 +59,7 @@ public class SharedViewModel extends AndroidViewModel{
         groundMonsterSpritesheet = new SpriteSheet(application, "groundMonsters");
         waterMonsterSpritesheet = new SpriteSheet(application, "waterMonsters");
         symbolsSpriteSheet = new SpriteSheet(application, "symbols");
-        fixedSpriteSheet = new SpriteSheet(application, "fixed");
+        fixedSpriteSheet = new SpriteSheet(application, "fixedTiles");
         maplayouts = new MapLayouts(spritesheet, symbolsSpriteSheet, fixedSpriteSheet);
         maplayouts.setSymbolsSpriteSheet();
     }
@@ -78,15 +78,34 @@ public class SharedViewModel extends AndroidViewModel{
     }
 
     public int[][] getMonsterArray(){ return maplayouts.getMonsterArray().clone();}
+
     // Get Map Functions
     public void getMap(String map) { // Builds map on MapLayouts
         switch(map) {
-            case "grass":
-                currentZone = "grass";                               // Updates current Zone
-                maplayouts.grassMap(currentZoneLevel);                               // Builds Map
             case "home":
-                currentZone = "home";                               // Updates current Zone
-                maplayouts.homeMap();                               // Builds Map
+                currentZone = "home";
+                maplayouts.homeMap();
+                return;
+            case "zoneSelection_1":
+                currentZone = "zoneSelection_1";
+                maplayouts.zoneSelection_1();
+                return;
+            case "waterDungeon":
+                currentZone = "waterDungeon";
+                maplayouts.waterDungeon(currentZoneLevel);
+                return;
+            case "fireDungeon":
+                currentZone = "waterDungeon";
+                maplayouts.fireDungeon(currentZoneLevel);
+                return;
+            case "groundDungeon":
+                currentZone = "waterDungeon";
+                maplayouts.groundDungeon(currentZoneLevel);
+                return;
+            case "airDungeon":
+                currentZone = "waterDungeon";
+                maplayouts.airDungeon(currentZoneLevel);
+                return;
 
         }
     }
