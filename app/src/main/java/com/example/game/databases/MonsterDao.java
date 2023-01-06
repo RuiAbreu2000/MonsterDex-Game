@@ -25,6 +25,9 @@ public interface MonsterDao {
     @Query("SELECT * FROM Monster WHERE type=:type")
     List<Monster> getAllMonstersByType(String type);
 
+    @Query("SELECT COUNT(*) FROM Monster")
+    int getCount();
+
     // Set Queries
     @Query("UPDATE Monster SET health=:health, attack=:attack, defense=:defense WHERE id =:id")
     void updateMonster(int id, Integer health, Integer attack, Integer defense);
@@ -40,6 +43,10 @@ public interface MonsterDao {
 
     @Query("UPDATE Monster SET level=:level WHERE id =:id")
     void setLevel(Integer level, int id);
+
+    @Query("UPDATE Monster SET health=maxhealth WHERE id =:id")
+    void healMonster(int id);
+
 
     @Delete
     void deleteMonster(Monster monster);
