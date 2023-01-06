@@ -31,10 +31,17 @@ public class SpriteSheet {
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ground_monsters, bitmapOptions);
         }else if(source.equals("waterMonsters")){
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.water_monsters, bitmapOptions);
-        }
-        else if(source.equals("symbols")){
+        }else if(source.equals("symbols")){
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.symbols, bitmapOptions);
+        }else if(source.equals("waterTiles")){
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fixed_tiles, bitmapOptions);
+        }else if(source.equals("fireTiles")){
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fixed_tiles, bitmapOptions);
         }else if(source.equals("fixedTiles")){
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fixed_tiles, bitmapOptions);
+        }else if(source.equals("groundTiles")){
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fixed_tiles, bitmapOptions);
+        }else if(source.equals("skyTiles")){
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fixed_tiles, bitmapOptions);
         }
     }

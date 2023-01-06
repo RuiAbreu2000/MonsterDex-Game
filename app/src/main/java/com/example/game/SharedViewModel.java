@@ -33,14 +33,21 @@ public class SharedViewModel extends AndroidViewModel{
     Stack<Fragment> fragmentStack = new Stack<Fragment>();
 
     // Sprite Sheets
-    public SpriteSheet spritesheet;
+        // Dungeon
+    public SpriteSheet waterTiles;
+    public SpriteSheet fireTiles;
+    public SpriteSheet groundTiles;
+    public SpriteSheet skyTiles;
+        // Monsters
     public SpriteSheet airMonsterSpritesheet;
     public SpriteSheet bugMonsterSpritesheet;
     public SpriteSheet fireMonsterSpritesheet;
     public SpriteSheet groundMonsterSpritesheet;
     public SpriteSheet waterMonsterSpritesheet;
+        // Other
     public SpriteSheet symbolsSpriteSheet;
     public SpriteSheet fixedSpriteSheet;
+    public SpriteSheet spritesheet;
 
 
     // Current Zone Vars
@@ -52,14 +59,21 @@ public class SharedViewModel extends AndroidViewModel{
         db = AppDatabase.getInstance(application);
 
         // Spritesheets
-        spritesheet = new SpriteSheet(application, "tiles");
+            // Dungeon
+        waterTiles  = new SpriteSheet(application, "waterTiles");
+        fireTiles= new SpriteSheet(application, "fireTiles");
+        groundTiles= new SpriteSheet(application, "groundTiles");
+        skyTiles= new SpriteSheet(application, "skyTiles");
+            // Monsters
         airMonsterSpritesheet = new SpriteSheet(application, "airMonsters");
         bugMonsterSpritesheet = new SpriteSheet(application, "bugMonsters");
         fireMonsterSpritesheet = new SpriteSheet(application, "fireMonsters");
         groundMonsterSpritesheet = new SpriteSheet(application, "groundMonsters");
         waterMonsterSpritesheet = new SpriteSheet(application, "waterMonsters");
+            // Other
         symbolsSpriteSheet = new SpriteSheet(application, "symbols");
         fixedSpriteSheet = new SpriteSheet(application, "fixedTiles");
+        spritesheet = new SpriteSheet(application, "tiles");
         maplayouts = new MapLayouts(spritesheet, symbolsSpriteSheet, fixedSpriteSheet);
         maplayouts.setSymbolsSpriteSheet();
     }
