@@ -1,5 +1,6 @@
 package com.example.game;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,9 +16,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.game.databases.Monster;
 import com.example.game.databases.MonsterDex;
+import com.example.game.maps.MainCity;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -63,7 +67,13 @@ public class BattleCOOPboss extends Fragment {
 
     private int player1HP = 1;
     private int player2HP = 1;
+    private int player1DEF = 1;
+    private int player2DEF = 1;
     private int BossHP = 1;
+    private String player2NAME;
+    private String player1NAME;
+
+
 
     // variables to track whose turn it is
 
@@ -85,6 +95,13 @@ public class BattleCOOPboss extends Fragment {
     private TextView player2Label;
     private TextView Boss2Label;
     private Button attackButton;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        viewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+    }
 
     @Nullable
     @Override
@@ -109,6 +126,11 @@ public class BattleCOOPboss extends Fragment {
         player2Label = v.findViewById(R.id.textView_inimigo);
         Boss2Label = v.findViewById(R.id.textView_Boss);
         attackButton = v.findViewById(R.id.button_ataque);
+        ImageView p1 = v.findViewById(R.id.imageView1);
+        ImageView p2 = v.findViewById(R.id.imageView2);
+
+        ImageView p3 = v.findViewById(R.id.imageView3);
+
         Button joinmatch = v.findViewById(R.id.button_join);
         TextView gameActionsTextView = v.findViewById(R.id.game_actions_text_view);
 
@@ -136,8 +158,10 @@ public class BattleCOOPboss extends Fragment {
                 if (imPlayer2) {
 
                     String hp = Integer.toString(player2HP);
+                    String def = Integer.toString(player2DEF);
+                    String name = player2NAME;
                     helper.publish("ConnectJunior", "Player2conn", 0, true);
-                    helper.publish("GetHPJunior", hp, 0, true);
+                    helper.publish("GetHPJunior", hp + " " + def + " " + name, 0, false);
                     joinmatch.setVisibility(v.INVISIBLE);
 
                 }
@@ -145,8 +169,10 @@ public class BattleCOOPboss extends Fragment {
                 if (imPlayer1) {
 
                     String hp = Integer.toString(player1HP);
+                    String def = Integer.toString(player1DEF);
+                    String name = player1NAME;
                     helper.publish("ConnectJunior", "Player1conn", 0, true);
-                    helper.publish("GetHPJunior", hp, 0, true);
+                    helper.publish("GetHPJunior", hp + " " + def + " " + name, 0, true);
                     joinmatch.setVisibility(v.INVISIBLE);
 
                 }
@@ -200,6 +226,8 @@ public class BattleCOOPboss extends Fragment {
 
                         player1Label.setText("Player 1 - " + player1.health);
                         player1HP = player1.health;
+                        player1DEF = player1.defense;
+                        player1NAME = m.name;
 
                         //String hp = Integer.toString(player1.health);
                         // Publish the message to the HP topic
@@ -229,6 +257,8 @@ public class BattleCOOPboss extends Fragment {
 
                             player2Label.setText("Player 2 - " + player2.health);
                             player2HP = player2.health;
+                            player2DEF = player2.defense;
+                            player2NAME = m.name;
 
                             // Publish the message to notify player 2 is in
                             // String hp = Integer.toString(player2.health);
@@ -245,7 +275,7 @@ public class BattleCOOPboss extends Fragment {
 
 
                         byte[] emptyByteArray = new byte[0];
-                        Boss = new Character(5000, 400, 200, "dark", emptyByteArray);//player mon
+                        Boss = new Character(50000, 3000, 2000, "dark", emptyByteArray);//player mon
 
                         BossHP = Boss.health;
                         BossHealthBar.setMax(Boss.health);
@@ -257,17 +287,17 @@ public class BattleCOOPboss extends Fragment {
 
 
                     } else if (new String(message.getPayload()).equals("BossIsReady")){
-                        Log.w("TAG", "Entrei no loop" + topic);
-                        Log.w("TAG", "player1hp= " + player1HP);
-                        Log.w("TAG", "player2hp= " + player2HP);
-                        Log.w("TAG", "BossHP= " + Boss.health);
-
 
                         if (imPlayer1) {
                             attackButton.setEnabled(true);
                         }
 
-                        mGameThread.start();
+                        if (imPlayer1 || imPlayer2) {
+                            mGameThread.start();
+                        } else {
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainCity()).commit();
+                        }
+
                     }
 
                 }
@@ -277,26 +307,52 @@ public class BattleCOOPboss extends Fragment {
                     if (message.isRetained()) {
                         Log.w("TAG", "message was retained" + topic);
                         // The message is a retained message
-                        if (!imPlayer1) { //IF ITS PLAYER 2
-                            int number = Integer.parseInt(new String(message.getPayload()));
-                            player1HealthBar.setMax(number);
-                            player1HealthBar.setProgress(number);
+                        if (!imPlayer1 && imPlayer2) { //IF ITS PLAYER 2
 
-                            player1Label.setText("Player 1 - " + number);
-                            player1HP = number;
+                            String messageString = new String(message.getPayload());
+
+                            String[] words = messageString.split(" ");
+
+                            int health = Integer.parseInt(words[0]);
+                            int defense = Integer.parseInt(words[1]);
+                            String name = words[2];
+                            player1HealthBar.setMax(health);
+                            player1HealthBar.setProgress(health);
+
+                            player1Label.setText("Player 1 - " + health);
+                            player1HP = health;
+                            player1DEF = defense;
+                            Monster monsterReceiving = viewModel.getDatabase().monsterDexDao().getMonsterByName(name);
+                            Monster mymonster = viewModel.getDatabase().monsterDexDao().getMonsterByName(player2NAME);
+
+                            p1.setImageBitmap(BitmapFactory.decodeByteArray(monsterReceiving.bArray, 0, monsterReceiving.bArray.length));
+                            p2.setImageBitmap(BitmapFactory.decodeByteArray(mymonster.bArray, 0, mymonster.bArray.length));
 
                         }
                     } else {
                         Log.w("TAG", "message was not retained" + topic);
                         // The message is a normal message
                         if (imPlayer1) { //IF IM PLAYER 1
-                            int number = Integer.parseInt(new String(message.getPayload()));
-                            player2HealthBar.setMax(number);
-                            player2HealthBar.setProgress(number);
 
-                            player2Label.setText("Player 2 - " + number);
+                            String messageString = new String(message.getPayload());
 
-                            player2HP = number;
+                            String[] words = messageString.split(" ");
+
+                            int health = Integer.parseInt(words[0]);
+                            int defense = Integer.parseInt(words[1]);
+                            String name = words[2];
+                            player2HealthBar.setMax(health);
+                            player2HealthBar.setProgress(health);
+
+                            player2Label.setText("Player 2 - " + health);
+
+                            player2HP = health;
+                            player2DEF = defense;
+                            Monster monsterReceiving = viewModel.getDatabase().monsterDexDao().getMonsterByName(name);
+                            Monster mymonster = viewModel.getDatabase().monsterDexDao().getMonsterByName(player1NAME);
+
+                            p2.setImageBitmap(BitmapFactory.decodeByteArray(monsterReceiving.bArray, 0, monsterReceiving.bArray.length));
+                            p1.setImageBitmap(BitmapFactory.decodeByteArray(mymonster.bArray, 0, mymonster.bArray.length));
 
                         }
                     }
@@ -372,7 +428,7 @@ public class BattleCOOPboss extends Fragment {
 
                         Log.w("TAG", "cahnce" + chance);
 
-                        if (chance > 50) {
+                        if (chance > 30) {
 
                             Random random2 = new Random(seed2);
                             int chance2 = random2.nextInt(100); // generates a random number between 0 and 1
@@ -403,7 +459,7 @@ public class BattleCOOPboss extends Fragment {
 
                             }
                         } else {
-                            BossHP += (int) Math.round(BossHP * 0.07);
+                            BossHP += (int) Math.round(BossHP * 0.2);
 
                             // Update the UI
                             mHandler.post(new Runnable() {
@@ -607,6 +663,9 @@ public class BattleCOOPboss extends Fragment {
                             helper.stop();
                             // GET OUT OF MAP
 
+                            //TestMap fragment = new TestMap();
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainCity()).commit();
+
                         } else if (BossHP > 0){
                             toast = Toast.makeText(getContext(), "You lose!", Toast.LENGTH_SHORT);
                             toast.show();
@@ -621,7 +680,12 @@ public class BattleCOOPboss extends Fragment {
                             helper.publish("GetHPJunior", "Gameover", 0, true);
                             helper.stop();
                             // GET OUT OF MAP
+
+                            //TestMap fragment = new TestMap();
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainCity()).commit();
+
                         }
+
                     }
                 });
 

@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                 MonsterDex newMonster = new MonsterDex();
                 newMonster.name = monsterNames[iRow*3+iCol];
                 newMonster.type = type;
-                newMonster.health = 100;
+                newMonster.health = 1000;
                 newMonster.attack = 100;
                 newMonster.defense = 100;
                 newMonster.isBoss = false;

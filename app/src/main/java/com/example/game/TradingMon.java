@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.game.databases.Monster;
 import com.example.game.databases.MonsterDex;
+import com.example.game.maps.MainCity;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -45,8 +46,9 @@ public class TradingMon extends Fragment {
     private boolean imPlayer2 = false;
     private boolean selected = false;
     private boolean player1Sent = false;
-    private boolean player2Sent = false;
-    private String myTrade;
+    private boolean OnGoingTrade = false;
+    private Monster myTrade;
+    private boolean iSent = false;
 
     private Button tradeButton;
     private Button receiveButton;
@@ -106,7 +108,6 @@ public class TradingMon extends Fragment {
                 trade.setText("Send: " + name);
                 selected = true;
 
-
             }
         });
 
@@ -120,13 +121,49 @@ public class TradingMon extends Fragment {
 
 
                     tradeButton.setEnabled(false);
-                    Monster monster = viewModel.getDatabase().monsterDexDao().getMonsterByName(selectedMonster.name);
+                    Monster monster = viewModel.getDatabase().monsterDao().getMonsterByName(selectedMonster.name);
+                    String name = monster.name;
+                    String type = monster.type;
+                    String health = Integer.toString(monster.health);
+                    String attack = Integer.toString(monster.attack);
+                    String defense = Integer.toString(monster.defense);
+                    String level = Integer.toString(monster.level);
+                    String xp = Integer.toString(monster.xp);
+                    String eve = Integer.toString(monster.eve);
+                    String evolution = monster.evolution;
+                    String message = name + " " + type + " " + health + " " + attack + " " + level + " " + defense + " " + xp + " " + eve + " " + evolution;
+                    helper.publish("GetStatsJunior", message, 0, false);
 
-                    helper.publish("GetStatsJunior", monster.name, 0, false);
 
-                    if (imPlayer1){
-                        player1Sent = true;
-                    }
+                    iSent = true;
+
+
+
+                }
+            }
+        });
+
+        // Wait for player 1 to attack
+        receiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (selected && iSent) {
+
+                    Monster monsterReceiving = viewModel.getDatabase().monsterDexDao().getMonsterByName(myTrade.name);
+                    myTrade.bArray = monsterReceiving.bArray;
+
+                    viewModel.getDatabase().monsterDao().addMonster(myTrade);
+                    Monster deleting = viewModel.getDatabase().monsterDao().getMonsterByName(selectedMonster.name);
+                    viewModel.getDatabase().monsterDao().deleteMonster(deleting);
+
+                    helper.publish("ConnectTrading", "TradingOver", 0, true);
+                    //getActivity().getSupportFragmentManager().beginTransaction().detach(this).attach(this).commit();
+                    Fragment goBack = viewModel.getLastFragment();
+                    goBack.onResume();
+                    //TestMap fragment = new TestMap();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, goBack).commit();
+
 
 
                 }
@@ -155,17 +192,16 @@ public class TradingMon extends Fragment {
                 Log.w("TAG", "message: " + new String(message.getPayload()));
                 Log.w("TAG", "topic: " + topic);
 
-                if (message.isRetained()) {
-                    Log.w("TAG", "message was retained" + topic);
-                }
 
                 if (topic.equals("ConnectTrading")) {
 
                     if (new String(message.getPayload()).equals("TradingOver")){
 
-                        imPlayer1 = true;
-                        List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
-                        helper.publish("ConnectTrading", "Player1conn", 0, true);
+                        if (!OnGoingTrade) {
+                            imPlayer1 = true;
+                            //List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
+                            helper.publish("ConnectTrading", "Player1conn", 0, true);
+                        }
 
 
                     } else if (new String(message.getPayload()).equals("Player1conn")){
@@ -173,7 +209,7 @@ public class TradingMon extends Fragment {
                         if (!imPlayer1) { //IF IM PLAYER2
 
                             imPlayer2 = true;
-                            List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
+                            //List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
                             helper.publish("ConnectTrading", "Player2conn", 0, false);
 
 
@@ -181,32 +217,79 @@ public class TradingMon extends Fragment {
 
                     } else if (new String(message.getPayload()).equals("Player2conn")){
                         Log.w("TAG", "Entrei no loop" + topic);
+                        OnGoingTrade = true;
+
+                        helper.publish("ConnectTrading", "TradingStarted", 0, true);
 
                         if (imPlayer1){
                             tradeButton.setEnabled(true);
                         }
 
+                    } else if (new String(message.getPayload()).equals("TradingStarted")) {
+
+
+                        if (imPlayer1 || imPlayer2) {
+                            if (imPlayer1){
+                                tradeButton.setEnabled(true);
+                            }
+
+                        } else {
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainCity()).commit();
+                        }
                     }
 
                 }
 
                 if (topic.equals("GetStatsJunior")) {
 
-
+                    Log.w("TAG", "recebi stats");
                     if (!imPlayer1 && !player1Sent) { //IF ITS PLAYER 2
 
-                        myTrade = new String(message.getPayload());
-                        receive.setText("Receive: " + myTrade);
+
+                        String messageString = new String(message.getPayload());
+
+
+                        String[] words = messageString.split(" ");
+
+                        myTrade = new Monster();
+                        myTrade.name = words[0];
+                        myTrade.type = words[1];
+                        myTrade.health = Integer.parseInt(words[2]);
+                        myTrade.attack = Integer.parseInt(words[3]);
+                        myTrade.defense = Integer.parseInt(words[4]);
+                        myTrade.level = Integer.parseInt(words[5]);
+                        myTrade.xp = Integer.parseInt(words[6]);
+                        myTrade.eve = Integer.parseInt(words[7]);
+                        myTrade.evolution = words[8];
+
+
+                        receive.setText("Receive: " + words[0] + " " + words[1]);
                         receiveButton.setEnabled(true);
 
                         player1Sent = true;
                         tradeButton.setEnabled(true);
 
 
-                    } else if (imPlayer1 && player1Sent) { //IF IM PLAYER 1
+                    } else if (imPlayer1 && iSent) { //IF IM PLAYER 1
 
-                        myTrade = new String(message.getPayload());
-                        receive.setText("Receive: " + myTrade);
+                        String messageString = new String(message.getPayload());
+
+                        String[] words = messageString.split(" ");
+
+                        myTrade = new Monster();
+                        myTrade.name = words[0];
+                        myTrade.type = words[1];
+                        myTrade.health = Integer.parseInt(words[2]);
+                        myTrade.attack = Integer.parseInt(words[3]);
+                        myTrade.defense = Integer.parseInt(words[4]);
+                        myTrade.level = Integer.parseInt(words[5]);
+                        myTrade.xp = Integer.parseInt(words[6]);
+                        myTrade.eve = Integer.parseInt(words[7]);
+                        myTrade.evolution = words[8];
+
+                        // Now you can access the separate words in the words array
+
+                        receive.setText("Receive: " +words[0] + " " + words[1]);
                         receiveButton.setEnabled(true);
 
                         //helper.publish("ConnectTrading", "TradingOver", 0, true);
@@ -229,10 +312,10 @@ public class TradingMon extends Fragment {
     }
 
     private void setMonsters() {
-        List<MonsterDex> monsters = viewModel.getDatabase().monsterDexDao().getAllMonsters();
+        List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
 
         for (int i=0;i<monsters.size();i++){
-            MonsterDex m = monsters.get(i);
+            Monster m = monsters.get(i);
             Bitmap bitmap = BitmapFactory.decodeByteArray(m.bArray, 0, m.bArray.length);
             monster.add(new monster_class(bitmap, m.name));
         }
