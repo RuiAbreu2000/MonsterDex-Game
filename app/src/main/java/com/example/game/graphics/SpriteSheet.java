@@ -20,7 +20,7 @@ public class SpriteSheet {
         bitmapOptions.inScaled = false;
 
         if (source.equals("tiles")) {
-            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.water_map_tiles, bitmapOptions);
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.water_tiles, bitmapOptions);
         }else if(source.equals("airMonsters")){
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.air_monsters, bitmapOptions);
         }else if(source.equals("bugMonsters")){
