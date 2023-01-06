@@ -158,7 +158,7 @@ public class Battle extends Fragment {
             m = monsters.get(number);
             if (m == null){
                 m = monsters.get(0);
-                m.health=m.maxhealth;
+                //m.health=m.maxhealth;
             }
             number=number+1;
         }
