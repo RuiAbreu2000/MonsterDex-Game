@@ -81,6 +81,8 @@ public class SharedViewModel extends AndroidViewModel{
     public String currentZone = null;
     public String monsterType;
 
+    public int currentMonster = -1;
+
     public SharedViewModel(@NonNull Application application) {
         super(application);
         db = AppDatabase.getInstance(application);
@@ -225,5 +227,17 @@ public class SharedViewModel extends AndroidViewModel{
         m2.eve = m.evolution;
         m2.evolution = m.evolvesFrom;
         createNewMonsterTeam(m2);
+    }
+
+    public void setCurrentMonster(int id){
+        currentMonster = id;
+    }
+
+    public int getCurrentMonster(){
+        return currentMonster;
+    }
+
+    public Monster getMonsterById(int id){
+        return db.monsterDao().getMonster(id);
     }
 }

@@ -15,12 +15,14 @@ import java.util.ArrayList;
 public class recycler_view_adapter3 extends RecyclerView.Adapter<recycler_view_adapter3.MyViewHolder> {
     Context context;
     ArrayList<monster_class> monsters;
+    private final RecyclerViewInterface3 recyclerViewInterface3;
 
 
 
-    public recycler_view_adapter3(Context context, ArrayList<monster_class> monsters){
+    public recycler_view_adapter3(Context context, ArrayList<monster_class> monsters, RecyclerViewInterface3 recyclerViewInterface3){
         this.context = context;
         this.monsters = monsters;
+        this.recyclerViewInterface3 = recyclerViewInterface3;
 
     }
 
@@ -29,7 +31,7 @@ public class recycler_view_adapter3 extends RecyclerView.Adapter<recycler_view_a
     public recycler_view_adapter3.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.recycle_view_row3, parent, false);
-        return new recycler_view_adapter3.MyViewHolder(view);
+        return new recycler_view_adapter3.MyViewHolder(view, recyclerViewInterface3);
     }
 
     @Override
@@ -54,12 +56,25 @@ public class recycler_view_adapter3 extends RecyclerView.Adapter<recycler_view_a
         TextView lvlView;
         TextView typeView;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView, RecyclerViewInterface3 recyclerViewInterface3) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
             nameView = itemView.findViewById(R.id.textView2);
             lvlView = itemView.findViewById(R.id.textViewLvl);
             typeView = itemView.findViewById(R.id.textViewType);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (recyclerViewInterface3 != null){
+                        int pos = getAdapterPosition();
+
+                        if (pos != RecyclerView.NO_POSITION){
+                            recyclerViewInterface3.onItemClick(pos);
+                        }
+                    }
+                }
+            });
         }
     }
 }

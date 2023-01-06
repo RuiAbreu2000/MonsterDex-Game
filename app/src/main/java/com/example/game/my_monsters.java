@@ -25,8 +25,8 @@ import com.example.game.screens.MainMenu;
 import java.util.ArrayList;
 import java.util.List;
 
-public class my_monsters extends Fragment {
-    ArrayList<monster_class> monster = new ArrayList<>();
+public class my_monsters extends Fragment implements  RecyclerViewInterface3{
+    private ArrayList<monster_class> monster = new ArrayList<>();
     private SharedViewModel viewModel;
     private Sprite monsterSprite;
     private SpriteSheet waterMonsterSpriteSheet;
@@ -49,7 +49,7 @@ public class my_monsters extends Fragment {
 
         setMonsters();
 
-        recycler_view_adapter3 adapter = new recycler_view_adapter3(((MainActivity)getActivity()), monster);
+        recycler_view_adapter3 adapter = new recycler_view_adapter3(((MainActivity)getActivity()), monster, this::onItemClick);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(((MainActivity)getActivity())));
 
@@ -83,7 +83,14 @@ public class my_monsters extends Fragment {
         for (int i=0;i<monsters.size();i++){
             Monster m = monsters.get(i);
             Bitmap bitmap = BitmapFactory.decodeByteArray(m.bArray, 0, m.bArray.length);
-            monster.add(new monster_class(bitmap, m.name, String.valueOf(m.level), m.type));
+            monster.add(new monster_class(m.id, bitmap, m.name, String.valueOf(m.level), m.type));
         }
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        viewModel.setCurrentMonster(monster.get(position).getId());
+        monsterStats m = new monsterStats();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, m).commit();
     }
 }
