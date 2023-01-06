@@ -62,9 +62,9 @@ public class monsterStats extends Fragment {
         image.setImageBitmap(BitmapFactory.decodeByteArray(monster.bArray, 0, monster.bArray.length));
         name.setText(monster.name);
         level.setText(String.valueOf(monster.level));
-        health.setText(String.valueOf(monster.health)+"/"+String.valueOf(monster.maxhealth));
-        attack.setText(String.valueOf(monster.attack));
-        defense.setText(String.valueOf(monster.defense));
+        health.setText(String.valueOf(monster.health)+"/"+String.valueOf(monster.maxhealth + 8 *monster.level));
+        attack.setText(String.valueOf(monster.attack + 8 *monster.level));
+        defense.setText(String.valueOf(monster.defense + 8 *monster.level));
         xp.setMax(250*monster.level);
         xp.setProgress(monster.xp);
 
