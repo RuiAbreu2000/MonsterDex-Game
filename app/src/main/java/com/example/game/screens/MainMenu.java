@@ -1,22 +1,19 @@
-package com.example.game;
+package com.example.game.screens;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.game.databases.Monster;
-import com.example.game.maps.MainCity;
-import com.example.game.maps.TestMap;
-
-import java.util.List;
+import com.example.game.R;
+import com.example.game.SharedViewModel;
+import com.example.game.my_monsters;
+import com.example.game.my_monstersDEX;
 
 public class MainMenu extends Fragment {
     private SharedViewModel viewModel;

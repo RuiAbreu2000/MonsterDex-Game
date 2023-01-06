@@ -1,12 +1,9 @@
 package com.example.game.maps;
 
 import static com.example.game.SharedViewModel.NUMBER_OF_MAP_COLUMNS;
-import static com.example.game.SharedViewModel.NUMBER_OF_MAP_ROWS;
 import static com.example.game.SharedViewModel.TILESIZE;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +11,6 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -23,18 +19,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.game.Arena;
-import com.example.game.Battle;
-import com.example.game.BattleCOOPboss;
-import com.example.game.BattlePVP;
-import com.example.game.Loja;
-import com.example.game.MainActivity;
-import com.example.game.MainMenu;
+import com.example.game.city.BattleCOOPboss;
+import com.example.game.city.BattlePVP;
+import com.example.game.screens.MainMenu;
 import com.example.game.R;
 import com.example.game.SharedViewModel;
 import com.example.game.TradingMon;
-import com.example.game.maps.Map1;
-import com.example.game.maps.Map2;
 
 public class MainCity extends Fragment implements View.OnTouchListener{
 

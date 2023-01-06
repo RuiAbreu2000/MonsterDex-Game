@@ -10,7 +10,6 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -19,12 +18,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.game.databases.MonsterDex;
 import com.example.game.graphics.Sprite;
 import com.example.game.graphics.SpriteSheet;
-import com.example.game.maps.TestMap;
+import com.example.game.screens.MainMenu;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;

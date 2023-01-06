@@ -1,4 +1,4 @@
-package com.example.game;
+package com.example.game.city;
 
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -22,6 +22,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.game.MQTTHelper;
+import com.example.game.MainActivity;
+import com.example.game.R;
+import com.example.game.SharedViewModel;
 import com.example.game.databases.Monster;
 import com.example.game.databases.MonsterDex;
 
@@ -145,7 +149,6 @@ public class Battle extends Fragment {
         }
         level_inimigo = viewModel.getZoneLevel();
         Monster m = monsters.get(0);
-
         // LOAD ENEMY
         MonsterDex enemy = viewModel.getRandomMonsterByType(viewModel.getCurrentType());
 

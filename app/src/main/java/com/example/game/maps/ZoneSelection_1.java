@@ -1,11 +1,9 @@
 package com.example.game.maps;
 
 import static com.example.game.SharedViewModel.NUMBER_OF_MAP_COLUMNS;
-import static com.example.game.SharedViewModel.NUMBER_OF_MAP_ROWS;
 import static com.example.game.SharedViewModel.TILESIZE;
 
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,7 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.game.MainMenu;
+import com.example.game.screens.MainMenu;
 import com.example.game.R;
 import com.example.game.SharedViewModel;
 

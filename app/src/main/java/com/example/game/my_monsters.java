@@ -1,6 +1,5 @@
 package com.example.game;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -19,9 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.game.databases.Monster;
-import com.example.game.databases.MonsterDex;
 import com.example.game.graphics.Sprite;
 import com.example.game.graphics.SpriteSheet;
+import com.example.game.screens.MainMenu;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,14 +1,7 @@
-package com.example.game;
+package com.example.game.screens;
 
-import static com.example.game.SharedViewModel.NUMBER_OF_MAP_COLUMNS;
-import static com.example.game.SharedViewModel.NUMBER_OF_MAP_ROWS;
-import static com.example.game.SharedViewModel.TILESIZE;
-
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,21 +12,22 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.game.MainActivity;
+import com.example.game.R;
+import com.example.game.SharedViewModel;
 import com.example.game.databases.Monster;
 import com.example.game.databases.MonsterDex;
 import com.example.game.graphics.Sprite;
 import com.example.game.graphics.SpriteSheet;
 import com.example.game.maps.MainCity;
-import com.example.game.maps.TestMap;
+import com.example.game.recycler_view_adapter2;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 /**
