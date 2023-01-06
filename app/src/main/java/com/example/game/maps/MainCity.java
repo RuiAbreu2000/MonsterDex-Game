@@ -57,7 +57,7 @@ public class MainCity extends Fragment implements View.OnTouchListener{
 
         View v = inflater.inflate(R.layout.fragment_main_city, container, false);
         image = v.findViewById(R.id.MapHolder);
-
+        viewModel.setLevelTo_1();
         // Build map
         viewModel.getMap("home");
 

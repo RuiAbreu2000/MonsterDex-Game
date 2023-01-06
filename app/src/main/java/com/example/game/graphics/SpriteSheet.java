@@ -34,15 +34,15 @@ public class SpriteSheet {
         }else if(source.equals("symbols")){
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.symbols, bitmapOptions);
         }else if(source.equals("waterTiles")){
-            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fixed_tiles, bitmapOptions);
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.water_tiles, bitmapOptions);
         }else if(source.equals("fireTiles")){
-            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fixed_tiles, bitmapOptions);
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_tiles, bitmapOptions);
         }else if(source.equals("fixedTiles")){
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fixed_tiles, bitmapOptions);
         }else if(source.equals("groundTiles")){
-            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fixed_tiles, bitmapOptions);
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.groud_tiles, bitmapOptions);
         }else if(source.equals("skyTiles")){
-            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fixed_tiles, bitmapOptions);
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.air_tiles, bitmapOptions);
         }
     }
 

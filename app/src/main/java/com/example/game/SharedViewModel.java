@@ -106,19 +106,19 @@ public class SharedViewModel extends AndroidViewModel{
                 return;
             case "waterDungeon":
                 currentZone = "waterDungeon";
-                maplayouts.waterDungeon(currentZoneLevel);
+                maplayouts.waterDungeon(currentZoneLevel, waterTiles);
                 return;
             case "fireDungeon":
                 currentZone = "waterDungeon";
-                maplayouts.fireDungeon(currentZoneLevel);
+                maplayouts.fireDungeon(currentZoneLevel, fireTiles);
                 return;
             case "groundDungeon":
                 currentZone = "waterDungeon";
-                maplayouts.groundDungeon(currentZoneLevel);
+                maplayouts.groundDungeon(currentZoneLevel, groundTiles);
                 return;
             case "airDungeon":
                 currentZone = "waterDungeon";
-                maplayouts.airDungeon(currentZoneLevel);
+                maplayouts.airDungeon(currentZoneLevel, skyTiles);
                 return;
 
         }
@@ -156,6 +156,7 @@ public class SharedViewModel extends AndroidViewModel{
     public void incrementLevel() {
         this.currentZoneLevel += 1;
     }
+    public void setLevelTo_1(){this.currentZoneLevel = 1;}
 
     public void addFragment(Fragment fragment){
         fragmentStack.push(fragment);

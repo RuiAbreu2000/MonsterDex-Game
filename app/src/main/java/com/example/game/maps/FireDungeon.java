@@ -83,19 +83,16 @@ public class FireDungeon extends Fragment implements View.OnTouchListener{
         Log.w("texto", String.valueOf(idxCol));
         Log.w("texto", String.valueOf(tile));
 
-        if(tile == 18){     // Go Home
+        if(tile == 17){     // Go Home
             MainCity maincity = new MainCity();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, maincity).commit();
-        }
-        if(tile == 1){      // Go Forward
+        }else if(tile == 1){      // Go Forward
             viewModel.incrementLevel();
             // Save Frament
-            TestMap fragment = new TestMap();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+            FireDungeon fireDungeon = new FireDungeon();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fireDungeon).commit();
 
-        }
-
-        if(monsterArray[idxRow][idxCol] > 0){
+        }else if(monsterArray[idxRow][idxCol] > 0){
             // BATTLE SCREEN TO CAPTURE MONSTER
             Log.w("texto", "BATTLE TIME");
             // Save Fragment and Go to Battle Screen

@@ -102,6 +102,8 @@ public class ZoneSelection_1 extends Fragment implements View.OnTouchListener{
 
         }else if( tile == 2 ){      // Fire Dungeon
             Log.w("texto", "Fire Dungeon");
+            FireDungeon fireDungeon = new FireDungeon();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fireDungeon).commit();
 
         }else if( tile == 8 ){      // Go Left
             Log.w("texto", "Left Arrow");
@@ -113,9 +115,13 @@ public class ZoneSelection_1 extends Fragment implements View.OnTouchListener{
 
         }else if( tile == 17 ) {      // Air Dungeon
             Log.w("texto", "Air Dungeon");
+            airDungeon airDungeon = new airDungeon();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, airDungeon).commit();
 
         }else if( tile == 18 ){      // Ground Dungeon
             Log.w("texto", "Ground Dungeon");
+            GroundDungeon groundDungeon = new GroundDungeon();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, groundDungeon).commit();
         }
 
 

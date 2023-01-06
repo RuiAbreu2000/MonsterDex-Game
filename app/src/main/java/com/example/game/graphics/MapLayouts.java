@@ -75,9 +75,9 @@ public class MapLayouts {
     }
 
     // DUNGEON MAPS
-    public void waterDungeon(int currentZoneLevel) {
+    public void waterDungeon(int currentZoneLevel, SpriteSheet waterTiles) {
         // Build Sprite Array
-        buildSpriteArray(currentZoneLevel, mapInformation.waterMapLevels[currentZoneLevel]);
+        buildSpriteArray(currentZoneLevel, mapInformation.waterMapLevels[currentZoneLevel], waterTiles, 20);
 
         // Build Monster array
         buildMonsterArray(currentZoneLevel);
@@ -89,32 +89,59 @@ public class MapLayouts {
 
     }
 
-    public void fireDungeon(int currentZoneLevel) {
-        // ...
+    public void fireDungeon(int currentZoneLevel, SpriteSheet fireTiles) {
+        // Build Sprite Array
+        buildSpriteArray(currentZoneLevel, mapInformation.fireMapLevels[currentZoneLevel], fireTiles, 19);
+
+        // Build Monster array
+        buildMonsterArray(currentZoneLevel);
+
+        // Build Bitmap
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_COLUMNS * TILESIZE, NUMBER_OF_MAP_ROWS * TILESIZE, conf); // this creates a MUTABLE bitmap
+        this.buildBitmap();
     }
 
-    public void groundDungeon(int currentZoneLevel) {
-        // ...
+    public void groundDungeon(int currentZoneLevel, SpriteSheet groundTiles) {
+        // Build Sprite Array
+        buildSpriteArray(currentZoneLevel, mapInformation.groundMapLevels[currentZoneLevel], groundTiles, 15);
+
+        // Build Monster array
+        buildMonsterArray(currentZoneLevel);
+
+        // Build Bitmap
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_COLUMNS * TILESIZE, NUMBER_OF_MAP_ROWS * TILESIZE, conf); // this creates a MUTABLE bitmap
+        this.buildBitmap();
     }
 
-    public void airDungeon(int currentZoneLevel) {
-        // ...
+    public void airDungeon(int currentZoneLevel, SpriteSheet skyTiles) {
+        // Build Sprite Array
+        buildSpriteArray(currentZoneLevel, mapInformation.airMapLevels[currentZoneLevel], skyTiles, 15);
+
+        // Build Monster array
+        buildMonsterArray(currentZoneLevel);
+
+        // Build Bitmap
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_COLUMNS * TILESIZE, NUMBER_OF_MAP_ROWS * TILESIZE, conf); // this creates a MUTABLE bitmap
+        this.buildBitmap();
     }
 
 
-    public void buildSpriteArray(int currentZoneLevel, int[] mapTiles){
+    public void buildSpriteArray(int currentZoneLevel, int[] mapTiles, SpriteSheet sheet, int maxLevel){
         // Build Map with Sprites
         int tile_counter = 0;
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
                 // get corresponding sprite
-                mapSprite[iRow][iCol] = spritesheet.getTile(mapTiles[tile_counter]);
+                mapSprite[iRow][iCol] = sheet.getTile(mapTiles[tile_counter]);
             }
         }
         // Set Arrow Symbols
         mapSprite[0][1] = arrowUp;
 
-        if(currentZoneLevel < 15){
+        if(currentZoneLevel < maxLevel){
             mapSprite[4][1] = arrowDown;
         }else{
             mapSprite[0][1] = bossSymbol;
@@ -148,7 +175,7 @@ public class MapLayouts {
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
                 mapCanvas.drawBitmap(mapSprite[iRow][iCol].getSpriteBitmap(), null, new Rect(current_left, current_top,current_right, current_bot), null);
-                if(monsterArray[iRow][iCol] > 0 && !(iRow == 0 && iCol == 2) && !(iRow == 4 && iCol == 2) ){    // Draw Monster Symbol if Monster exists in this tile
+                if(monsterArray[iRow][iCol] > 0 && !(iRow == 0 && iCol == 1) && !(iRow == 4 && iCol == 1) ){    // Draw Monster Symbol if Monster exists in this tile
                     mapCanvas.drawBitmap(monsterSymbol.getSpriteBitmap(), null, new Rect(current_left, current_top,current_right, current_bot), p);
                 }
                 current_left += TILESIZE;
