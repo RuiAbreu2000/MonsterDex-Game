@@ -16,12 +16,22 @@ public class recycler_view_adapter extends RecyclerView.Adapter<recycler_view_ad
     Context context;
     ArrayList<monster_class> monsters;
 
-
+    private static OnItemClickListener listener;
 
     public recycler_view_adapter(Context context, ArrayList<monster_class> monsters){
         this.context = context;
         this.monsters = monsters;
 
+    }
+
+    // In the adapter class
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -54,6 +64,19 @@ public class recycler_view_adapter extends RecyclerView.Adapter<recycler_view_ad
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
             nameView = itemView.findViewById(R.id.textView2);
+
+            // In the MyViewHolder class
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

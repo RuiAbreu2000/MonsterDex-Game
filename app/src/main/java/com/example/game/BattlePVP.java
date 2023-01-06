@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.game.databases.Monster;
+
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -22,8 +24,10 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.List;
 
 public class BattlePVP extends Fragment {
+    private SharedViewModel viewModel;
     // variables to represent the characters and their stats
     // object to represent the character
     private class Character {
@@ -31,11 +35,15 @@ public class BattlePVP extends Fragment {
         int health;
         int attack;
         int defense;
+        String type;
+        byte[] bArray;
 
-        public Character(int health, int attack, int defense) {
+        public Character(int health, int attack, int defense, String type, byte[] image) {
             this.health = health;
             this.attack = attack;
             this.defense = defense;
+            this.type = type;
+            this.bArray = image;
         }
     }
     // Handler for updating the UI
@@ -171,7 +179,10 @@ public class BattlePVP extends Fragment {
                         imPlayer1 = true;
 
                         //LOAD PLAYER DATA FROM DATABASE WHEN ITS READY
-                        player1 = new Character(900, 100, 20);
+                        List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
+
+                        Monster m = monsters.get(0);
+                        player1 = new Character(m.health*m.level, m.attack*m.level, m.defense*m.level, m.type, m.bArray);
 
                         // Publish the message to notify player 1 is in
                         player1HealthBar.setMax(player1.health);
@@ -196,7 +207,10 @@ public class BattlePVP extends Fragment {
                             imPlayer2 = true;
 
                             //LOAD PLAYER DATA FROM DATABASE WHEN ITS READY
-                            player2 = new Character(1000, 100, 20);
+                            List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
+
+                            Monster m = monsters.get(0);
+                            player2 = new Character(m.health*m.level, m.attack*m.level, m.defense*m.level, m.type, m.bArray);
 
                             // Publish the message to notify player 1 is in
                             player2HealthBar.setMax(player2.health);
@@ -237,7 +251,6 @@ public class BattlePVP extends Fragment {
                 if (topic.equals("GetHPJunior")) {
 
                     if (message.isRetained()) {
-                        Log.w("TAG", "message was retained" + topic);
                         // The message is a retained message
                         if (!imPlayer1) { //IF ITS PLAYER 2
                             int number = Integer.parseInt(new String(message.getPayload()));
@@ -249,7 +262,6 @@ public class BattlePVP extends Fragment {
 
                         }
                     } else {
-                        Log.w("TAG", "message was not retained" + topic);
                         // The message is a normal message
                         if (imPlayer1) { //IF IM PLAYER 1
                                 int number = Integer.parseInt(new String(message.getPayload()));

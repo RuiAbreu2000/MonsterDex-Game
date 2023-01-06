@@ -15,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.game.databases.Monster;
+import com.example.game.databases.MonsterDex;
+
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -22,9 +25,12 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.List;
 import java.util.Random;
 
 public class BattleCOOPboss extends Fragment {
+
+    private SharedViewModel viewModel;
     // variables to represent the characters and their stats
     // object to represent the character
     private class Character {
@@ -32,11 +38,15 @@ public class BattleCOOPboss extends Fragment {
         int health;
         int attack;
         int defense;
+        String type;
+        byte[] bArray;
 
-        public Character(int health, int attack, int defense) {
+        public Character(int health, int attack, int defense, String type, byte[] image) {
             this.health = health;
             this.attack = attack;
             this.defense = defense;
+            this.type = type;
+            this.bArray = image;
         }
     }
     // Handler for updating the UI
@@ -176,7 +186,13 @@ public class BattleCOOPboss extends Fragment {
                         imPlayer1 = true;
 
                         //LOAD PLAYER DATA FROM DATABASE WHEN ITS READY
-                        player1 = new Character(900, 100, 20);
+                        List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
+
+                        Monster m = monsters.get(0);
+
+                        // initialize the characters and their stats
+
+                        player1 = new Character(m.health*m.level, m.attack*m.level, m.defense*m.level, m.type, m.bArray); //player mon
 
                         // Publish the message to notify player 1 is in
                         player1HealthBar.setMax(player1.health);
@@ -184,8 +200,6 @@ public class BattleCOOPboss extends Fragment {
 
                         player1Label.setText("Player 1 - " + player1.health);
                         player1HP = player1.health;
-
-
 
                         //String hp = Integer.toString(player1.health);
                         // Publish the message to the HP topic
@@ -201,7 +215,13 @@ public class BattleCOOPboss extends Fragment {
                             imPlayer2 = true;
 
                             //LOAD PLAYER DATA FROM DATABASE WHEN ITS READY
-                            player2 = new Character(1000, 100, 20);
+                            List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
+
+                            Monster m = monsters.get(0);
+
+                            // initialize the characters and their stats
+
+                            player2 = new Character(m.health*m.level, m.attack*m.level, m.defense*m.level, m.type, m.bArray); //player mon
 
                             // Publish the message to notify player 1 is in
                             player2HealthBar.setMax(player2.health);
@@ -223,8 +243,9 @@ public class BattleCOOPboss extends Fragment {
 
                     } else if (new String(message.getPayload()).equals("Player2conn")){
 
-                        //LOAD BOSS DATA FROM DATABASE WHEN ITS READY
-                        Boss = new Character(2000, 100, 20);
+
+                        byte[] emptyByteArray = new byte[0];
+                        Boss = new Character(5000, 400, 200, "dark", emptyByteArray);//player mon
 
                         BossHP = Boss.health;
                         BossHealthBar.setMax(Boss.health);
