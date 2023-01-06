@@ -22,7 +22,7 @@ import com.example.game.R;
 import com.example.game.SharedViewModel;
 
 
-public class GroundDungeon extends Fragment implements View.OnTouchListener{
+public class airDungeon extends Fragment implements View.OnTouchListener{
 
     // Variables
     private SharedViewModel viewModel;
@@ -31,6 +31,7 @@ public class GroundDungeon extends Fragment implements View.OnTouchListener{
     private Bitmap bitmap;
     private int[] tileIndexArray;
     private int[][] monsterArray;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class GroundDungeon extends Fragment implements View.OnTouchListener{
         image = v.findViewById(R.id.MapHolder);
 
         // Build map
-        viewModel.getMap("waterDungeon");
+        viewModel.getMap("airDungeon");
         // Get Tile Matrix
         tileIndexArray = new int[NUMBER_OF_MAP_COLUMNS*NUMBER_OF_MAP_ROWS];
         tileIndexArray = viewModel.getTileMatrix().clone();
