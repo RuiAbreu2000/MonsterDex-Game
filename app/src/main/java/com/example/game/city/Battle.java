@@ -39,6 +39,8 @@ import java.util.List;
 
 public class Battle extends Fragment {
     private SharedViewModel viewModel;
+    private int enemy_max_health;
+    private Monster m;
     // variables to represent the characters and their stats
     // object to represent the character
     private class Character {
@@ -48,6 +50,7 @@ public class Battle extends Fragment {
         int defense;
         String type;
         byte[] bArray;
+
 
         public Character(int health, int attack, int defense, String type, byte[] image) {
             this.health = health;
@@ -148,16 +151,27 @@ public class Battle extends Fragment {
             level_inimigo = level_inimigo + monsters.get(i).level;
         }
         level_inimigo = viewModel.getZoneLevel();
-        Monster m = monsters.get(0);
+        int number = 0;
+        m = monsters.get(number);
+        number=number+1;
+        while (m.health <= 0){
+            m = monsters.get(number);
+            if (m == null){
+                m = monsters.get(0);
+                m.health=m.maxhealth;
+            }
+            number=number+1;
+        }
+
         // LOAD ENEMY
         MonsterDex enemy = viewModel.getRandomMonsterByType(viewModel.getCurrentType());
 
 
         // initialize the characters and their stats
 
-        player1 = new Character(m.health*m.level, m.attack*m.level, m.defense*m.level, m.type, m.bArray); //player mon
-        player2 = new Character(enemy.health*level_inimigo, enemy.attack*level_inimigo, enemy.defense*level_inimigo, enemy.type, enemy.bArray); //mon he is fighting
-
+        player1 = new Character(m.health+8*m.level, m.attack+8*m.level, m.defense+8*m.level, m.type, m.bArray); //player mon
+        player2 = new Character(enemy.health+8*level_inimigo, enemy.attack+8*level_inimigo, enemy.defense+8*level_inimigo, enemy.type, enemy.bArray); //mon he is fighting
+        enemy_max_health = player2.health+8*level_inimigo;
 
         // initialize the views to display the characters' stats
         player1HealthBar = v.findViewById(R.id.progressBar_aliado);
@@ -170,10 +184,10 @@ public class Battle extends Fragment {
         //attackButton2 = v.findViewById(R.id.attack_button2);
 
         // display the initial values for the characters' stats
-        player1HealthBar.setMax(player1.health);
+        player1HealthBar.setMax(m.maxhealth+8*m.level);
         player1HealthBar.setProgress(player1.health);
         player1image.setImageBitmap(BitmapFactory.decodeByteArray(player1.bArray, 0, player1.bArray.length));
-        player2HealthBar.setMax(player2.health);
+        player2HealthBar.setMax(enemy_max_health);
         player2HealthBar.setProgress(player2.health);
         player2image.setImageBitmap(BitmapFactory.decodeByteArray(player2.bArray, 0, player2.bArray.length));
 
@@ -222,7 +236,7 @@ public class Battle extends Fragment {
                         @Override
                         public void onClick(View v) {
                             if (player1Turn) {
-                                player2.health -= player1.attack;
+                                player2.health -= player1.attack - (int)(player1.attack*(player1.defense/m.maxhealth));
 
                                 player1Turn = false;
                                 player2Turn = true;
@@ -275,7 +289,8 @@ public class Battle extends Fragment {
                         }
 
                         // Aqui vai ser a "AI" que escolhe o ataque que vai usar
-                        player1.health -= player2.attack;
+                        player1.health -= player2.attack - (int)(player2.attack*(player1.defense/m.maxhealth));
+                        viewModel.getDatabase().monsterDao().setHealth(player1.health, m.id);
 
                         player1Turn = true;
                         player2Turn = false;

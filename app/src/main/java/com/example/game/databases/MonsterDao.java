@@ -47,9 +47,6 @@ public interface MonsterDao {
     @Query("UPDATE Monster SET health=maxhealth WHERE id =:id")
     void healMonster(int id);
 
-    @Query("UPDATE Monster SET name=name WHERE id =:id")
-    void nameMonster(int id, String newName);
-
     @Delete
     void deleteMonster(Monster monster);
 }
