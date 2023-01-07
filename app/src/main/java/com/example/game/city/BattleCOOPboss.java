@@ -189,6 +189,11 @@ public class BattleCOOPboss extends Fragment {
         fugirButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (imPlayer1){
+                    helper.publish("ConnectJunior", "Gameover", 0, true);
+                    helper.publish("GetHPJunior", "Gameover", 0, true);
+                }
+
                 MainCity fragment = new MainCity();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
             }
