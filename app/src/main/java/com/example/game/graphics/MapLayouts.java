@@ -30,8 +30,8 @@ public class MapLayouts {
     public Sprite arrowUp;
     private Sprite arrowDown;
     private Sprite monsterSymbol;
-    private Sprite itemSymbol;
     private Sprite bossSymbol;
+    private Sprite bugDungeonSymbol;
 
     // Tile Indexes
     int[] groundIndexes = {2, 6, 10, 14};
@@ -103,6 +103,16 @@ public class MapLayouts {
         this.buildBitmapFixed();
     }
 
+    public void zoneSelection_3_mild() {
+        // Build Sprite Array
+        buildSpriteArrayFixed2(mapInformation.zoneSelection_3MildMap);
+
+        // Build Bitmap
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_COLUMNS * TILESIZE, NUMBER_OF_MAP_ROWS * TILESIZE, conf); // this creates a MUTABLE bitmap
+        this.buildBitmapFixed();
+    }
+
     // DUNGEON MAPS
     public void waterDungeon(int currentZoneLevel, SpriteSheet waterTiles) {
         buildSpriteArray(currentZoneLevel, mapInformation.waterMapLevels[currentZoneLevel-1], waterTiles, 20);
@@ -156,6 +166,19 @@ public class MapLayouts {
         this.buildBitmap();
     }
 
+    public void bugDungeon(int currentZoneLevel, SpriteSheet skyTiles) {
+        // Build Sprite Array
+        buildSpriteArray(currentZoneLevel, mapInformation.airMapLevels[currentZoneLevel-1], skyTiles, 15);
+
+        // Build Monster array
+        buildMonsterArray(currentZoneLevel);
+
+        // Build Bitmap
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_COLUMNS * TILESIZE, NUMBER_OF_MAP_ROWS * TILESIZE, conf); // this creates a MUTABLE bitmap
+        this.buildBitmap();
+    }
+
     public void randomDungeon(int currentZoneLevel, SpriteSheet[] sheets) {
         Random sheet = new Random();
         Random tile = new Random();
@@ -164,7 +187,7 @@ public class MapLayouts {
         for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
             for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
                 // Pick sheet
-                sheet_i = sheet.nextInt(4);
+                sheet_i = sheet.nextInt(5);
                 tile_i = tile.nextInt(16);
                 mapSprite[iRow][iCol] = sheets[sheet_i].getTile(tile_i+1);
             }
@@ -221,6 +244,20 @@ public class MapLayouts {
                 tile_counter += 1;
             }
         }
+    }
+
+    public void buildSpriteArrayFixed2(int[] mapTiles){     // Para o bug dungeon
+        // Build Map with Sprites
+        int tile_counter = 0;
+        for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
+            for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
+                // get corresponding sprite
+                //Log.w("texto", String.valueOf(mapTiles[tile_counter]));
+                mapSprite[iRow][iCol] = fixedSpriteSheet.getTile_5x5(mapTiles[tile_counter]);
+                tile_counter += 1;
+            }
+        }
+        mapSprite[2][0] = bugDungeonSymbol;
     }
 
     // BUILD BITMAPS
@@ -336,6 +373,7 @@ public class MapLayouts {
         arrowDown = symbolsSpriteSheet.getMonsterTile(4);
         monsterSymbol = symbolsSpriteSheet.getMonsterTile(1);
         bossSymbol = symbolsSpriteSheet.getMonsterTile(10);
+        bugDungeonSymbol = symbolsSpriteSheet.getMonsterTile(8);
     }
 
     public String getTileType(int currentZoneLevel, String currentZone, int tile) {

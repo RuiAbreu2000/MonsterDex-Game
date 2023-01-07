@@ -42,6 +42,7 @@ public class SharedViewModel extends AndroidViewModel{
     public SpriteSheet fireTiles;
     public SpriteSheet groundTiles;
     public SpriteSheet skyTiles;
+    public SpriteSheet bugTiles;
         // Monsters
     public SpriteSheet airMonsterSpritesheet;
     public SpriteSheet bugMonsterSpritesheet;
@@ -65,6 +66,7 @@ public class SharedViewModel extends AndroidViewModel{
     public int monster_change = 0;
     public int create = 0;
     public Battle.Character enemy;
+    public int temp;
 
     public SharedViewModel(@NonNull Application application) {
         super(application);
@@ -76,6 +78,7 @@ public class SharedViewModel extends AndroidViewModel{
         fireTiles= new SpriteSheet(application, "fireTiles");
         groundTiles= new SpriteSheet(application, "groundTiles");
         skyTiles= new SpriteSheet(application, "skyTiles");
+        bugTiles = new SpriteSheet(application, "bugTiles");
             // Monsters
         airMonsterSpritesheet = new SpriteSheet(application, "airMonsters");
         bugMonsterSpritesheet = new SpriteSheet(application, "bugMonsters");
@@ -133,9 +136,13 @@ public class SharedViewModel extends AndroidViewModel{
                 currentZone = "airDungeon";
                 maplayouts.airDungeon(currentZoneLevel, skyTiles);
                 return;
+            case "bugDungeon":
+                currentZone = "bugDungeon";
+                maplayouts.bugDungeon(currentZoneLevel, bugTiles);
+                return;
             case "randomDungeon":
                 currentZone = "randomDungeon";
-                maplayouts.randomDungeon(currentZoneLevel, new SpriteSheet[]{waterTiles, fireTiles, groundTiles, skyTiles});
+                maplayouts.randomDungeon(currentZoneLevel, new SpriteSheet[]{waterTiles, fireTiles, groundTiles, skyTiles, bugTiles});
                 return;
             case "zoneSelection_3_cold":
                 currentZone = "zoneSelection_3";
@@ -144,6 +151,10 @@ public class SharedViewModel extends AndroidViewModel{
             case "zoneSelection_3_hot":
                 currentZone = "zoneSelection_3";
                 maplayouts.zoneSelection_3_hot();
+                return;
+            case "zoneSelection_3_mild":
+                currentZone = "zoneSelection_3";
+                maplayouts.zoneSelection_3_mild();
                 return;
         }
     }
@@ -298,5 +309,13 @@ public class SharedViewModel extends AndroidViewModel{
 
     public Battle.Character getCharacter(){
         return enemy;
+    }
+
+    public int getTemp(){
+        return temp;
+    }
+
+    public void setTemp(int temp){
+        this.temp = temp;
     }
 }

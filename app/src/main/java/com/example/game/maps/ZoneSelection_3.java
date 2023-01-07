@@ -90,6 +90,7 @@ public class ZoneSelection_3 extends Fragment implements View.OnTouchListener{
                 if (topic.equals("tempJunior")){
                     float number = Float.parseFloat(new String(message.getPayload()));
                     temp = number;
+                    viewModel.setTemp((int) temp);
                     image = v.findViewById(R.id.MapHolder);
                     // Build map
                     if(temp > 50){
@@ -114,6 +115,19 @@ public class ZoneSelection_3 extends Fragment implements View.OnTouchListener{
                         posXY = new int[2];
                         image.getLocationOnScreen(posXY);
                         addListener();
+                    }else{
+                        ((MainActivity)getActivity()).noti("Its mild...", "Ambiente ameno, a masmorra de bug vai aparecer!");
+                        viewModel.getMap("zoneSelection_3_mild");
+                        // Get Bitmap
+                        bitmap = viewModel.getBitmap();
+
+                        // Save on screen map coordinates and set listener
+                        image.setImageBitmap(bitmap);
+                        posXY = new int[2];
+                        image.getLocationOnScreen(posXY);
+                        addListener();
+
+
                     }
 
                 }
@@ -171,6 +185,11 @@ public class ZoneSelection_3 extends Fragment implements View.OnTouchListener{
             Log.w("texto", "Right Arrow");
             ZoneSelection_2 zone_2 = new ZoneSelection_2();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, zone_2).commit();
+
+        }else if(tile == 8 && viewModel.getTemp() < 50 &&  viewModel.getTemp() >0){    // Bug Dungeon
+            Log.w("texto", "Bug Dungeon");
+            bugDungeon bugDungeon = new bugDungeon();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, bugDungeon).commit();
 
         }
         return false;

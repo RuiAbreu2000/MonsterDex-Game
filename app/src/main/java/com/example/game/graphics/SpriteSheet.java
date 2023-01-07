@@ -44,6 +44,9 @@ public class SpriteSheet {
         }else if(source.equals("skyTiles")){
             this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.air_tiles, bitmapOptions);
         }
+        else if(source.equals("bugTiles")){
+            this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.bug_tiles, bitmapOptions);
+        }
     }
 
 
