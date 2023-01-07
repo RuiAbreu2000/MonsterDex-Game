@@ -325,6 +325,7 @@ public class Battle extends Fragment{
                             //goBack.onResume();
                             //TestMap fragment = new TestMap();
                             //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, goBack).commit();
+                            viewModel.setCreatedZero();
                             getActivity().getSupportFragmentManager().popBackStackImmediate();
                         }
                     });
@@ -334,9 +335,10 @@ public class Battle extends Fragment{
                             Log.w("texto", "ADDING FRAG");
                             viewModel.setCreatedOne();
                             Backpack backpack = new Backpack();
-                            addFrag();
                             //viewModel.addFragment(getActivity().getSupportFragmentManager().findFragmentByTag("BATTLETAG"));
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, backpack,"BATTLETAG").commit();
+
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, backpack,"BATTLETAG").addToBackStack(null).commit();
+
                         }
                     });
 
@@ -455,10 +457,6 @@ public class Battle extends Fragment{
             getActivity().getSupportFragmentManager().popBackStackImmediate();
         }
 
-    }
-
-    private void addFrag(){
-        viewModel.addFragment(this);
     }
 
 }

@@ -95,9 +95,9 @@ public class Backpack extends Fragment implements RecyclerViewInterface3{
         viewModel.changeMonsterChange();
         // Go Back
         //getActivity().getSupportFragmentManager().beginTransaction().detach(this).attach(this).commit();
-        Fragment goBack = viewModel.getLastFragment();
-        goBack.onResume();
+        //Fragment goBack = viewModel.getLastFragment();
+        //goBack.onResume();
         //TestMap fragment = new TestMap();
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, goBack, "BATTLETAG").commit();
+        getActivity().getSupportFragmentManager().popBackStackImmediate();
     }
 }

@@ -151,7 +151,7 @@ public class MapLayouts {
         // Set Arrow Symbols
         mapSprite[4][1] = arrowDown;
 
-        if(currentZoneLevel < maxLevel){
+        if(currentZoneLevel < maxLevel+1){
             mapSprite[0][1] = arrowUp;
         }else{
             mapSprite[0][1] = bossSymbol;
