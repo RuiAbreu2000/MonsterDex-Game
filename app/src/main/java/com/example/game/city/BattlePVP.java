@@ -70,6 +70,8 @@ public class BattlePVP extends Fragment {
 
     private int player1HP = 1;
     private int player2HP = 1;
+    private int player1HP1 = 1;
+    private int player2HP2 = 1;
     private int player1DEF = 1;
     private int player2DEF = 1;
     private String player1NAME = "";
@@ -314,6 +316,7 @@ public class BattlePVP extends Fragment {
 
                             player1Label.setText("Player 1 - " + health);
                             player1HP = health;
+                            player1HP1 = health;
                             player1DEF = defense;
                             Monster monsterReceiving = viewModel.getDatabase().monsterDexDao().getMonsterByName(name);
                             Monster mymonster = viewModel.getDatabase().monsterDexDao().getMonsterByName(player2NAME);
@@ -339,6 +342,7 @@ public class BattlePVP extends Fragment {
                                 player2Label.setText("Player 2 - " + health);
 
                                 player2HP = health;
+                                player2HP2 = health;
                                 player2DEF = defense;
                                 Monster monsterReceiving = viewModel.getDatabase().monsterDexDao().getMonsterByName(name);
                                 Monster mymonster = viewModel.getDatabase().monsterDexDao().getMonsterByName(player1NAME);
@@ -425,7 +429,7 @@ public class BattlePVP extends Fragment {
                                             gameActionsTextView.setText("Player 1 attacked player 2");
                                         }
                                     });
-                                    player2HP -= (number - (number * (player2DEF/player2HP)));
+                                    player2HP -= (number - (number * (player2DEF/player2HP2)));
 
                                     player1Turn = false;
                                     player2Turn = true;
@@ -461,7 +465,7 @@ public class BattlePVP extends Fragment {
                                         }
                                     });
                                     //(number - (number * (Boss.defense)/ Boss.health))
-                                    player1HP -= (number - (number * (player1DEF/player1HP)));
+                                    player1HP -= (number - (number * (player1DEF/player1HP1)));
 
                                     player1Turn = true;
                                     player2Turn = false;
