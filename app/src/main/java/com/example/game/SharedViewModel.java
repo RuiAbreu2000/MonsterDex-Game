@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import android.app.Application;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.example.game.city.Battle;
 import com.example.game.databases.AppDatabase;
@@ -20,30 +21,6 @@ import java.util.Stack;
 
 public class SharedViewModel extends AndroidViewModel{
     // TILESET INDEX TYPES
-    public String[] waterTileType = {
-            "ground", "water", "water", "water",
-            "water", "water", "ground", "ground",
-            "water", "water", "water", "water",
-            "water", "water", "water", "water",
-    };
-    public String[] fireTileType = {
-            "fire", "fire", "ground", "fire",
-            "fire", "fire", "fire", "fire",
-            "fire", "fire", "fire", "ground",
-            "fire", "fire", "fire", "fire",
-    };
-    public String[] groundTileType = {
-            "ground", "bug", "ground", "ground",
-            "ground", "ground", "water", "ground",
-            "ground", "ground", "ground", "ground",
-            "ground", "ground", "ground", "ground",
-    };
-    public String[] airTileType = {
-            "air", "air", "air", "air",
-            "air", "air", "water", "air",
-            "air", "air", "fire", "air",
-            "air", "air", "air", "air",
-    };
 
     // MAP CONSTANTS
     public static final int NUMBER_OF_MAP_ROWS = 5;
@@ -124,10 +101,6 @@ public class SharedViewModel extends AndroidViewModel{
         return maplayouts.getTileIndexMap().clone();
     }
     public int[][] getMonsterArray(){ return maplayouts.getMonsterArray().clone();}
-    public String[] getTileType_Water() { return waterTileType;}
-    public String[] getTileType_Fire() { return fireTileType;}
-    public String[] getTileType_Ground() { return groundTileType;}
-    public String[] getTileType_Air() { return airTileType;}
 
     public void getMap(String map) { // Builds map on MapLayouts
         switch(map) {
@@ -148,15 +121,15 @@ public class SharedViewModel extends AndroidViewModel{
                 maplayouts.waterDungeon(currentZoneLevel, waterTiles);
                 return;
             case "fireDungeon":
-                currentZone = "waterDungeon";
+                currentZone = "fireDungeon";
                 maplayouts.fireDungeon(currentZoneLevel, fireTiles);
                 return;
             case "groundDungeon":
-                currentZone = "waterDungeon";
+                currentZone = "groundDungeon";
                 maplayouts.groundDungeon(currentZoneLevel, groundTiles);
                 return;
             case "airDungeon":
-                currentZone = "waterDungeon";
+                currentZone = "airDungeon";
                 maplayouts.airDungeon(currentZoneLevel, skyTiles);
                 return;
         }
@@ -197,7 +170,10 @@ public class SharedViewModel extends AndroidViewModel{
     public void setLevelTo_1(){this.currentZoneLevel = 1;}
     public int getZoneLevel(){ Random rand = new Random(); return this.currentZoneLevel + rand.nextInt(5);}
     public String getCurrentType() {return monsterType;}
-    public void setCurrentType(String string) {this.monsterType = string;}
+    public void setCurrentType(int tile) {
+        this.monsterType = maplayouts.getTileType(currentZoneLevel,currentZone, tile);
+        Log.w("texto", this.monsterType);
+    }
 
     // Save Zone Before going into Battle
     public void addFragment(Fragment fragment){
@@ -213,7 +189,8 @@ public class SharedViewModel extends AndroidViewModel{
         List<MonsterDex> monsterdex = db.monsterDexDao().getAllMonstersByType(type);
         int rand = (int)(Math.random()*(monsterdex.size()-0+1)+0);
         int id = rand-(rand%3);
-        if(id > monsterdex.size()){monsterdex.get(0);}
+        if(id >= monsterdex.size()){monsterdex.get(0);}
+
         MonsterDex mosnter = monsterdex.get(id);
 
 

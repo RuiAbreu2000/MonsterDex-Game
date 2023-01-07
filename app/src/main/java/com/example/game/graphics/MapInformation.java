@@ -1,6 +1,32 @@
 package com.example.game.graphics;
 
 public class MapInformation {
+    public String[] waterTileType = {
+            "ground", "water", "water", "water",
+            "water", "water", "ground", "ground",
+            "water", "water", "water", "water",
+            "water", "water", "water", "water",
+    };
+    public String[] fireTileType = {
+            "fire", "fire", "ground", "fire",
+            "fire", "fire", "fire", "fire",
+            "fire", "fire", "fire", "ground",
+            "fire", "fire", "fire", "fire",
+    };
+    public String[] groundTileType = {
+            "ground", "bug", "ground", "ground",
+            "ground", "ground", "water", "ground",
+            "ground", "ground", "ground", "ground",
+            "ground", "ground", "ground", "ground",
+    };
+    public String[] airTileType = {
+            "air", "air", "air", "air",
+            "air", "air", "water", "air",
+            "air", "air", "fire", "air",
+            "air", "air", "air", "air",
+    };
+
+
     // HOME MAP
     public int[] homeMap = {
             6, 7, 8, 9,

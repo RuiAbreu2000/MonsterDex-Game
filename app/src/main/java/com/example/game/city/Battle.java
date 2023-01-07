@@ -1,7 +1,7 @@
 package com.example.game.city;
 
+import android.app.Activity;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,8 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.game.Backpack;
@@ -29,7 +30,6 @@ import com.example.game.R;
 import com.example.game.SharedViewModel;
 import com.example.game.databases.Monster;
 import com.example.game.databases.MonsterDex;
-import com.example.game.my_monsters;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -37,29 +37,38 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Battle extends Fragment{
     private SharedViewModel viewModel;
     private int enemy_max_health;
     private Monster m;
+    List<Monster> monsters;
+    int new_id;
+    int monster_change = 0;
+
     // variables to represent the characters and their stats
     // object to represent the character
-    private class Character {
+    public class Character {
         // variables to represent the character's stats
         int health;
         int attack;
         int defense;
         String type;
         byte[] bArray;
+        int level;
+        int maxhealth;
 
 
-        public Character(int health, int attack, int defense, String type, byte[] image) {
+        public Character(int health, int attack, int defense, String type, byte[] image, int level, int maxhealth) {
             this.health = health;
             this.attack = attack;
             this.defense = defense;
             this.type = type;
             this.bArray = image;
+            this.level = level;
+            this.maxhealth = maxhealth;
         }
 
         public void setValues(int health, int attack, int defense, String type, byte[] image){
@@ -76,7 +85,6 @@ public class Battle extends Fragment{
 
     // Thread for running the game loop
     private Thread mGameThread;
-
 
     // variables to represent the characters
     private Character player1;
@@ -99,6 +107,7 @@ public class Battle extends Fragment{
     private Button runButton;
     private Button attackButton2;
     private Button backpackButton;
+    private MQTTHelper helper;
 
 
     @Override
@@ -111,14 +120,43 @@ public class Battle extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_battle, container, false);
+        View v = inflater.inflate(R.layout.fragment_battle2, container, false);
+
+
+        if(viewModel.getCreated() == 1){
+            // Get Monster
+            new_id = viewModel.getCurrentMonster2();
+            Monster m = viewModel.getMonsterById(new_id);
+            player1 = new Character(m.health+8*m.level, m.attack+8*m.level, m.defense+8*m.level, m.type, m.bArray, 0, 0); //player mon
+            player2 = viewModel.getCharacter();
+
+            // initialize the views to display the characters' stats
+            player1HealthBar = v.findViewById(R.id.progressBar_aliado);
+            player2HealthBar = v.findViewById(R.id.progressBar_inimigo);
+            player1image = v.findViewById(R.id.imageView3);
+            player2image = v.findViewById(R.id.imageView2);
+            player1Label = v.findViewById(R.id.textView_aliado);
+            player2Label = v.findViewById(R.id.textView_inimigo);
+            attackButton = v.findViewById(R.id.button_ataque);
+            runButton = v.findViewById(R.id.button_fugir);
+            //attackButton2 = v.findViewById(R.id.attack_button2);
+            backpackButton = v.findViewById(R.id.button_monstros);
+            // display the initial values for the characters' stats
+            player1HealthBar.setMax(m.maxhealth+8*m.level);
+            player1HealthBar.setProgress(player1.health);
+            player1image.setImageBitmap(BitmapFactory.decodeByteArray(player1.bArray, 0, player1.bArray.length));
+            player2HealthBar.setMax(player2.maxhealth+8*player2.level);
+            player2HealthBar.setProgress(player2.health);
+            player2image.setImageBitmap(BitmapFactory.decodeByteArray(player2.bArray, 0, player2.bArray.length));
+            return v;
+        }
 
         SecureRandom random = new SecureRandom();
         byte[] idBytes = new byte[16];
         random.nextBytes(idBytes);
         String id = new BigInteger(1, idBytes).toString(16);
 
-        MQTTHelper helper = new MQTTHelper(getActivity(), id, "battleaJunior");
+        helper = new MQTTHelper(getActivity(), id, "battleaJunior");
 
         helper.connect();
 
@@ -155,9 +193,8 @@ public class Battle extends Fragment{
             }
         });
 
-
         // LOAD PLAYER AND LOAD MONSTER HE IS FIGHTING FROM DATABASE
-        List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
+        monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
 
         int level_inimigo = viewModel.getZoneLevel();
         int number = 0;
@@ -174,11 +211,11 @@ public class Battle extends Fragment{
 
         // LOAD ENEMY
         MonsterDex enemy = viewModel.getRandomMonsterByType(viewModel.getCurrentType());
-        
+
         // initialize the characters and their stats
 
-        player1 = new Character(m.health+8*m.level, m.attack+8*m.level, m.defense+8*m.level, m.type, m.bArray); //player mon
-        player2 = new Character(enemy.health+8*level_inimigo, enemy.attack+8*level_inimigo, enemy.defense+8*level_inimigo, enemy.type, enemy.bArray); //mon he is fighting
+        player1 = new Character(m.health+8*m.level, m.attack+8*m.level, m.defense+8*m.level, m.type, m.bArray, 0, 0); //player mon
+        player2 = new Character(enemy.health+4*level_inimigo, enemy.attack+4*level_inimigo, enemy.defense+4*level_inimigo, enemy.type, enemy.bArray, level_inimigo, enemy.health+4*level_inimigo+8*level_inimigo); //mon he is fighting
         enemy_max_health = player2.health+8*level_inimigo;
 
         // initialize the views to display the characters' stats
@@ -191,7 +228,7 @@ public class Battle extends Fragment{
         attackButton = v.findViewById(R.id.button_ataque);
         runButton = v.findViewById(R.id.button_fugir);
         //attackButton2 = v.findViewById(R.id.attack_button2);
-        backpackButton = v.findViewById(R.id.button_mochila);
+        backpackButton = v.findViewById(R.id.button_monstros);
 
         // display the initial values for the characters' stats
         player1HealthBar.setMax(m.maxhealth+8*m.level);
@@ -205,24 +242,6 @@ public class Battle extends Fragment{
         // Create the handler for updating the UI
         mHandler = new Handler();
 
-
-        // Backpack Listener
-        backpackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Opens list
-                // On click change
-                // save state
-                viewModel.addFragment(getParentFragment());
-                Backpack backpack = new Backpack();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, backpack).commit();
-                // get new id
-
-                // change player
-
-            }
-        });
-
         // Create the game thread
         mGameThread = new Thread(new Runnable() {
             @Override
@@ -231,9 +250,10 @@ public class Battle extends Fragment{
 
                 // CUIDADO PARA NAO ALTERAR O ATAQUE NA BASE DE DADOS DO MONSTRO, ALTERA SÓ DURANTE O COMBATE!
                 if (temp >= 35){
-
-                    ((MainActivity)getActivity()).noti("Its hot...", "Ambiente quente, monstros de água estão enfraquecidos!");
-
+                    Activity activity = getActivity();
+                    if(activity != null) {
+                        ((MainActivity) getActivity()).noti("Its hot...", "Ambiente quente, monstros de água estão enfraquecidos!");
+                    }
                     if (player1.type.equals("water")){
                         player1.attack -= (int) Math.round(player1.attack * 0.1);
                     }
@@ -255,13 +275,29 @@ public class Battle extends Fragment{
                 Log.w("TAG", "p2atk: " + player2.attack);
 
                 while (player1.health > 0 && player2.health > 0) {
+                    viewModel.setCharacter(player2);
                     // Check for user input
+                    if(viewModel.getMonsterChange() == 1){
+                        // Get New Monster
+                        new_id = viewModel.getCurrentMonster2();
+                        Monster m = viewModel.getMonsterById(new_id);
 
+                        // Save changes
+                        viewModel.setHeal(player1.health, m.id);
+                        viewModel.changeMonsterChange();
+
+                        // update player object
+                        player1.setValues(m.health+8*m.level, m.attack+8*m.level, m.defense+8*m.level, m.type, m.bArray);
+                        player1image.setImageBitmap(BitmapFactory.decodeByteArray(player1.bArray, 0, player1.bArray.length));
+                        player1HealthBar.setProgress(player1.health);
+
+                    }
                     // Wait for player 1 to attack
                     attackButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             if (player1Turn) {
+
                                 player2.health -= player1.attack - (int)(player1.attack*(player1.defense/m.maxhealth));
 
                                 player1Turn = false;
@@ -271,6 +307,7 @@ public class Battle extends Fragment{
                                 mHandler.post(new Runnable() {
                                     @Override
                                     public void run() {
+
                                         player1HealthBar.setProgress(player1.health);
                                         player2HealthBar.setProgress(player2.health);
                                     }
@@ -284,37 +321,24 @@ public class Battle extends Fragment{
                         @Override
                         public void onClick(View v) {
                             //getActivity().getSupportFragmentManager().beginTransaction().detach(this).attach(this).commit();
-                            Fragment goBack = viewModel.getLastFragment();
-                            goBack.onResume();
+                            //Fragment goBack = viewModel.getLastFragment();
+                            //goBack.onResume();
                             //TestMap fragment = new TestMap();
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, goBack).commit();
+                            //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, goBack).commit();
+                            getActivity().getSupportFragmentManager().popBackStackImmediate();
                         }
                     });
-
-
-
-                    // Este bloco simula batalha entre 2 players em que cada um tem o seu botao....
-                    // Wait for player 2 to attack
-                    /*attackButton2.setOnClickListener(new View.OnClickListener() {
-                        @Override
+                    // Backpack Listener
+                    backpackButton.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
-                            if (player2Turn) {
-                                player1.health -= player2.attack;
-
-                                player1Turn = true;
-                                player2Turn = false;
-
-                                // Update the UI
-                                mHandler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        player1HealthBar.setProgress(player1.health);
-                                        player2HealthBar.setProgress(player2.health);
-                                    }
-                                });
-                            }
+                            Log.w("texto", "ADDING FRAG");
+                            viewModel.setCreatedOne();
+                            Backpack backpack = new Backpack();
+                            addFrag();
+                            //viewModel.addFragment(getActivity().getSupportFragmentManager().findFragmentByTag("BATTLETAG"));
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, backpack,"BATTLETAG").commit();
                         }
-                    });*/
+                    });
 
                     //Aqui é como se tivessemos a lutar contra uma AI
 
@@ -355,6 +379,7 @@ public class Battle extends Fragment{
 
                 }
 
+
                 // Update the UI
                 mHandler.post(new Runnable() {
                     @Override
@@ -381,20 +406,19 @@ public class Battle extends Fragment{
 
 
 
-    return v;
+        return v;
 
     }
     public void decisionPopup(int id){
 
-
-
         if (id==-1){
             toast = Toast.makeText(getContext(), "Defeat!", Toast.LENGTH_SHORT);
             toast.show();
-            Fragment goBack = viewModel.getLastFragment();
-            goBack.onResume();
+            //Fragment goBack = viewModel.getLastFragment();
+            //goBack.onResume();
             //TestMap fragment = new TestMap();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, goBack).commit();
+            //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, goBack).commit();
+            getActivity().getSupportFragmentManager().popBackStackImmediate();
         }
         else{
             toast = Toast.makeText(getContext(), "Victory!", Toast.LENGTH_SHORT);
@@ -422,13 +446,19 @@ public class Battle extends Fragment{
             alertDialog.show();
             // Refresh
             // refresh also List<Nota> notas and set to SharedModel
-            getActivity().getSupportFragmentManager().beginTransaction().detach(this).attach(this).commit();
-            Fragment goBack = viewModel.getLastFragment();
-            goBack.onResume();
+            viewModel.setCreatedZero();
+            //getActivity().getSupportFragmentManager().beginTransaction().detach(this).attach(this).commit();
+            //Fragment goBack = viewModel.getLastFragment();
+            //goBack.onResume();
             //TestMap fragment = new TestMap();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, goBack).commit();
+            //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, goBack).commit();
+            getActivity().getSupportFragmentManager().popBackStackImmediate();
         }
 
+    }
+
+    private void addFrag(){
+        viewModel.addFragment(this);
     }
 
 }

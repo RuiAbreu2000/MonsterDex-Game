@@ -48,8 +48,7 @@ public class WaterDungeon extends Fragment implements View.OnTouchListener{
         viewModel.getMap("waterDungeon");
         // Get Monster Matrix
         monsterArray = viewModel.getMonsterArray().clone();
-        // Get Tile Type Array
-        typeArray = viewModel.getTileType_Water().clone();
+
 
         // Get Bitmap
         bitmap = viewModel.getBitmap();
@@ -92,10 +91,8 @@ public class WaterDungeon extends Fragment implements View.OnTouchListener{
 
         }else if(monsterArray[idxRow][idxCol] > 0){
             // Save Fragment and Go to Battle Screen
-            viewModel.setCurrentType(typeArray[(int)tile]);
+            viewModel.setCurrentType((int) tile);
             Battle battle = new Battle();
-            //viewModel.addFragment(this);
-
 
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, battle,"BATTLETAG").addToBackStack(null).commit();
         }
