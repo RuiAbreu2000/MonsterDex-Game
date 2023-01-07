@@ -85,7 +85,7 @@ public class MapLayouts {
 
     // DUNGEON MAPS
     public void waterDungeon(int currentZoneLevel, SpriteSheet waterTiles) {
-        buildSpriteArray(currentZoneLevel, mapInformation.waterMapLevels[currentZoneLevel], waterTiles, 20);
+        buildSpriteArray(currentZoneLevel, mapInformation.waterMapLevels[currentZoneLevel-1], waterTiles, 20);
 
         // Build Monster array
         buildMonsterArray(currentZoneLevel);
@@ -99,7 +99,7 @@ public class MapLayouts {
 
     public void fireDungeon(int currentZoneLevel, SpriteSheet fireTiles) {
         // Build Sprite Array
-        buildSpriteArray(currentZoneLevel, mapInformation.fireMapLevels[currentZoneLevel], fireTiles, 19);
+        buildSpriteArray(currentZoneLevel, mapInformation.fireMapLevels[currentZoneLevel-1], fireTiles, 19);
 
         // Build Monster array
         buildMonsterArray(currentZoneLevel);
@@ -112,7 +112,7 @@ public class MapLayouts {
 
     public void groundDungeon(int currentZoneLevel, SpriteSheet groundTiles) {
         // Build Sprite Array
-        buildSpriteArray(currentZoneLevel, mapInformation.groundMapLevels[currentZoneLevel], groundTiles, 15);
+        buildSpriteArray(currentZoneLevel, mapInformation.groundMapLevels[currentZoneLevel-1], groundTiles, 15);
 
         // Build Monster array
         buildMonsterArray(currentZoneLevel);
@@ -125,7 +125,7 @@ public class MapLayouts {
 
     public void airDungeon(int currentZoneLevel, SpriteSheet skyTiles) {
         // Build Sprite Array
-        buildSpriteArray(currentZoneLevel, mapInformation.airMapLevels[currentZoneLevel], skyTiles, 15);
+        buildSpriteArray(currentZoneLevel, mapInformation.airMapLevels[currentZoneLevel-1], skyTiles, 15);
 
         // Build Monster array
         buildMonsterArray(currentZoneLevel);
@@ -284,4 +284,21 @@ public class MapLayouts {
         bossSymbol = symbolsSpriteSheet.getMonsterTile(10);
     }
 
+    public String getTileType(int currentZoneLevel, String currentZone, int tile) {
+        Log.w("texto", "getTileType");
+        Log.w("texto", String.valueOf(currentZoneLevel));
+        Log.w("texto", String.valueOf(tile));
+        Log.w("texto", String.valueOf(mapInformation.waterMapLevels[currentZoneLevel][tile]));
+        switch(currentZone) {
+            case "waterDungeon":
+                return mapInformation.waterTileType[mapInformation.waterMapLevels[currentZoneLevel][tile]];
+            case "fireDungeon":
+                return mapInformation.fireTileType[mapInformation.fireMapLevels[currentZoneLevel][tile]];
+            case "groundDungeon":
+                return mapInformation.groundTileType[mapInformation.groundMapLevels[currentZoneLevel][tile]];
+            case "airDungeon":
+                return mapInformation.airTileType[mapInformation.airMapLevels[currentZoneLevel][tile]];
+        }
+        return "erro";
+    }
 }
