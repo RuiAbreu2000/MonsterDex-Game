@@ -55,12 +55,6 @@ public class NewGame extends Fragment {
     private Sprite[][] monsterSprite;
     private SpriteSheet waterMonsterSpriteSheet;
     Bitmap[] monster = new Bitmap[3];
-    private String[] monsterNames = {
-            "Crab", "Angry Crab", "Monster Crab",
-            "Ocean Bear", "Ocean Bearsaur", "Oceanzilla",
-            "Ocean Mutant", "Giant Ocean Mutant", "Mega Mutant",
-            "Shark", "Shark Monster", "Shark Monstrosity",
-    };
 
     public NewGame() {
         // Required empty public constructor

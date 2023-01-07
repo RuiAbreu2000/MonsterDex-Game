@@ -26,6 +26,14 @@ public class MapInformation {
             "air", "air", "air", "air",
     };
 
+    public String[] bugTileType = {
+            "bug", "bug", "bug", "bug",
+            "bug", "ground", "water", "air",
+            "bug", "bug", "bug", "bug",
+            "air", "ground", "bug", "bug",
+    };
+
+
 
     // HOME MAP
     public int[] homeMap = {
