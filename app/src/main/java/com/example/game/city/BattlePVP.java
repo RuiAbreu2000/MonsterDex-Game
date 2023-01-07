@@ -92,6 +92,7 @@ public class BattlePVP extends Fragment {
     private TextView player1Label;
     private TextView player2Label;
     private Button attackButton;
+    private Button fugirButton;
     private Button attackButton2;
 
     @Override
@@ -122,6 +123,7 @@ public class BattlePVP extends Fragment {
         player1Label = v.findViewById(R.id.textView_aliado);
         player2Label = v.findViewById(R.id.textView_inimigo);
         attackButton = v.findViewById(R.id.button_ataque);
+        fugirButton = v.findViewById(R.id.buttonFugir);
         ImageView p1 = v.findViewById(R.id.imageView1);
         ImageView p2 = v.findViewById(R.id.imageView2);
         Button joinmatch = v.findViewById(R.id.button_join);
@@ -170,6 +172,19 @@ public class BattlePVP extends Fragment {
                     joinmatch.setVisibility(v.INVISIBLE);
 
                 }
+            }
+        });
+
+        fugirButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imPlayer1){
+                    helper.publish("ConnectJunior", "Gameover", 0, true);
+                    helper.publish("GetHPJunior", "Gameover", 0, true);
+                }
+
+                MainCity fragment = new MainCity();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
             }
         });
 
@@ -410,7 +425,7 @@ public class BattlePVP extends Fragment {
                                             gameActionsTextView.setText("Player 1 attacked player 2");
                                         }
                                     });
-                                    player2HP -= number;
+                                    player2HP -= (number - (number * (player2DEF/player2HP)));
 
                                     player1Turn = false;
                                     player2Turn = true;
@@ -445,7 +460,8 @@ public class BattlePVP extends Fragment {
                                             gameActionsTextView.setText("Player 2 attacked player 1");
                                         }
                                     });
-                                    player1HP -= number;
+                                    //(number - (number * (Boss.defense)/ Boss.health))
+                                    player1HP -= (number - (number * (player1DEF/player1HP)));
 
                                     player1Turn = true;
                                     player2Turn = false;
@@ -520,6 +536,17 @@ public class BattlePVP extends Fragment {
 
                             }
 
+                        }
+                    });
+
+                    fugirButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (player1Turn){
+                                helper.publish("battleJunior", "fugir", 0, false);
+                            }else if (player2Turn){
+                                helper.publish("battleJunior", "fugir", 0, false);
+                            }
                         }
                     });
 

@@ -553,7 +553,7 @@ public class BattleCOOPboss extends Fragment {
                                             gameActionsTextView.setText("Player 1 attacked boss!");
                                         }
                                     });
-                                    BossHP -= (number - (number * (Boss.defense)/ Boss.health));
+                                    BossHP -= (number - (number * (Boss.defense/ Boss.health)));
 
                                     player1Turn = false;
                                     player2Turn = true;
@@ -592,7 +592,7 @@ public class BattleCOOPboss extends Fragment {
                                         }
                                     });
 
-                                    BossHP -= (number - (number * (Boss.defense)/ Boss.health));
+                                    BossHP -= (number - (number * (Boss.defense/ Boss.health)));
 
                                     if (imPlayer2) {
                                         attackButton.setEnabled(false);
