@@ -225,7 +225,7 @@ public class BattlePVP extends Fragment {
 
                         Monster m = monsters.get(0);
 
-                        player1 = new Character(m.health*m.level, m.attack*m.level, m.defense*m.level, m.type, m.bArray);
+                        player1 = new Character(m.maxhealth*m.level, m.attack*m.level, m.defense*m.level, m.type, m.bArray);
 
                         // Publish the message to notify player 1 is in
                         player1HealthBar.setMax(player1.health);
@@ -253,7 +253,7 @@ public class BattlePVP extends Fragment {
                             List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
 
                             Monster m = monsters.get(0);
-                            player2 = new Character(m.health*m.level, m.attack*m.level, m.defense*m.level, m.type, m.bArray);
+                            player2 = new Character(m.maxhealth*m.level, m.attack*m.level, m.defense*m.level, m.type, m.bArray);
 
                             // Publish the message to notify player 1 is in
                             player2HealthBar.setMax(player2.health);
@@ -416,6 +416,15 @@ public class BattlePVP extends Fragment {
                             Log.w("TAG", "topic: " + topic);
 
                             if (topic.equals("battleJunior")) {
+
+                                if (new String(message.getPayload()).equals("fugir")){
+                                    helper.publish("ConnectJunior", "Gameover", 0, true);
+                                    helper.publish("GetHPJunior", "Gameover", 0, true);
+
+                                    MainCity fragment = new MainCity();
+                                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                                }
+
                                 int number = Integer.parseInt(new String(message.getPayload()));
 
                                 if (player1Turn) { //player 2 takes dmg
