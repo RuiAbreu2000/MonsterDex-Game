@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import android.app.Application;
 import android.graphics.Bitmap;
 
+import com.example.game.city.Battle;
 import com.example.game.databases.AppDatabase;
 import com.example.game.databases.Monster;
 import com.example.game.databases.MonsterDex;
@@ -82,6 +83,10 @@ public class SharedViewModel extends AndroidViewModel{
     public String monsterType;
 
     public int currentMonster = -1;
+    public int currentMonster2 = 1;
+    public int monster_change = 0;
+    public int create = 0;
+    public Battle.Character enemy;
 
     public SharedViewModel(@NonNull Application application) {
         super(application);
@@ -207,7 +212,10 @@ public class SharedViewModel extends AndroidViewModel{
     public MonsterDex getRandomMonsterByType(String type){
         List<MonsterDex> monsterdex = db.monsterDexDao().getAllMonstersByType(type);
         int rand = (int)(Math.random()*(monsterdex.size()-0+1)+0);
-        MonsterDex mosnter = monsterdex.get(rand-(rand%3));
+        int id = rand-(rand%3);
+        if(id > monsterdex.size()){monsterdex.get(0);}
+        MonsterDex mosnter = monsterdex.get(id);
+
 
         return mosnter;
     }
@@ -243,5 +251,53 @@ public class SharedViewModel extends AndroidViewModel{
 
     public void setHeal(int health, int id){
         db.monsterDao().setHealth(health, id);
+    }
+
+    public void setCurrentMonster2(int id){
+        currentMonster2 = id;
+    }
+
+    public int getCurrentMonster2(){
+        return currentMonster2;
+    }
+
+    public void changeMonsterChange(){
+        if(monster_change == 0){
+            monster_change = 1;
+        }else{
+            monster_change = 0;
+        }
+    }
+
+    public int getMonsterChange(){
+        return monster_change;
+    }
+
+    public void changeCreated(){
+        if(create == 0){
+            create = 1;
+        }else{
+            create = 0;
+        }
+    }
+
+    public int getCreated(){
+        return create;
+    }
+
+    public int setCreatedZero(){
+        return create = 0;
+    }
+
+    public int setCreatedOne(){
+        return create = 1;
+    }
+
+    public void setCharacter(Battle.Character enemy){
+        this.enemy = enemy;
+    }
+
+    public Battle.Character getCharacter(){
+        return enemy;
     }
 }

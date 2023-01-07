@@ -88,14 +88,16 @@ public class WaterDungeon extends Fragment implements View.OnTouchListener{
             viewModel.incrementLevel();
             // Save Frament
             WaterDungeon waterDungeon = new WaterDungeon();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, waterDungeon).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, waterDungeon, "DUNGEON").commit();
 
         }else if(monsterArray[idxRow][idxCol] > 0){
             // Save Fragment and Go to Battle Screen
             viewModel.setCurrentType(typeArray[(int)tile]);
             Battle battle = new Battle();
-            viewModel.addFragment(this);
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, battle).commit();
+            //viewModel.addFragment(this);
+
+
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, battle,"BATTLETAG").addToBackStack(null).commit();
         }
 
 

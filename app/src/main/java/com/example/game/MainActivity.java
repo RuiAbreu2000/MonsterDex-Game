@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new MainMenu()).commit();
 
-        //fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         // Show the main game screen when the activity is first created
         //showFragment(new MainMenu());
     }

@@ -96,7 +96,7 @@ public class ZoneSelection_1 extends Fragment implements View.OnTouchListener{
         if( tile == 1){               // Water Dungeon
             Log.w("texto", "Water Dungeon");
             WaterDungeon waterDungeon = new WaterDungeon();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, waterDungeon).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, waterDungeon, "DUNGEON").commit();
 
         }else if( tile == 2 ){      // Fire Dungeon
             Log.w("texto", "Fire Dungeon");

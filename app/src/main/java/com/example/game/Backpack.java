@@ -88,7 +88,16 @@ public class Backpack extends Fragment implements RecyclerViewInterface3{
 
     @Override
     public void onItemClick(int position) {
-        viewModel.setCurrentMonster(monster.get(position).getId());
+        //Log.w("texto", "CREATING ");
+        //Log.w("texto", String.valueOf(monster.get(position).getId()));
+
+        viewModel.setCurrentMonster2(monster.get(position).getId());
+        viewModel.changeMonsterChange();
         // Go Back
+        //getActivity().getSupportFragmentManager().beginTransaction().detach(this).attach(this).commit();
+        Fragment goBack = viewModel.getLastFragment();
+        goBack.onResume();
+        //TestMap fragment = new TestMap();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, goBack, "BATTLETAG").commit();
     }
 }

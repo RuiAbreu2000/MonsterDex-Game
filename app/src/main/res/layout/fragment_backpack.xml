@@ -7,14 +7,15 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/monsters"
-        android:layout_width="match_parent"
-        android:layout_height="675dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
         app:layout_constraintBottom_toTopOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:adjustViewBounds = "true"/>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
