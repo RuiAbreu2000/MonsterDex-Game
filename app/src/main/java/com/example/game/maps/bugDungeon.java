@@ -83,7 +83,7 @@ public class bugDungeon extends Fragment implements View.OnTouchListener{
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, maincity).commit();
         }else if(tile == 1){      // Go Forward
             Log.w("texto", String.valueOf(viewModel.getLevel()));
-            if(viewModel.getLevel() == 16){
+            if(viewModel.getLevel() == 15){
                 MainCity maincity = new MainCity();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, maincity).commit();
             }else{

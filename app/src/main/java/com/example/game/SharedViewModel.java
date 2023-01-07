@@ -20,7 +20,6 @@ import java.util.Random;
 import java.util.Stack;
 
 public class SharedViewModel extends AndroidViewModel{
-    // TILESET INDEX TYPES
 
     // MAP CONSTANTS
     public static final int NUMBER_OF_MAP_ROWS = 5;

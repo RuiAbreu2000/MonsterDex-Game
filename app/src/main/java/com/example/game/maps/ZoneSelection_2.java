@@ -96,16 +96,16 @@ public class ZoneSelection_2 extends Fragment implements View.OnTouchListener{
 
 
         if( tile == 11 ){      // Right Arrow
-            Log.w("texto", "Right Arrow");
+            //Log.w("texto", "Right Arrow");
             ZoneSelection_1 zone_1 = new ZoneSelection_1();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, zone_1).commit();
 
         }else if( tile == 17 ) {      // Random Dungeon
-            Log.w("texto", "Random Dungeon");
+            //Log.w("texto", "Random Dungeon");
             RandomDungeon randomDungeon = new RandomDungeon();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, randomDungeon).commit();
         }else if( tile == 8 ) {      // Go Left
-            Log.w("texto", "Left Arrow");
+            //Log.w("texto", "Left Arrow");
             ZoneSelection_3 zone_3 = new ZoneSelection_3();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, zone_3).commit();
         }

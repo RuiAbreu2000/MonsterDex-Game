@@ -377,6 +377,8 @@ public class MapLayouts {
                 return mapInformation.groundTileType[mapInformation.groundMapLevels[currentZoneLevel][tile]];
             case "airDungeon":
                 return mapInformation.airTileType[mapInformation.airMapLevels[currentZoneLevel][tile]];
+            case "bugDungeon":
+                return mapInformation.bugTileType[mapInformation.airMapLevels[currentZoneLevel][tile]];
         }
         return "erro";
     }
