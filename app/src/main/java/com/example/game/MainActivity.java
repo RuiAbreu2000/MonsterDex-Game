@@ -48,34 +48,34 @@ public class MainActivity extends AppCompatActivity {
             // Load Monsters to MonsterDex Database
             MonsterSpriteSheet = viewModel.getAirMonsterSpriteSheet();
             monsterNames = new String[]{
-                    "air00", "air01", "air02",
-                    "air10", "air11", "air12",
-                    "air20", "air21", "air22",
-                    "air30", "air31", "air32",
+                    "Apprentice Moira", "Moira", "Dark Sisters",
+                    "Canary", "Eagle", "Dragon",
+                    "Slime", "Slime Angel", "Angel",
+                    "Small Fairy", "Fairy", "Ancient Fairy",
             };
             buildMonsters("air");
             MonsterSpriteSheet = viewModel.getBugMonsterSpriteSheet();
             monsterNames = new String[]{
-                    "bug00", "bug01", "bug02",
-                    "bug10", "bug11", "bug12",
-                    "bug20", "bug21", "bug22",
-                    "bug30", "bug31", "bug32",
+                    "Ant", "Mutant Ant", "Anterfly",
+                    "Spider", "Mutant Spider", "Demonic Spider",
+                    "Bee", "Mutant Bee", "Beeterfly",
+                    "Larva", "Mutant Larva", "Giant Larva",
             };
             buildMonsters("bug");
             MonsterSpriteSheet = viewModel.getFireMonsterSpriteSheet();
             monsterNames = new String[]{
-                    "fire00", "fire01", "fire02",
-                    "fire10", "fire11", "fire12",
-                    "fire20", "fire21", "fire22",
-                    "fire30", "fire31", "fire32",
+                    "Lizard", "Dragon", "Ancient Dragon",
+                    "Fire Slime", "Fire Human", "Fire Homunculus",
+                    "Dog", "Infernal Dog", "Cerebrus",
+                    "Quimera", "Old Quimera", "Grifo",
             };
             buildMonsters("fire");
             MonsterSpriteSheet = viewModel.getGroundMonsterSpriteSheet();
             monsterNames = new String[]{
-                    "ground00", "ground01", "ground02",
-                    "ground10", "ground11", "ground12",
-                    "ground20", "ground21", "ground22",
-                    "ground30", "ground31", "ground32",
+                    "Turtle", "Mutant Turtle", "T-Turtle",
+                    "Plant", "Carnivorous Plant", "Ancient Plant",
+                    "Lizard", "Poison Lizard", "Mega Lizard",
+                    "Scorpion", "Mutant Scorpion", "Scorpider",
             };
             buildMonsters("ground");
             MonsterSpriteSheet = viewModel.getWaterMonsterSpriteSheet();
