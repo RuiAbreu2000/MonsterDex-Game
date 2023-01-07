@@ -172,7 +172,7 @@ public class MapLayouts {
 
     public void bugDungeon(int currentZoneLevel, SpriteSheet bugTiles) {
         // Build Sprite Array
-        buildSpriteArray(currentZoneLevel, mapInformation.bugMapLevels[currentZoneLevel-1], bugTiles, 15);
+        buildSpriteArray(currentZoneLevel, mapInformation.bugMapLevels[currentZoneLevel-1], bugTiles, 14);
 
         // Build Monster array
         buildMonsterArray(currentZoneLevel);
