@@ -197,15 +197,15 @@ public class SharedViewModel extends AndroidViewModel{
     public String getCurrentType() {return monsterType;}
     public void setCurrentType(int tile) {
         this.monsterType = maplayouts.getTileType(currentZoneLevel,currentZone, tile);
-        Log.w("texto", this.monsterType);
+        //Log.w("texto", this.monsterType);
     }
     public void setCurrentTypeRandom() {
         Random sheet = new Random();
         Random tile = new Random();
-        String[] randomzone = new String[]{"waterDungeon", "fireDungeon", "groundDungeon", "airDungeon"};
+        String[] randomzone = new String[]{"waterDungeon", "fireDungeon", "groundDungeon", "airDungeon","bugDungeon"};
 
         this.monsterType = maplayouts.getTileType(currentZoneLevel ,randomzone[sheet.nextInt(4)],  tile.nextInt(16));
-        Log.w("texto", this.monsterType);
+        //Log.w("texto", this.monsterType);
     }
 
     // Save Zone Before going into Battle

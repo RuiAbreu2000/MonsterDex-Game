@@ -30,6 +30,7 @@ public class MapLayouts {
     public Sprite arrowUp;
     private Sprite arrowDown;
     private Sprite monsterSymbol;
+    private Sprite arrowRight;
     private Sprite bossSymbol;
     private Sprite bugDungeonSymbol;
 
@@ -86,6 +87,7 @@ public class MapLayouts {
     public void zoneSelection_3_cold() {
         // Build Sprite Array
         buildSpriteArrayFixed(mapInformation.zoneSelection_3ColdMap);
+        mapSprite[2][3] = arrowRight;
 
         // Build Bitmap
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
@@ -96,6 +98,7 @@ public class MapLayouts {
     public void zoneSelection_3_hot() {
         // Build Sprite Array
         buildSpriteArrayFixed(mapInformation.zoneSelection_3HotMap);
+        mapSprite[2][3] = arrowRight;
 
         // Build Bitmap
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
@@ -106,6 +109,7 @@ public class MapLayouts {
     public void zoneSelection_3_mild() {
         // Build Sprite Array
         buildSpriteArrayFixed2(mapInformation.zoneSelection_3MildMap);
+        mapSprite[2][3] = arrowRight;
 
         // Build Bitmap
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
@@ -166,9 +170,9 @@ public class MapLayouts {
         this.buildBitmap();
     }
 
-    public void bugDungeon(int currentZoneLevel, SpriteSheet skyTiles) {
+    public void bugDungeon(int currentZoneLevel, SpriteSheet bugTiles) {
         // Build Sprite Array
-        buildSpriteArray(currentZoneLevel, mapInformation.airMapLevels[currentZoneLevel-1], skyTiles, 15);
+        buildSpriteArray(currentZoneLevel, mapInformation.bugMapLevels[currentZoneLevel-1], bugTiles, 15);
 
         // Build Monster array
         buildMonsterArray(currentZoneLevel);
@@ -312,24 +316,6 @@ public class MapLayouts {
         return;
     }
 
-    private void buildRandomLayout(int[] indexes, int[] mapProbabilities){
-        Random rand = new Random();
-        for (int i = 0; i < NUMBER_OF_MAP_ROWS*NUMBER_OF_MAP_COLUMNS; i++) {
-            int randomNumber = rand.nextInt(100);
-
-            //Log.w("a", String.valueOf(randomNumber));
-            if(randomNumber >= 0 && randomNumber <= mapProbabilities[0]){                           // Index 0
-                mapSpriteSheetIndex[i] = indexes[0];
-            }else if(randomNumber > mapProbabilities[0] && randomNumber <= mapProbabilities[1]){    // Index 1
-                mapSpriteSheetIndex[i] = indexes[1];
-            }else if(randomNumber > mapProbabilities[1] && randomNumber <= mapProbabilities[2]){    // index 2
-                mapSpriteSheetIndex[i] = indexes[2];
-            }else if(randomNumber > mapProbabilities[2] && randomNumber <= 100){                    // Index 3
-                mapSpriteSheetIndex[i] = indexes[3];
-            }
-        }
-        return;
-    }
 
     // BUILD MONSTER ARRAY
     public void buildMonsterArray(int currentZoneLevel) {
@@ -374,6 +360,7 @@ public class MapLayouts {
         monsterSymbol = symbolsSpriteSheet.getMonsterTile(1);
         bossSymbol = symbolsSpriteSheet.getMonsterTile(10);
         bugDungeonSymbol = symbolsSpriteSheet.getMonsterTile(8);
+        arrowRight = symbolsSpriteSheet.getMonsterTile(6);
     }
 
     public String getTileType(int currentZoneLevel, String currentZone, int tile) {
