@@ -48,6 +48,7 @@ public class SharedViewModel extends AndroidViewModel{
     public SpriteSheet fireMonsterSpritesheet;
     public SpriteSheet groundMonsterSpritesheet;
     public SpriteSheet waterMonsterSpritesheet;
+
         // Other
     public SpriteSheet symbolsSpriteSheet;
     public SpriteSheet fixedSpriteSheet;
@@ -132,6 +133,18 @@ public class SharedViewModel extends AndroidViewModel{
                 currentZone = "airDungeon";
                 maplayouts.airDungeon(currentZoneLevel, skyTiles);
                 return;
+            case "randomDungeon":
+                currentZone = "randomDungeon";
+                maplayouts.randomDungeon(currentZoneLevel, new SpriteSheet[]{waterTiles, fireTiles, groundTiles, skyTiles});
+                return;
+            case "zoneSelection_3_cold":
+                currentZone = "zoneSelection_3";
+                maplayouts.zoneSelection_3_cold();
+                return;
+            case "zoneSelection_3_hot":
+                currentZone = "zoneSelection_3";
+                maplayouts.zoneSelection_3_hot();
+                return;
         }
     }
 
@@ -169,9 +182,18 @@ public class SharedViewModel extends AndroidViewModel{
     public void incrementLevel() { this.currentZoneLevel += 1;}
     public void setLevelTo_1(){this.currentZoneLevel = 1;}
     public int getZoneLevel(){ Random rand = new Random(); return this.currentZoneLevel + rand.nextInt(5);}
+    public int getLevel(){return this.currentZoneLevel;};
     public String getCurrentType() {return monsterType;}
     public void setCurrentType(int tile) {
         this.monsterType = maplayouts.getTileType(currentZoneLevel,currentZone, tile);
+        Log.w("texto", this.monsterType);
+    }
+    public void setCurrentTypeRandom() {
+        Random sheet = new Random();
+        Random tile = new Random();
+        String[] randomzone = new String[]{"waterDungeon", "fireDungeon", "groundDungeon", "airDungeon"};
+
+        this.monsterType = maplayouts.getTileType(currentZoneLevel ,randomzone[sheet.nextInt(4)],  tile.nextInt(16));
         Log.w("texto", this.monsterType);
     }
 

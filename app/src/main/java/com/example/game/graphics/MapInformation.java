@@ -47,9 +47,25 @@ public class MapInformation {
     public int[] zoneSelection_2Map = {
             15, 15, 15, 15,
             1, 1, 1, 1,
-            3, 16, 16, 2,
+            3, 14, 16, 2,
             1, 17, 1, 1,
             1, 25, 1, 1,
+    };
+
+    public int[] zoneSelection_3HotMap = {
+            10, 10, 10, 10,
+            10, 10, 10, 10,
+            10, 10, 10, 10,
+            10, 10, 10, 10,
+            10, 10, 10, 10,
+    };
+
+    public int[] zoneSelection_3ColdMap = {
+            20, 20, 20, 20,
+            20, 20, 20, 20,
+            20, 20, 20, 20,
+            20, 20, 20, 20,
+            20, 20, 20, 20,
     };
 
     // DUNGEONS

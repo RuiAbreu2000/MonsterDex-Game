@@ -3,6 +3,7 @@ package com.example.game.maps;
 import static com.example.game.SharedViewModel.NUMBER_OF_MAP_COLUMNS;
 import static com.example.game.SharedViewModel.TILESIZE;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
@@ -16,12 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.game.city.Battle;
 import com.example.game.R;
 import com.example.game.SharedViewModel;
+import com.example.game.city.Battle;
 
 
-public class GroundDungeon extends Fragment implements View.OnTouchListener{
+public class RandomDungeon extends Fragment implements View.OnTouchListener{
 
     // Variables
     private SharedViewModel viewModel;
@@ -30,6 +31,7 @@ public class GroundDungeon extends Fragment implements View.OnTouchListener{
     private Bitmap bitmap;
     private String[] typeArray;
     private int[][] monsterArray;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,13 +43,14 @@ public class GroundDungeon extends Fragment implements View.OnTouchListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_water_dungeon, container, false);
+        View v = inflater.inflate(R.layout.fragment_random_dungeon, container, false);
         image = v.findViewById(R.id.MapHolder);
 
         // Build map
-        viewModel.getMap("groundDungeon");
+        viewModel.getMap("randomDungeon");
         // Get Monster Matrix
         monsterArray = viewModel.getMonsterArray().clone();
+
 
         // Get Bitmap
         bitmap = viewModel.getBitmap();
@@ -74,32 +77,27 @@ public class GroundDungeon extends Fragment implements View.OnTouchListener{
         int idxCol = (int) (imageX/TILESIZE);
         float tile = idxRow*NUMBER_OF_MAP_COLUMNS+idxCol;
 
-        Log.w("texto", "ROWS AND COLUMNS");
-        Log.w("texto", String.valueOf(idxRow));
-        Log.w("texto", String.valueOf(idxCol));
-        Log.w("texto", String.valueOf(tile));
-
         if(tile == 17){     // Go Home
             MainCity maincity = new MainCity();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, maincity).commit();
-        } else if(tile == 1){      // Go Forward
-            if(viewModel.getLevel() == 16) {
+        }else if(tile == 1){      // Go Forward
+            if(viewModel.getLevel() == 21) {
                 MainCity maincity = new MainCity();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, maincity).commit();
             }else {
                 viewModel.incrementLevel();
                 // Save Frament
-                GroundDungeon groundDungeon = new GroundDungeon();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, groundDungeon).commit();
+                RandomDungeon randomDungeon = new RandomDungeon();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, randomDungeon, "DUNGEON").commit();
             }
         }else if(monsterArray[idxRow][idxCol] > 0){
             // Save Fragment and Go to Battle Screen
-            viewModel.setCurrentType((int) tile);
+            viewModel.setCurrentTypeRandom();
             Battle battle = new Battle();
+
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, battle,"BATTLETAG").addToBackStack(null).commit();
         }
-
-
         return false;
     }
+
 }

@@ -105,7 +105,6 @@ public class ZoneSelection_1 extends Fragment implements View.OnTouchListener{
 
         }else if( tile == 8 ){      // Go Left
             Log.w("texto", "Left Arrow");
-            Log.w("texto", "Left Map");
             ZoneSelection_2 zone_2 = new ZoneSelection_2();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, zone_2).commit();
 

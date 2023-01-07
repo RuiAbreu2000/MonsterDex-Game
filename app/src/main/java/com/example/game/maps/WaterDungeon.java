@@ -75,20 +75,21 @@ public class WaterDungeon extends Fragment implements View.OnTouchListener{
         int idxCol = (int) (imageX/TILESIZE);
         float tile = idxRow*NUMBER_OF_MAP_COLUMNS+idxCol;
 
-        Log.w("texto", "ROWS AND COLUMNS");
-        Log.w("texto", String.valueOf(idxRow));
-        Log.w("texto", String.valueOf(idxCol));
-        Log.w("texto", String.valueOf(tile));
 
         if(tile == 17){     // Go Home
             MainCity maincity = new MainCity();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, maincity).commit();
         }else if(tile == 1){      // Go Forward
-            viewModel.incrementLevel();
-            // Save Frament
-            WaterDungeon waterDungeon = new WaterDungeon();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, waterDungeon, "DUNGEON").commit();
+            Log.w("texto", String.valueOf(viewModel.getLevel()));
+            if(viewModel.getLevel() == 21){
+                MainCity maincity = new MainCity();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, maincity).commit();
+            }else{
+                viewModel.incrementLevel();
+                WaterDungeon waterDungeon = new WaterDungeon();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, waterDungeon, "DUNGEON").commit();
 
+            }
         }else if(monsterArray[idxRow][idxCol] > 0){
             // Save Fragment and Go to Battle Screen
             viewModel.setCurrentType((int) tile);

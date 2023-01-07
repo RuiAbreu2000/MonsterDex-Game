@@ -50,7 +50,7 @@ public class MapLayouts {
     }
 
 
-    // MAPAS
+    // GET MAPAS
     public void homeMap() {
         // Build Sprite Array
         buildSpriteArrayFixed(mapInformation.homeMap);
@@ -76,6 +76,26 @@ public class MapLayouts {
     public void zoneSelection_2() {
         // Build Sprite Array
         buildSpriteArrayFixed(mapInformation.zoneSelection_2Map);
+
+        // Build Bitmap
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_COLUMNS * TILESIZE, NUMBER_OF_MAP_ROWS * TILESIZE, conf); // this creates a MUTABLE bitmap
+        this.buildBitmapFixed();
+    }
+
+    public void zoneSelection_3_cold() {
+        // Build Sprite Array
+        buildSpriteArrayFixed(mapInformation.zoneSelection_3ColdMap);
+
+        // Build Bitmap
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_COLUMNS * TILESIZE, NUMBER_OF_MAP_ROWS * TILESIZE, conf); // this creates a MUTABLE bitmap
+        this.buildBitmapFixed();
+    }
+
+    public void zoneSelection_3_hot() {
+        // Build Sprite Array
+        buildSpriteArrayFixed(mapInformation.zoneSelection_3HotMap);
 
         // Build Bitmap
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
@@ -136,7 +156,39 @@ public class MapLayouts {
         this.buildBitmap();
     }
 
+    public void randomDungeon(int currentZoneLevel, SpriteSheet[] sheets) {
+        Random sheet = new Random();
+        Random tile = new Random();
+        int sheet_i, tile_i;
+        // Build Map with Sprites
+        for (int iRow = 0; iRow < NUMBER_OF_MAP_ROWS; iRow++) {
+            for (int iCol = 0; iCol < NUMBER_OF_MAP_COLUMNS; iCol++) {
+                // Pick sheet
+                sheet_i = sheet.nextInt(4);
+                tile_i = tile.nextInt(16);
+                mapSprite[iRow][iCol] = sheets[sheet_i].getTile(tile_i+1);
+            }
+        }
+        // Set Arrow Symbols
+        mapSprite[4][1] = arrowDown;
 
+        if(currentZoneLevel < 20+1){ // 20 -> maxLevel
+            mapSprite[0][1] = arrowUp;
+        }else{
+            mapSprite[0][1] = bossSymbol;
+        }
+
+        // Build Monster array
+        buildMonsterArray(currentZoneLevel);
+
+        // Build Bitmap
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        bitmap = Bitmap.createBitmap(NUMBER_OF_MAP_COLUMNS * TILESIZE, NUMBER_OF_MAP_ROWS * TILESIZE, conf); // this creates a MUTABLE bitmap
+        this.buildBitmap();
+
+    }
+
+    // BUILD SPRITE ARRAY
     public void buildSpriteArray(int currentZoneLevel, int[] mapTiles, SpriteSheet sheet, int maxLevel){
         // Build Map with Sprites
         int tile_counter = 0;
@@ -171,6 +223,7 @@ public class MapLayouts {
         }
     }
 
+    // BUILD BITMAPS
     public void buildBitmap(){
         int current_left = 0;
         int current_top = 0;
@@ -241,6 +294,7 @@ public class MapLayouts {
         return;
     }
 
+    // BUILD MONSTER ARRAY
     public void buildMonsterArray(int currentZoneLevel) {
         // 0 if no Monster; 1< if Monster and number is their level
         Random rand = new Random();
@@ -301,4 +355,5 @@ public class MapLayouts {
         }
         return "erro";
     }
+
 }

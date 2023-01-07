@@ -102,8 +102,12 @@ public class ZoneSelection_2 extends Fragment implements View.OnTouchListener{
 
         }else if( tile == 17 ) {      // Random Dungeon
             Log.w("texto", "Random Dungeon");
-            airDungeon airDungeon = new airDungeon();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, airDungeon).commit();
+            RandomDungeon randomDungeon = new RandomDungeon();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, randomDungeon).commit();
+        }else if( tile == 8 ) {      // Go Left
+            Log.w("texto", "Left Arrow");
+            ZoneSelection_3 zone_3 = new ZoneSelection_3();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, zone_3).commit();
         }
         return false;
     }

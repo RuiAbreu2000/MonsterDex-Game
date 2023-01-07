@@ -83,11 +83,15 @@ public class airDungeon extends Fragment implements View.OnTouchListener{
             MainCity maincity = new MainCity();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, maincity).commit();
         }else if(tile == 1){      // Go Forward
-            viewModel.incrementLevel();
-            // Save Frament
-            airDungeon airDungeon = new airDungeon();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, airDungeon).commit();
-
+            if(viewModel.getLevel() == 16) {
+                MainCity maincity = new MainCity();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, maincity).commit();
+            }else {
+                viewModel.incrementLevel();
+                // Save Frament
+                airDungeon airDungeon = new airDungeon();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, airDungeon).commit();
+            }
         }else if(monsterArray[idxRow][idxCol] > 0){
             // Save Fragment and Go to Battle Screen
             viewModel.setCurrentType((int) tile);
