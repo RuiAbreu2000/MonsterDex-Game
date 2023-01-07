@@ -24,6 +24,7 @@ import com.example.game.SharedViewModel;
 import com.example.game.databases.Monster;
 import com.example.game.databases.MonsterDex;
 import com.example.game.maps.MainCity;
+import com.example.game.screens.NewGame;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -98,6 +99,7 @@ public class BattleCOOPboss extends Fragment {
     private TextView player2Label;
     private TextView Boss2Label;
     private Button attackButton;
+    private Button fugirButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -129,6 +131,7 @@ public class BattleCOOPboss extends Fragment {
         player2Label = v.findViewById(R.id.textView_inimigo);
         Boss2Label = v.findViewById(R.id.textView_Boss);
         attackButton = v.findViewById(R.id.button_ataque);
+        fugirButton = v.findViewById(R.id.buttonFugir);
         ImageView p1 = v.findViewById(R.id.imageView1);
         ImageView p2 = v.findViewById(R.id.imageView2);
 
@@ -145,6 +148,7 @@ public class BattleCOOPboss extends Fragment {
         //player1HealthBar.setProgress(player1.health);
         //player2HealthBar.setProgress(player2.health);
         attackButton.setEnabled(false);
+        fugirButton.setEnabled(true);
 
         // Create the handler for updating the UI
         mHandler = new Handler();
@@ -179,6 +183,14 @@ public class BattleCOOPboss extends Fragment {
                     joinmatch.setVisibility(v.INVISIBLE);
 
                 }
+            }
+        });
+
+        fugirButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainCity fragment = new MainCity();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
             }
         });
 
@@ -221,7 +233,7 @@ public class BattleCOOPboss extends Fragment {
 
                         // initialize the characters and their stats
 
-                        player1 = new Character(m.health*m.level, m.attack*m.level, m.defense*m.level, m.type, m.bArray); //player mon
+                        player1 = new Character(m.maxhealth*m.level, m.attack*m.level, m.defense*m.level, m.type, m.bArray); //player mon
 
                         // Publish the message to notify player 1 is in
                         player1HealthBar.setMax(player1.health);
@@ -252,7 +264,7 @@ public class BattleCOOPboss extends Fragment {
 
                             // initialize the characters and their stats
 
-                            player2 = new Character(m.health*m.level, m.attack*m.level, m.defense*m.level, m.type, m.bArray); //player mon
+                            player2 = new Character(m.maxhealth*m.level, m.attack*m.level, m.defense*m.level, m.type, m.bArray); //player mon
 
                             // Publish the message to notify player 1 is in
                             player2HealthBar.setMax(player2.health);
@@ -278,7 +290,7 @@ public class BattleCOOPboss extends Fragment {
 
 
                         byte[] emptyByteArray = new byte[0];
-                        Boss = new Character(50000, 3000, 2000, "dark", emptyByteArray);//player mon
+                        Boss = new Character(50000, 3000, 2000, "bug", emptyByteArray);//player mon
 
                         BossHP = Boss.health;
                         BossHealthBar.setMax(Boss.health);
@@ -293,6 +305,7 @@ public class BattleCOOPboss extends Fragment {
 
                         if (imPlayer1) {
                             attackButton.setEnabled(true);
+                            fugirButton.setEnabled(true);
                         }
 
                         if (imPlayer1 || imPlayer2) {
@@ -487,6 +500,7 @@ public class BattleCOOPboss extends Fragment {
 
                                 if (imPlayer1) {
                                     attackButton.setEnabled(true);
+                                    fugirButton.setEnabled(true);
                                 }
                             }
                         });
@@ -511,7 +525,17 @@ public class BattleCOOPboss extends Fragment {
                             Log.w("TAG", "topic: " + topic);
 
                             if (topic.equals("battleJunior")) {
+
+                                if (new String(message.getPayload()).equals("fugir")){
+                                    helper.publish("ConnectJunior", "Gameover", 0, true);
+                                    helper.publish("GetHPJunior", "Gameover", 0, true);
+
+                                    MainCity fragment = new MainCity();
+                                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                                }
                                 int number = Integer.parseInt(new String(message.getPayload()));
+
+
 
                                 if (player1Turn) {
 
@@ -524,17 +548,19 @@ public class BattleCOOPboss extends Fragment {
                                             gameActionsTextView.setText("Player 1 attacked boss!");
                                         }
                                     });
-                                    BossHP -= number;
+                                    BossHP -= (number - (number * (Boss.defense)/ Boss.health));
 
                                     player1Turn = false;
                                     player2Turn = true;
 
                                     if (imPlayer1) {
                                         attackButton.setEnabled(false);
+                                        fugirButton.setEnabled(false);
                                     }
 
                                     if (imPlayer2) {
                                         attackButton.setEnabled(true);
+                                        fugirButton.setEnabled(true);
                                     }
 
                                     // Update the UI
@@ -561,14 +587,16 @@ public class BattleCOOPboss extends Fragment {
                                         }
                                     });
 
-                                    BossHP -= number;
+                                    BossHP -= (number - (number * (Boss.defense)/ Boss.health));
 
                                     if (imPlayer2) {
                                         attackButton.setEnabled(false);
+                                        fugirButton.setEnabled(false);
                                     }
 
                                     if (imPlayer1) {
                                         attackButton.setEnabled(false);
+                                        fugirButton.setEnabled(false);
                                     }
 
                                     player1Turn = false;
@@ -608,6 +636,7 @@ public class BattleCOOPboss extends Fragment {
                                 //player2Turn = true;
 
                                 //attackButton.setEnabled(false);
+                                //fugirButton.setEnabled(false);
 
                                 helper.publish("battleJunior", attack, 0, false);
 
@@ -622,15 +651,28 @@ public class BattleCOOPboss extends Fragment {
                                 //player2Turn = false;
 
                                 //attackButton.setEnabled(false);
+                                //fugirButton.setEnabled(false);
 
                                 helper.publish("battleJunior", attack, 0, false);
 
 
                                 //attackButton.setEnabled(false);
+                                //fugirButton.setEnabled(false);
 
 
                             }
 
+                        }
+                    });
+
+                    fugirButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (player1Turn){
+                                helper.publish("battleJunior", "fugir", 0, false);
+                            }else if (player2Turn){
+                                helper.publish("battleJunior", "fugir", 0, false);
+                            }
                         }
                     });
 
