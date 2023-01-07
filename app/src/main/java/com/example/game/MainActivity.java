@@ -48,42 +48,42 @@ public class MainActivity extends AppCompatActivity {
             // Load Monsters to MonsterDex Database
             MonsterSpriteSheet = viewModel.getAirMonsterSpriteSheet();
             monsterNames = new String[]{
-                    "Apprentice Moira", "Moira", "Dark Sisters",
+                    "ApprenticeMoira", "Moira", "DarkSisters",
                     "Canary", "Eagle", "Dragon",
-                    "Slime", "Slime Angel", "Angel",
-                    "Small Fairy", "Fairy", "Ancient Fairy",
+                    "Slime", "SlimeAngel", "Angel",
+                    "SmallFairy", "Fairy", "AncientFairy",
             };
             buildMonsters("air");
             MonsterSpriteSheet = viewModel.getBugMonsterSpriteSheet();
             monsterNames = new String[]{
-                    "Ant", "Mutant Ant", "Anterfly",
-                    "Spider", "Mutant Spider", "Demonic Spider",
-                    "Bee", "Mutant Bee", "Beeterfly",
-                    "Larva", "Mutant Larva", "Giant Larva",
+                    "Ant", "MutantAnt", "Anterfly",
+                    "Spider", "MutantSpider", "DemonicSpider",
+                    "Bee", "MutantBee", "Beeterfly",
+                    "Larva", "MutantLarva", "GiantLarva",
             };
             buildMonsters("bug");
             MonsterSpriteSheet = viewModel.getFireMonsterSpriteSheet();
             monsterNames = new String[]{
-                    "Lizard", "Dragon", "Ancient Dragon",
-                    "Fire Slime", "Fire Human", "Fire Homunculus",
-                    "Dog", "Infernal Dog", "Cerebrus",
-                    "Quimera", "Old Quimera", "Grifo",
+                    "Lizard", "Dragon", "AncientDragon",
+                    "FireSlime", "FireHuman", "FireHomunculus",
+                    "Dog", "InfernalDog", "Cerebrus",
+                    "Quimera", "OldQuimera", "Grifo",
             };
             buildMonsters("fire");
             MonsterSpriteSheet = viewModel.getGroundMonsterSpriteSheet();
             monsterNames = new String[]{
-                    "Turtle", "Mutant Turtle", "T-Turtle",
-                    "Plant", "Carnivorous Plant", "Ancient Plant",
-                    "Lizard", "Poison Lizard", "Mega Lizard",
-                    "Scorpion", "Mutant Scorpion", "Scorpider",
+                    "Turtle", "MutantTurtle", "T-Turtle",
+                    "Plant", "CarnivorousPlant", "AncientPlant",
+                    "Lizard", "Poison Lizard", "MegaLizard",
+                    "Scorpion", "MutantScorpion", "Scorpider",
             };
             buildMonsters("ground");
             MonsterSpriteSheet = viewModel.getWaterMonsterSpriteSheet();
             monsterNames = new String[]{
-                    "Crab", "Angry Crab", "Monster Crab",
-                    "Ocean Bear", "Ocean Bearsaur", "Oceanzilla",
-                    "Ocean Mutant", "Giant Ocean Mutant", "Mega Mutant",
-                    "Shark", "Shark Monster", "Shark Monstrosity",
+                    "Crab", "AngryCrab", "MonsterCrab",
+                    "OceanBear", "OceanBearsaur", "Oceanzilla",
+                    "OceanMutant", "GiantOceanMutant", "MegaMutant",
+                    "Shark", "SharkMonster", "SharkMonstrosity",
             };
             buildMonsters("water");
         }

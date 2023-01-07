@@ -45,7 +45,7 @@ public class Battle extends Fragment{
     private Monster m;
     // variables to represent the characters and their stats
     // object to represent the character
-    private class Character {
+    public class Character {
         // variables to represent the character's stats
         int health;
         int attack;
