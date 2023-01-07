@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.game.city.BattleCOOPboss;
 import com.example.game.city.BattlePVP;
+import com.example.game.city.Shop;
 import com.example.game.databases.Monster;
 import com.example.game.screens.MainMenu;
 import com.example.game.R;
@@ -110,7 +111,8 @@ public class MainCity extends Fragment implements View.OnTouchListener{
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, battleCOOPboss).commit();
         }else if( tile == 1 ){      // Shop
             Log.w("texto", "Shop");
-
+            Shop shop = new Shop();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, shop).commit();
 
         }else if( tile == 2 ){      // Arena
             BattlePVP battlePVP = new BattlePVP();
