@@ -303,6 +303,8 @@ public class BattleCOOPboss extends Fragment {
 
                         Boss2Label.setText("Boss - " + Boss.health);
 
+                        p3.setImageBitmap(BitmapFactory.decodeByteArray(viewModel.getDatabase().monsterDexDao().getMonsterByName("T-Turtle").bArray, 0, viewModel.getDatabase().monsterDexDao().getMonsterByName("T-Turtle").bArray.length));
+
                         helper.publish("ConnectJunior", "BossIsReady", 0, true);
 
 

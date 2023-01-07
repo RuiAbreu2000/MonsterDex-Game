@@ -52,6 +52,7 @@ public class TradingMon extends Fragment {
 
     private Button tradeButton;
     private Button receiveButton;
+    private Button fugirButton;
     private TextView trade;
     private TextView receive;
 
@@ -76,6 +77,8 @@ public class TradingMon extends Fragment {
         RecyclerView recyclerView = v.findViewById(R.id.monsters);
         tradeButton = v.findViewById(R.id.button3);
         receiveButton = v.findViewById(R.id.button4);
+
+        fugirButton = v.findViewById(R.id.button5);
         trade = v.findViewById(R.id.textView3);
         receive = v.findViewById(R.id.textView4);
 
@@ -124,22 +127,34 @@ public class TradingMon extends Fragment {
                     Monster monster = viewModel.getDatabase().monsterDao().getMonsterByName(selectedMonster.name);
                     String name = monster.name;
                     String type = monster.type;
-                    String health = Integer.toString(monster.health);
+                    String health = Integer.toString(monster.maxhealth);
                     String attack = Integer.toString(monster.attack);
                     String defense = Integer.toString(monster.defense);
                     String level = Integer.toString(monster.level);
                     String xp = Integer.toString(monster.xp);
                     String eve = Integer.toString(monster.eve);
                     String evolution = monster.evolution;
-                    String message = name + " " + type + " " + health + " " + attack + " " + level + " " + defense + " " + xp + " " + eve + " " + evolution;
+                    String message = name + " " + type + " " + health + " " + attack + " " + defense + " " + level +  " " + xp + " " + eve + " " + evolution;
                     helper.publish("GetStatsJunior", message, 0, false);
 
 
                     iSent = true;
 
-
-
                 }
+            }
+        });
+
+        fugirButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                helper.publish("ConnectTrading", "fugir", 0, false);
+
+                MainCity fragment = new MainCity();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+
+
             }
         });
 
@@ -152,17 +167,17 @@ public class TradingMon extends Fragment {
 
                     Monster monsterReceiving = viewModel.getDatabase().monsterDexDao().getMonsterByName(myTrade.name);
                     myTrade.bArray = monsterReceiving.bArray;
+                    myTrade.maxhealth = myTrade.health;
 
                     viewModel.getDatabase().monsterDao().addMonster(myTrade);
                     Monster deleting = viewModel.getDatabase().monsterDao().getMonsterByName(selectedMonster.name);
                     viewModel.getDatabase().monsterDao().deleteMonster(deleting);
 
                     helper.publish("ConnectTrading", "TradingOver", 0, true);
-                    //getActivity().getSupportFragmentManager().beginTransaction().detach(this).attach(this).commit();
-                    Fragment goBack = viewModel.getLastFragment();
-                    goBack.onResume();
-                    //TestMap fragment = new TestMap();
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, goBack).commit();
+                    helper.stop();
+                    OnGoingTrade = false;
+                    MainCity fragment = new MainCity();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
 
 
 
@@ -195,13 +210,24 @@ public class TradingMon extends Fragment {
 
                 if (topic.equals("ConnectTrading")) {
 
+                    if (new String(message.getPayload()).equals("fugir")){
+                        OnGoingTrade = false;
+                        helper.publish("ConnectTrading", "TradingOver", 0, true);
+                        helper.stop();
+                        MainCity fragment = new MainCity();
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+
+
+                    }
+
                     if (new String(message.getPayload()).equals("TradingOver")){
 
-                        if (!OnGoingTrade) {
+
                             imPlayer1 = true;
                             //List<Monster> monsters = viewModel.getDatabase().monsterDao().getAllMonsters();
                             helper.publish("ConnectTrading", "Player1conn", 0, true);
-                        }
+
+
 
 
                     } else if (new String(message.getPayload()).equals("Player1conn")){
@@ -217,8 +243,8 @@ public class TradingMon extends Fragment {
 
                     } else if (new String(message.getPayload()).equals("Player2conn")){
                         Log.w("TAG", "Entrei no loop" + topic);
-                        OnGoingTrade = true;
 
+                        OnGoingTrade = true;
                         helper.publish("ConnectTrading", "TradingStarted", 0, true);
 
                         if (imPlayer1){

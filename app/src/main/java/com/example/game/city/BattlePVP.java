@@ -233,6 +233,8 @@ public class BattlePVP extends Fragment {
 
                         player1Label.setText("Player 1 - " + player1.health);
                         player1HP = player1.health;
+                        player1HP1 = player1.health;
+
                         player1DEF = player1.defense;
                         player1NAME = m.name;
 
@@ -261,6 +263,7 @@ public class BattlePVP extends Fragment {
 
                             player2Label.setText("Player 2 - " + player2.health);
                             player2HP = player2.health;
+                            player2HP2 = player1.health;
                             player2DEF = player2.defense;
                             player2NAME = m.name;
 
@@ -377,6 +380,10 @@ public class BattlePVP extends Fragment {
 
                     if (player1Turn){
                         Log.w("TAG", "Player 1 turn");
+                        Log.w("TAG", "Player 1 HP =" + player1HP);
+                        Log.w("TAG", "Player 2 HP =" + player2HP);
+                        Log.w("TAG", "Player 1 MAXHP =" + player1HP1);
+                        Log.w("TAG", "Player 2 MAXHP =" + player2HP2);
 
                         // Update the UI
                         mHandler.post(new Runnable() {
@@ -388,6 +395,10 @@ public class BattlePVP extends Fragment {
                     }
                     else if (player2Turn) {
                         Log.w("TAG", "Player 2 turn");
+                        Log.w("TAG", "Player 1 HP =" + player1HP);
+                        Log.w("TAG", "Player 2 HP =" + player2HP);
+                        Log.w("TAG", "Player 1 MAXHP =" + player1HP1);
+                        Log.w("TAG", "Player 2 MAXHP =" + player2HP2);
 
                         // Update the UI
                         mHandler.post(new Runnable() {
@@ -439,6 +450,7 @@ public class BattlePVP extends Fragment {
                                         }
                                     });
                                     player2HP -= (number - (number * (player2DEF/player2HP2)));
+                                    Log.w("TAG", "Player 1 new HP =" + player2HP);
 
                                     player1Turn = false;
                                     player2Turn = true;
@@ -476,6 +488,7 @@ public class BattlePVP extends Fragment {
                                     //(number - (number * (Boss.defense)/ Boss.health))
                                     player1HP -= (number - (number * (player1DEF/player1HP1)));
 
+                                    Log.w("TAG", "Player 1 new HP =" + player1HP);
                                     player1Turn = true;
                                     player2Turn = false;
 
